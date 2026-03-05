@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ישראל - איראן | מצגת מקיפה</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue-israel: #0038B8;
+  --blue-light: #4A90D9;
+  --green-iran: #239F40;
+  --red-iran: #DA0000;
+  --gold: #C9A84C;
+  --bg-deep: #080810;
+  --bg-card: #0F0F1A;
+  --bg-elevated: #161625;
+  --text-primary: #E8E8F0;
+  --text-secondary: #9090A8;
+  --text-muted: #555570;
+  --danger: #EF4444;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --cyan: #06B6D4;
+  --purple: #8B5CF6;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  font-family: 'Heebo', sans-serif;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Presentation ── */
+.presentation { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(24px);
+  padding: 60px 60px 80px;
+}
+.slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+.slide-inner { width: 100%; max-width: 1300px; position: relative; z-index: 2; }
+
+/* ── Backgrounds ── */
+.slide-bg {
+  position: absolute; inset: 0; z-index: 0;
+}
+.slide-bg img, .slide-bg video {
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0.18; filter: saturate(0.3) brightness(0.8);
+}
+.slide-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(8,8,16,0.95) 0%, rgba(8,8,16,0.65) 50%, rgba(8,8,16,0.92) 100%);
+}
+
+.glow-orb {
+  position: absolute; border-radius: 50%; filter: blur(120px);
+  opacity: 0.07; pointer-events: none; z-index: 1;
+}
+
+/* ── Typography ── */
+.slide-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 160px; font-weight: 900;
+  position: absolute; top: -30px; left: -10px;
+  opacity: 0.03; line-height: 1; z-index: 0; direction: ltr;
+  color: var(--blue-israel);
+}
+
+h1 {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: clamp(40px, 5vw, 68px); font-weight: 900; line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: clamp(30px, 3.5vw, 48px); font-weight: 700;
+  line-height: 1.2; margin-bottom: 16px;
+}
+
+h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+
+p {
+  font-size: clamp(15px, 1.6vw, 20px); line-height: 1.8;
+  color: var(--text-secondary); font-weight: 300;
+}
+
+.subtitle {
+  font-size: clamp(16px, 1.8vw, 22px);
+  font-weight: 500; margin-bottom: 12px; letter-spacing: 1px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--blue-light) 0%, var(--text-primary) 50%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.gold-text { color: var(--gold); }
+.blue-text { color: var(--blue-light); }
+.red-text { color: var(--danger); }
+.green-text { color: var(--success); }
+
+/* ── Divider ── */
+.divider {
+  width: 80px; height: 3px; border-radius: 2px; margin: 20px 0;
+}
+.divider-blue { background: linear-gradient(90deg, var(--blue-israel), var(--blue-light)); }
+.divider-gold { background: linear-gradient(90deg, var(--gold), #e8c96a); }
+.divider-dual {
+  background: linear-gradient(90deg, var(--blue-israel), var(--blue-light), var(--green-iran));
+  width: 120px;
+}
+
+/* ── Layouts ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ── Cards ── */
+.card {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; padding: 24px; position: relative; overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.12); }
+.card-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+.card h3 { font-size: 16px; margin-bottom: 6px; }
+.card p { font-size: 14px; line-height: 1.55; }
+
+/* ── Timeline ── */
+.timeline { position: relative; padding-right: 36px; }
+.timeline::before {
+  content: ''; position: absolute; right: 12px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(to bottom, var(--blue-israel), var(--gold), var(--danger));
+}
+.timeline-item { position: relative; margin-bottom: 22px; padding-right: 20px; }
+.timeline-item::before {
+  content: ''; position: absolute; right: -31px; top: 5px;
+  width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--bg-deep);
+}
+.timeline-item.good::before { background: var(--success); }
+.timeline-item.bad::before { background: var(--danger); }
+.timeline-item.neutral::before { background: var(--gold); }
+
+.timeline-year {
+  font-family: 'Playfair Display', serif; font-size: 17px;
+  font-weight: 700; direction: ltr; display: inline-block;
+}
+.timeline-year.good { color: var(--success); }
+.timeline-year.bad { color: var(--danger); }
+.timeline-year.neutral { color: var(--gold); }
+
+.timeline-text { font-size: 14px; color: var(--text-secondary); margin-top: 3px; line-height: 1.5; }
+
+/* ── Comparison Table ── */
+.comp-table {
+  width: 100%; border-collapse: collapse; margin-top: 20px;
+}
+.comp-table th {
+  text-align: right; padding: 14px 16px; font-size: 13px;
+  font-weight: 700; border-bottom: 2px solid rgba(255,255,255,0.08);
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.comp-table th.col-kalbia { color: var(--blue-light); }
+.comp-table th.col-ari { color: var(--gold); }
+.comp-table td {
+  padding: 12px 16px; font-size: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-secondary);
+}
+.comp-table tr:hover td { background: rgba(255,255,255,0.02); }
+.comp-table .param { color: var(--text-primary); font-weight: 500; }
+
+/* ── Stat Cards ── */
+.stat-card { text-align: center; padding: 24px 16px; }
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 2.8vw, 42px); font-weight: 900;
+  direction: ltr; margin-bottom: 6px;
+}
+.stat-label { font-size: 13px; color: var(--text-secondary); font-weight: 400; }
+
+/* ── Bar Chart ── */
+.bar-chart {
+  display: flex; align-items: flex-end; gap: 12px;
+  height: 280px; padding-top: 36px; margin-top: 24px;
+}
+.bar-group {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; height: 100%; justify-content: flex-end; gap: 0;
+}
+.bar-pair { display: flex; gap: 4px; align-items: flex-end; width: 100%; justify-content: center; }
+.bar {
+  width: 36px; border-radius: 6px 6px 0 0;
+  position: relative; transition: height 1s cubic-bezier(0.34, 1.4, 0.64, 1);
+  min-height: 0;
+}
+.bar-label { font-size: 11px; color: var(--text-secondary); margin-top: 10px; text-align: center; font-weight: 500; }
+.bar-value {
+  position: absolute; top: -24px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; font-weight: 700; white-space: nowrap; direction: ltr;
+}
+
+/* ── Image Panel ── */
+.img-panel {
+  border-radius: 14px; overflow: hidden; position: relative;
+  height: 100%; min-height: 260px;
+}
+.img-panel img { width: 100%; height: 100%; object-fit: cover; }
+.img-panel::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(8,8,16,0.3), rgba(74,144,217,0.08));
+}
+
+/* ── Animated GIF Frame ── */
+.gif-frame {
+  border-radius: 14px; overflow: hidden; border: 2px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+.gif-frame img { width: 100%; display: block; }
+
+/* ── Period Indicators ── */
+.period-good {
+  background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(34,197,94,0.02));
+  border-right: 3px solid var(--success);
+  border-radius: 10px; padding: 20px; margin-bottom: 16px;
+}
+.period-bad {
+  background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));
+  border-right: 3px solid var(--danger);
+  border-radius: 10px; padding: 20px; margin-bottom: 16px;
+}
+.period-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.period-header .emoji { font-size: 22px; }
+.period-header h3 { margin: 0; }
+
+/* ── Flag Badge ── */
+.flag-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 100px; font-size: 13px;
+  font-weight: 500; margin-bottom: 16px;
+}
+.flag-badge.israel {
+  background: rgba(0,56,184,0.15); border: 1px solid rgba(0,56,184,0.3); color: var(--blue-light);
+}
+.flag-badge.iran {
+  background: rgba(218,0,0,0.1); border: 1px solid rgba(218,0,0,0.2); color: var(--red-iran);
+}
+.flag-badge.dual {
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+}
+
+/* ── Navigation ── */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 36px;
+  background: linear-gradient(to top, rgba(8,8,16,0.98), transparent);
+}
+.nav-dots { display: flex; gap: 6px; direction: ltr; }
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--text-muted); border: none; cursor: pointer;
+  transition: all 0.3s; padding: 0;
+}
+.nav-dot.active { background: var(--blue-light); width: 28px; border-radius: 4px; }
+
+.nav-btn {
+  background: rgba(74,144,217,0.1); border: 1px solid rgba(74,144,217,0.2);
+  color: var(--blue-light); padding: 8px 20px; border-radius: 8px;
+  font-family: 'Heebo'; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 6px;
+}
+.nav-btn:hover { background: rgba(74,144,217,0.2); border-color: var(--blue-light); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+.slide-counter { font-size: 12px; color: var(--text-muted); direction: ltr; }
+
+/* ── Progress ── */
+.progress-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 101; background: rgba(255,255,255,0.03); }
+.progress-fill {
+  height: 100%; border-radius: 0 2px 2px 0;
+  background: linear-gradient(90deg, var(--blue-israel), var(--blue-light), var(--gold));
+  transition: width 0.5s ease;
+}
+
+/* ── Animations ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(35px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeRight { from { opacity: 0; transform: translateX(35px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes pulse { 0%,100% { opacity: 0.07; } 50% { opacity: 0.14; } }
+@keyframes countUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+.slide.active .a1 { animation: fadeUp 0.7s 0.1s both; }
+.slide.active .a2 { animation: fadeUp 0.7s 0.2s both; }
+.slide.active .a3 { animation: fadeUp 0.7s 0.35s both; }
+.slide.active .a4 { animation: fadeUp 0.7s 0.5s both; }
+.slide.active .a5 { animation: fadeUp 0.7s 0.65s both; }
+.slide.active .ar1 { animation: fadeRight 0.7s 0.2s both; }
+
+/* ── Operation Icon ── */
+.op-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin-bottom: 16px;
+}
+.op-kalbia { background: linear-gradient(135deg, rgba(0,56,184,0.2), rgba(74,144,217,0.1)); border: 1px solid rgba(74,144,217,0.2); }
+.op-ari { background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.1)); border: 1px solid rgba(201,168,76,0.2); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .two-col, .three-col, .four-col { grid-template-columns: 1fr; }
+  .slide { padding: 36px 20px 80px; }
+  .bar-chart { height: 180px; }
+  .comp-table { font-size: 13px; }
+  .comp-table td, .comp-table th { padding: 8px 10px; }
+}
+
+/* ── Highlight Box ── */
+.highlight-box {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; padding: 24px; margin-top: 20px;
+}
+
+/* ── Key Fact ── */
+.key-fact {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 20px; background: var(--bg-card);
+  border-radius: 10px; margin-bottom: 10px;
+  border-right: 3px solid var(--blue-light);
+}
+.key-fact .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 900; color: var(--gold);
+  flex-shrink: 0; direction: ltr; min-width: 60px; text-align: center;
+}
+.key-fact .desc { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
+/* ── Versus ── */
+.vs-container { display: flex; align-items: center; gap: 24px; margin: 24px 0; }
+.vs-side { flex: 1; text-align: center; }
+.vs-badge {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px; font-weight: 900; color: var(--gold); opacity: 0.6;
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<div class="presentation" id="presentation">
+
+  <!-- ═══════ SLIDE 1: TITLE ═══════ -->
+  <div class="slide active" data-slide="0">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1529243856184-fd5465488984?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:500px;height:500px;top:-200px;right:10%;background:var(--blue-israel);animation:pulse 4s infinite"></div>
+    <div class="glow-orb" style="width:400px;height:400px;bottom:-150px;left:5%;background:var(--red-iran);animation:pulse 5s 1s infinite"></div>
+    <div class="slide-inner" style="text-align:center">
+      <div class="a1 flag-badge dual">סקירה מקיפה | מבריאות הברית ועד לימי הקרב</div>
+      <h1 class="a2 gradient-text" style="font-size:clamp(48px,7vw,96px);">ישראל ואיראן</h1>
+      <p class="a3" style="font-size:clamp(18px,2.2vw,28px);max-width:750px;margin:0 auto;color:var(--text-secondary)">
+        מבעלות ברית קרובות לאויבות מרות —<br>ושני המבצעים שעיצבו את המציאות החדשה
+      </p>
+      <div class="a4" style="display:flex;gap:32px;justify-content:center;margin-top:40px">
+        <div style="text-align:center">
+          <div style="font-size:48px">🇮🇱</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px">ישראל</div>
+        </div>
+        <div style="font-size:36px;color:var(--text-muted);align-self:center">&#8596;</div>
+        <div style="text-align:center">
+          <div style="font-size:48px">🇮🇷</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px">איראן</div>
+        </div>
+      </div>
+      <div class="a5" style="margin-top:36px;font-size:13px;color:var(--text-muted)">מרץ 2026 | מבוסס על מקורות מרובים</div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 2: THE GOOD ERA ═══════ -->
+  <div class="slide" data-slide="1">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:500px;height:500px;top:10%;left:-100px;background:var(--success);animation:pulse 5s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">01</div>
+      <div class="two-col">
+        <div>
+          <div class="flag-badge dual a1">1948–1979</div>
+          <h2 class="a2">תקופת הזהב: בעלות ברית</h2>
+          <div class="divider divider-dual a2"></div>
+          <div class="a3">
+            <div class="period-good">
+              <div class="period-header">
+                <span class="emoji">🤝</span>
+                <h3 style="color:var(--success)">הכרה דיפלומטית</h3>
+              </div>
+              <p style="font-size:14px">איראן היתה <strong>המדינה המוסלמית השנייה</strong> (אחרי טורקיה) שהכירה בישראל. שגרירות ישראלית פעלה בטהרן.</p>
+            </div>
+            <div class="period-good">
+              <div class="period-header">
+                <span class="emoji">🛢️</span>
+                <h3 style="color:var(--success)">נפט ואנרגיה</h3>
+              </div>
+              <p style="font-size:14px">איראן סיפקה עד <strong>60% מהנפט של ישראל</strong> דרך צינור אילת-אשקלון. שיתוף פעולה אנרגטי רחב.</p>
+            </div>
+            <div class="period-good">
+              <div class="period-header">
+                <span class="emoji">🔧</span>
+                <h3 style="color:var(--success)">שיתוף פעולה ביטחוני</h3>
+              </div>
+              <p style="font-size:14px">אלפי ישראלים עבדו באיראן כיועצי ביטחון, חקלאות ובריאות. <strong>"דוקטרינת הפריפריה"</strong> — ברית עם "שכני השכנים" נגד העולם הערבי.</p>
+            </div>
+          </div>
+        </div>
+        <div class="ar1">
+          <div class="img-panel" style="margin-bottom:20px;min-height:200px">
+            <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?w=800&q=80" alt="Diplomacy">
+          </div>
+          <div class="highlight-box">
+            <h3 style="color:var(--gold);margin-bottom:12px">עובדות מרכזיות</h3>
+            <div class="key-fact" style="border-color:var(--success)">
+              <div class="num">60%</div>
+              <div class="desc">מהנפט של ישראל הגיע מאיראן</div>
+            </div>
+            <div class="key-fact" style="border-color:var(--success)">
+              <div class="num" style="font-size:20px">1,000+</div>
+              <div class="desc">ישראלים חיו ועבדו באיראן</div>
+            </div>
+            <div class="key-fact" style="border-color:var(--success)">
+              <div class="num" style="font-size:18px">SAVAK</div>
+              <div class="desc">המוסד הכשיר את שירות הביון האיראני</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 3: THE REVOLUTION ═══════ -->
+  <div class="slide" data-slide="2">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1591696205602-2f950c417cb9?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:600px;height:600px;bottom:-250px;right:-100px;background:var(--danger);animation:pulse 4.5s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">02</div>
+      <div class="subtitle a1" style="color:var(--danger)">1979 — נקודת המפנה</div>
+      <h2 class="a2">המהפכה האיסלאמית: מברית לאיבה</h2>
+      <div class="divider a2" style="background:linear-gradient(90deg, var(--danger), #ff6b6b)"></div>
+      <div class="two-col a3">
+        <div>
+          <p style="margin-bottom:20px;font-size:17px">
+            בפברואר 1979, <strong>האייתוללה חומייני</strong> עלה לשלטון בהפיכה שסחפה את השאה מהכס.
+            תוך ימים, איראן ניתקה את כל הקשרים עם ישראל.
+          </p>
+          <div class="period-bad">
+            <div class="period-header">
+              <span class="emoji">🏴</span>
+              <h3 style="color:var(--danger)">שגרירות ישראל הפכה למשרדי אש"ף</h3>
+            </div>
+            <p style="font-size:14px">יאסר ערפאת הניף את הדגל הפלסטיני במקום בו פעם עמד דגל ישראל. אחד הרגעים הסמליים ביותר במזרח התיכון.</p>
+          </div>
+          <div class="period-bad">
+            <div class="period-header">
+              <span class="emoji">💣</span>
+              <h3 style="color:var(--danger)">הקמת חיזבאללה (1982)</h3>
+            </div>
+            <p style="font-size:14px">איראן ייסדה ומימנה את חיזבאללה בלבנון כזרוע פרוקסי נגד ישראל. מאז — אלפי רקטות שוגרו לעבר ישראל.</p>
+          </div>
+          <div class="period-bad">
+            <div class="period-header">
+              <span class="emoji">☢️</span>
+              <h3 style="color:var(--danger)">תוכנית הגרעין</h3>
+            </div>
+            <p style="font-size:14px">איראן החלה בפיתוח תוכנית גרעין חשאית. ישראל זיהתה בכך <strong>איום קיומי</strong> והפכה את מניעת הגרעין האיראני ליעד אסטרטגי עליון.</p>
+          </div>
+        </div>
+        <div>
+          <div class="img-panel" style="min-height:200px;margin-bottom:20px">
+            <img src="https://images.unsplash.com/photo-1580130732478-4e339fb6836f?w=800&q=80" alt="Revolution">
+          </div>
+          <div class="highlight-box" style="border:1px solid rgba(239,68,68,0.15)">
+            <h3 style="color:var(--danger);margin-bottom:12px">ציר זמן של הידרדרות</h3>
+            <div style="font-size:14px;color:var(--text-secondary);line-height:1.8">
+              <div><strong style="color:var(--danger)">1979</strong> — ניתוק יחסים מלא</div>
+              <div><strong style="color:var(--danger)">1982</strong> — הקמת חיזבאללה</div>
+              <div><strong style="color:var(--danger)">2002</strong> — חשיפת תוכנית הגרעין</div>
+              <div><strong style="color:var(--danger)">2005</strong> — אחמדינג'אד: "ישראל תימחק"</div>
+              <div><strong style="color:var(--danger)">2012</strong> — פיגועי טרור נגד ישראלים בעולם</div>
+              <div><strong style="color:var(--danger)">2018</strong> — סוריה — עימותים ישירים</div>
+              <div><strong style="color:var(--danger)">2024</strong> — מתקפות טילים ישירות</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 4: FULL TIMELINE ═══════ -->
+  <div class="slide" data-slide="3">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:500px;height:500px;top:-100px;left:30%;background:var(--blue-israel);animation:pulse 4s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">03</div>
+      <div class="subtitle a1" style="color:var(--gold)">ציר זמן מלא</div>
+      <h2 class="a2">75 שנות יחסים במבט אחד</h2>
+      <div class="divider divider-dual a2"></div>
+      <div class="two-col a3">
+        <div class="timeline">
+          <div class="timeline-item good">
+            <span class="timeline-year good">1950</span>
+            <div class="timeline-text">איראן מכירה בישראל — המדינה המוסלמית השנייה</div>
+          </div>
+          <div class="timeline-item good">
+            <span class="timeline-year good">1953</span>
+            <div class="timeline-text">הפיכה באיראן — השאה מתחזק, יחסים מתהדקים</div>
+          </div>
+          <div class="timeline-item good">
+            <span class="timeline-year good">1960s</span>
+            <div class="timeline-text">דוקטרינת הפריפריה — שיתוף מודיעיני וצבאי עמוק</div>
+          </div>
+          <div class="timeline-item good">
+            <span class="timeline-year good">1965</span>
+            <div class="timeline-text">צינור נפט אילת-אשקלון — 60% מהנפט מאיראן</div>
+          </div>
+          <div class="timeline-item good">
+            <span class="timeline-year good">1970s</span>
+            <div class="timeline-text">חילופי שגרירים, בית ספר ישראלי בטהרן</div>
+          </div>
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">1979</span>
+            <div class="timeline-text">המהפכה האיסלאמית — ניתוק מוחלט</div>
+          </div>
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">1982</span>
+            <div class="timeline-text">הקמת חיזבאללה בלבנון במימון איראני</div>
+          </div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">2002</span>
+            <div class="timeline-text">חשיפת מתקני גרעין חשאיים בנתנז ואראק</div>
+          </div>
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">2006</span>
+            <div class="timeline-text">מלחמת לבנון השנייה — חיזבאללה כזרוע איראן</div>
+          </div>
+          <div class="timeline-item neutral">
+            <span class="timeline-year neutral">2015</span>
+            <div class="timeline-text">הסכם הגרעין (JCPOA) — ישראל מתנגדת בתוקף</div>
+          </div>
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">2018</span>
+            <div class="timeline-text">עימותים ישירים בסוריה, ישראל תוקפת יעדים איראניים</div>
+          </div>
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">2024</span>
+            <div class="timeline-text">איראן שוגרת 300+ טילים לישראל — מתקפה ישירה ראשונה</div>
+          </div>
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">2025</span>
+            <div class="timeline-text">מבצע "עם כלביא" — 12 ימי לחימה</div>
+          </div>
+          <div class="timeline-item bad">
+            <span class="timeline-year bad">2026</span>
+            <div class="timeline-text">מבצע "שאגת הארי" — מכה מכרעת, חיסול חמינאי</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 5: PROXY WARS ═══════ -->
+  <div class="slide" data-slide="4">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:500px;height:500px;bottom:-200px;left:-100px;background:var(--purple);animation:pulse 5s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">04</div>
+      <div class="subtitle a1" style="color:var(--purple)">מלחמות בפרוקסי</div>
+      <h2 class="a2">ציר ההתנגדות האיראני</h2>
+      <div class="divider a2" style="background:linear-gradient(90deg, var(--purple), #b794f6)"></div>
+      <p class="a3" style="max-width:800px;margin-bottom:28px">
+        במשך עשרות שנים ניהלה איראן עימות עקיף עם ישראל באמצעות ארגוני פרוקסי — "ציר ההתנגדות". מלחמת חרבות ברזל (2023) חשפה את כל הזרועות במקביל.
+      </p>
+      <div class="four-col a4">
+        <div class="card" style="border-top:3px solid #FDDA0D">
+          <span class="card-icon">🟡</span>
+          <h3 style="color:#FDDA0D">חיזבאללה — לבנון</h3>
+          <p>הזרוע החזקה ביותר. 150,000+ רקטות וטילים. נחלשה משמעותית במלחמת חרבות ברזל ובחיסול נסראללה.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--success)">
+          <span class="card-icon">🟢</span>
+          <h3 style="color:var(--success)">חמאס — עזה</h3>
+          <p>קיבל מימון, אימונים ונשק מאיראן. ביצע את מתקפת 7 באוקטובר שהצית את כל המערכה.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--danger)">
+          <span class="card-icon">🔴</span>
+          <h3 style="color:var(--danger)">חות'ים — תימן</h3>
+          <p>שיגרו טילים בליסטיים וכטב"מים לישראל ותקפו ספינות בים סוף. זרוע חדשה ומסוכנת.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--cyan)">
+          <span class="card-icon">🔵</span>
+          <h3 style="color:var(--cyan)">מיליציות — סוריה ועיראק</h3>
+          <p>עשרות מיליציות שיעיות פרו-איראניות. שימשו כבסיס לטילים ולכטב"מים כנגד ישראל.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 6: OPERATION IM KALBIA ═══════ -->
+  <div class="slide" data-slide="5">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1534996858221-380b92700493?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:600px;height:600px;top:-200px;right:-100px;background:var(--blue-israel);animation:pulse 4s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">05</div>
+      <div class="two-col">
+        <div>
+          <div class="flag-badge israel a1">🇮🇱 13–24 ביוני 2025</div>
+          <h2 class="a2" style="color:var(--blue-light)">מבצע "עם כלביא"</h2>
+          <div class="divider divider-blue a2"></div>
+          <p class="a3" style="margin-bottom:20px">
+            מתקפת מנע ישראלית נגד תוכנית הגרעין והטילים של איראן. <strong>12 ימי לחימה</strong> שכללו תקיפות אוויריות, סיכולים ממוקדים, לוחמת סייבר ומבצעי קומנדו.
+          </p>
+          <div class="a4" style="display:flex;flex-direction:column;gap:10px">
+            <div class="key-fact">
+              <div class="num" style="font-size:22px">~900</div>
+              <div class="desc">מטרות הותקפו באיראן</div>
+            </div>
+            <div class="key-fact">
+              <div class="num" style="font-size:22px">1,500</div>
+              <div class="desc">גיחות חיל האוויר</div>
+            </div>
+            <div class="key-fact">
+              <div class="num" style="font-size:22px">~200</div>
+              <div class="desc">משגרי טילים הושמדו (מחצית מהמלאי)</div>
+            </div>
+            <div class="key-fact">
+              <div class="num" style="font-size:22px">11</div>
+              <div class="desc">מדעני גרעין בכירים חוסלו</div>
+            </div>
+          </div>
+        </div>
+        <div class="ar1">
+          <div class="img-panel" style="min-height:200px;margin-bottom:16px">
+            <img src="https://images.unsplash.com/photo-1580910051074-3eb694886f3b?w=800&q=80" alt="Military">
+          </div>
+          <div class="highlight-box" style="border:1px solid rgba(74,144,217,0.15)">
+            <h3 style="color:var(--danger);margin-bottom:10px">תגובת איראן</h3>
+            <div style="font-size:14px;color:var(--text-secondary);line-height:1.8">
+              <div>🚀 <strong>500+</strong> טילים בליסטיים לעבר ישראל</div>
+              <div>🛩️ <strong>1,000+</strong> כטב"מים שוגרו</div>
+              <div>💥 <strong>63</strong> טילים חדרו את מערך ההגנה</div>
+              <div>🕊️ <strong>31</strong> הרוגים, <strong>3,238</strong> פצועים</div>
+              <div>💰 נזק ישיר: <strong>4.5 מיליארד ₪</strong></div>
+            </div>
+          </div>
+          <div style="margin-top:12px;padding:12px 16px;background:rgba(74,144,217,0.08);border-radius:10px;font-size:13px;color:var(--blue-light)">
+            🇺🇸 ב-21 ביוני הצטרפה ארה"ב — מפציצי B-2 תקפו את פורדו ונתנז
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 7: CYBER & SPECIAL OPS ═══════ -->
+  <div class="slide" data-slide="6">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:500px;height:500px;top:20%;left:-150px;background:var(--cyan);animation:pulse 5s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">06</div>
+      <div class="subtitle a1" style="color:var(--cyan)">הממד הנסתר</div>
+      <h2 class="a2">סייבר, מודיעין ומבצעים מיוחדים</h2>
+      <div class="divider a2" style="background:linear-gradient(90deg, var(--cyan), #67e8f9)"></div>
+      <p class="a3" style="max-width:800px;margin-bottom:28px">
+        מבצע "עם כלביא" כלל ממד מודיעיני וסייבר חסר תקדים. חיל האוויר כינה את המלחמה <strong>"מלחמת החלל הראשונה"</strong>.
+      </p>
+      <div class="three-col a4">
+        <div class="card" style="border-top:3px solid var(--cyan)">
+          <span class="card-icon">🎭</span>
+          <h3 style="color:var(--cyan)">מבצע ההטעיה</h3>
+          <p>יחידות סייבר שלחו הודעות מזויפות לבכירים איראניים, הזמינו אותם ל"ישיבת חירום" בבונקר — המיקום הועבר לחיל האוויר. <strong>20 קצינים בכירים חוסלו</strong>, כולל 3 רמטכ"לים.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--success)">
+          <span class="card-icon">💻</span>
+          <h3 style="color:var(--success)">מתקפת סייבר</h3>
+          <p>קבוצת ההאקרים "Predatory Sparrow" תקפה את הבנק הגדול באיראן. מערכות ההגנה האווירית <strong>הושבתו זמנית</strong> — ואפשרו את גל התקיפות הראשון.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--purple)">
+          <span class="card-icon">🎯</span>
+          <h3 style="color:var(--purple)">מבצע "נרניה"</h3>
+          <p>המוסד בנה רשימה של <strong>~100 מדעני גרעין</strong> מדורגים לפי חשיבות. <strong>כל 11 המדענים המובילים חוסלו</strong> בסדרת תקיפות דרמטית תוך דקות.</p>
+        </div>
+      </div>
+      <div class="a5 highlight-box" style="margin-top:24px;display:flex;align-items:center;gap:20px;border:1px solid rgba(6,182,212,0.15)">
+        <span style="font-size:40px">🛰️</span>
+        <div>
+          <h3 style="color:var(--cyan);margin-bottom:4px">מלחמת החלל הראשונה</h3>
+          <p style="font-size:14px">ראש מנהלת החלל במשרד הביטחון כינה את המבצע "מלחמת החלל הראשונה" — שימוש חסר תקדים בלווייני ביון, ניווט ותקשורת בשדה הקרב.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 8: OPERATION SHA'AGAT HA'ARI ═══════ -->
+  <div class="slide" data-slide="7">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:600px;height:600px;bottom:-200px;right:10%;background:var(--gold);animation:pulse 4s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">07</div>
+      <div class="two-col">
+        <div>
+          <div class="flag-badge dual a1">🇮🇱🇺🇸 28 בפברואר 2026</div>
+          <h2 class="a2" style="color:var(--gold)">מבצע "שאגת הארי"</h2>
+          <div class="divider divider-gold a2"></div>
+          <p class="a3" style="margin-bottom:20px">
+            מבצע משולב של ישראל וארה"ב — <strong>קפיצת מדרגה</strong> ביחס ל"עם כלביא". מטס התקיפה הגדול בתולדות חיל האוויר הישראלי.
+          </p>
+          <div class="a4" style="display:flex;flex-direction:column;gap:10px">
+            <div class="key-fact" style="border-color:var(--gold)">
+              <div class="num" style="font-size:22px;color:var(--gold)">200</div>
+              <div class="desc">מטוסי קרב — מטס "בראשית"</div>
+            </div>
+            <div class="key-fact" style="border-color:var(--gold)">
+              <div class="num" style="font-size:22px;color:var(--gold)">500+</div>
+              <div class="desc">מטרות הותקפו ביממה הראשונה</div>
+            </div>
+            <div class="key-fact" style="border-color:var(--gold)">
+              <div class="num" style="font-size:22px;color:var(--gold)">2,250</div>
+              <div class="desc">חימושים הוטלו ביממה הראשונה (ISR+US)</div>
+            </div>
+            <div class="key-fact" style="border-color:var(--gold)">
+              <div class="num" style="font-size:18px;color:var(--gold)">x11</div>
+              <div class="desc">עוצמת אש לעומת היממה הראשונה של "עם כלביא"</div>
+            </div>
+          </div>
+        </div>
+        <div class="ar1">
+          <div style="background:linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.03));border:1px solid rgba(201,168,76,0.2);border-radius:14px;padding:24px;margin-bottom:16px">
+            <h3 style="color:var(--gold);margin-bottom:12px;font-size:20px">🎯 ההישג המרכזי</h3>
+            <p style="font-size:16px;line-height:1.7;color:var(--text-primary)">
+              במכת הפתיחה <strong style="color:var(--gold)">חוסל עלי חמינאי</strong> — המנהיג העליון של איראן ששלט ביד ברזל במשך <strong>36 שנה</strong>.
+            </p>
+            <p style="font-size:14px;margin-top:12px;color:var(--text-secondary)">
+              לצד החיסול, הושמדו מערכות הגנה אווירית, מכ"מים, סוללות נ"מ, מרכזי פיקוד ושליטה, ומשגרי טילים בליסטיים.
+            </p>
+          </div>
+          <div class="highlight-box" style="border:1px solid rgba(201,168,76,0.15)">
+            <h3 style="color:var(--blue-light);margin-bottom:10px">שיתוף פעולה ישראלי-אמריקאי</h3>
+            <div style="font-size:14px;color:var(--text-secondary);line-height:1.8">
+              <div>🇮🇱 ישראל: <strong>1,200 חימושים</strong> ביממה הראשונה</div>
+              <div>🇺🇸 ארה"ב: <strong>1,050 חימושים</strong> ביממה הראשונה</div>
+              <div>🔥 סה"כ: <strong>3,000+ חימושים</strong> בשתי יממות</div>
+              <div>⚡ קצב פי 5 ביחס ל"עם כלביא"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 9: COMPARISON ═══════ -->
+  <div class="slide" data-slide="8">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:500px;height:500px;top:10%;right:-100px;background:var(--blue-israel);animation:pulse 4s infinite"></div>
+    <div class="glow-orb" style="width:400px;height:400px;bottom:10%;left:-100px;background:var(--gold);animation:pulse 5s 1s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">08</div>
+      <div class="subtitle a1" style="color:var(--gold)">השוואה</div>
+      <h2 class="a2">"עם כלביא" מול "שאגת הארי"</h2>
+      <div class="divider divider-dual a2"></div>
+      <div class="a3">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>פרמטר</th>
+              <th class="col-kalbia">🦁 עם כלביא (יוני 2025)</th>
+              <th class="col-ari">🦁 שאגת הארי (פבר' 2026)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="param">משך המבצע</td>
+              <td>12 ימים (13–24.6)</td>
+              <td>נמשך (החל 28.2)</td>
+            </tr>
+            <tr>
+              <td class="param">מטרות שהותקפו</td>
+              <td>~900</td>
+              <td>500+ ביממה ראשונה בלבד</td>
+            </tr>
+            <tr>
+              <td class="param">גיחות חיל אוויר</td>
+              <td>~1,500</td>
+              <td>200 מטוסים בו-זמנית</td>
+            </tr>
+            <tr>
+              <td class="param">חימושים ביממה ראשונה</td>
+              <td>~200</td>
+              <td>2,250 (ישראל+ארה"ב)</td>
+            </tr>
+            <tr>
+              <td class="param">מעורבות ארה"ב</td>
+              <td>הצטרפה ביום ה-9</td>
+              <td>מהרגע הראשון — מבצע משולב</td>
+            </tr>
+            <tr>
+              <td class="param">חיסולים מרכזיים</td>
+              <td>11 מדעני גרעין, 20+ קצינים</td>
+              <td style="color:var(--gold);font-weight:700">חמינאי + צמרת שלמה</td>
+            </tr>
+            <tr>
+              <td class="param">עוצמת אש (יחסי)</td>
+              <td>בסיס (x1)</td>
+              <td style="color:var(--gold);font-weight:700">פי 11</td>
+            </tr>
+            <tr>
+              <td class="param">מוקד תקיפה</td>
+              <td>גרעין + מדענים</td>
+              <td>הגנה אווירית + טילים + הנהגה</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="a4" style="margin-top:24px">
+        <div class="bar-chart" id="compChart">
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar" data-height="36" style="background:linear-gradient(to top, #003088, #4A90D9);height:0%">
+                <span class="bar-value" style="color:var(--blue-light)">~900</span>
+              </div>
+              <div class="bar" data-height="100" style="background:linear-gradient(to top, #8B6914, #F0D78C);height:0%">
+                <span class="bar-value" style="color:var(--gold)">2,500+</span>
+              </div>
+            </div>
+            <div class="bar-label">מטרות</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar" data-height="8" style="background:linear-gradient(to top, #003088, #4A90D9);height:0%">
+                <span class="bar-value" style="color:var(--blue-light)">~200</span>
+              </div>
+              <div class="bar" data-height="90" style="background:linear-gradient(to top, #8B6914, #F0D78C);height:0%">
+                <span class="bar-value" style="color:var(--gold)">2,250</span>
+              </div>
+            </div>
+            <div class="bar-label">חימושים (יממה 1)</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar" data-height="9" style="background:linear-gradient(to top, #003088, #4A90D9);height:0%">
+                <span class="bar-value" style="color:var(--blue-light)">x1</span>
+              </div>
+              <div class="bar" data-height="100" style="background:linear-gradient(to top, #8B6914, #F0D78C);height:0%">
+                <span class="bar-value" style="color:var(--gold)">x11</span>
+              </div>
+            </div>
+            <div class="bar-label">עוצמת אש</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar" data-height="48" style="background:linear-gradient(to top, #003088, #4A90D9);height:0%">
+                <span class="bar-value" style="color:var(--blue-light)">12</span>
+              </div>
+              <div class="bar" data-height="8" style="background:linear-gradient(to top, #8B6914, #F0D78C);height:0%">
+                <span class="bar-value" style="color:var(--gold)">2+</span>
+              </div>
+            </div>
+            <div class="bar-label">ימים (עד כה)</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:20px;justify-content:center;margin-top:8px;font-size:12px">
+          <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--blue-light);display:block"></span><span style="color:var(--text-muted)">עם כלביא</span></div>
+          <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--gold);display:block"></span><span style="color:var(--text-muted)">שאגת הארי</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 10: SUMMARY ═══════ -->
+  <div class="slide" data-slide="9">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb" style="width:600px;height:600px;top:-250px;left:20%;background:var(--blue-israel);animation:pulse 4s infinite"></div>
+    <div class="glow-orb" style="width:400px;height:400px;bottom:-100px;right:10%;background:var(--gold);animation:pulse 5s 1.5s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-num">10</div>
+      <div class="subtitle a1" style="color:var(--gold)">סיכום</div>
+      <h2 class="a2 gradient-text">75 שנה של שינוי — מברית לקרב</h2>
+      <div class="divider divider-dual a2"></div>
+      <div class="a3" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px">
+        <div class="card" style="border-right:3px solid var(--success)">
+          <h3 style="color:var(--success)">🤝 התקופה הטובה (1948–1979)</h3>
+          <p>30 שנות ברית אסטרטגית — נפט, מודיעין, דיפלומטיה. איראן ספקה 60% מהנפט, אלפי ישראלים עבדו בטהרן. שיתוף פעולה ב-SAVAK ודוקטרינת הפריפריה.</p>
+        </div>
+        <div class="card" style="border-right:3px solid var(--danger)">
+          <h3 style="color:var(--danger)">⚔️ התקופה הרעה (1979–2024)</h3>
+          <p>45 שנות עוינות — מלחמות פרוקסי דרך חיזבאללה, חמאס וחות'ים. תוכנית גרעין, קריאות להשמדת ישראל, פיגועים ברחבי העולם.</p>
+        </div>
+        <div class="card" style="border-right:3px solid var(--blue-light)">
+          <h3 style="color:var(--blue-light)">🦁 עם כלביא (יוני 2025)</h3>
+          <p>12 ימי לחימה. 900 מטרות, 1,500 גיחות. חיסול 11 מדעני גרעין. מתקפת סייבר. ארה"ב הצטרפה. 31 הרוגים בישראל. הסגת תוכנית הגרעין.</p>
+        </div>
+        <div class="card" style="border-right:3px solid var(--gold)">
+          <h3 style="color:var(--gold)">🦁 שאגת הארי (פבר' 2026)</h3>
+          <p>מבצע משולב ישראל-ארה"ב. 200 מטוסים, 500+ מטרות, פי 11 עוצמה. חיסול חמינאי. מטס "בראשית" — הגדול בתולדות חה"א.</p>
+        </div>
+      </div>
+      <div class="a4" style="text-align:center;margin-top:32px">
+        <p style="font-size:20px;color:var(--gold);font-weight:700;font-family:'Frank Ruhl Libre',serif;line-height:1.6">
+          "מהברית ההדוקה ביותר — לעימות הישיר ביותר.<br>75 שנה שעיצבו את המזרח התיכון."
+        </p>
+      </div>
+      <div class="a5" style="text-align:center;margin-top:24px;font-size:12px;color:var(--text-muted)">
+        מקורות: ויקיפדיה, ynet, כאן חדשות, Israel Hayom, JDN, IDI, Mako, IDSF, Al Jazeera, Encyclopaedia Iranica
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Nav ── -->
+<nav class="nav-bar">
+  <button class="nav-btn" id="nextBtn" onclick="go(1)"><span>הקודם</span> <span>→</span></button>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="nav-dots" id="dots"></div>
+    <span class="slide-counter" id="counter">1 / 10</span>
+  </div>
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)"><span>←</span> <span>הבא</span></button>
+</nav>
+
+<script>
+let cur = 0;
+const N = 10;
+const slides = document.querySelectorAll('.slide');
+const prog = document.getElementById('progress');
+const cnt = document.getElementById('counter');
+const dots = document.getElementById('dots');
+
+for (let i = 0; i < N; i++) {
+  const d = document.createElement('button');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => jump(i);
+  dots.appendChild(d);
+}
+
+function jump(n) {
+  slides[cur].classList.remove('active');
+  dots.children[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  dots.children[cur].classList.add('active');
+  prog.style.width = ((cur + 1) / N * 100) + '%';
+  cnt.textContent = (cur + 1) + ' / ' + N;
+  document.getElementById('prevBtn').disabled = cur === 0;
+  document.getElementById('nextBtn').disabled = cur === N - 1;
+  if (cur === 8) animBars();
+}
+
+function go(d) { const n = cur + d; if (n >= 0 && n < N) jump(n); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); go(-1); }
+});
+
+let tx = 0;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+document.addEventListener('touchend', e => {
+  const d = tx - e.changedTouches[0].clientX;
+  if (Math.abs(d) > 50) go(d > 0 ? 1 : -1);
+});
+
+function animBars() {
+  document.querySelectorAll('#compChart .bar').forEach((b, i) => {
+    b.style.height = '0%';
+    setTimeout(() => b.style.height = b.dataset.height + '%', 80 + i * 100);
+  });
+}
+
+document.getElementById('prevBtn').disabled = true;
+</script>
+
+</body>
+</html>
