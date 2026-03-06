@@ -342,14 +342,43 @@ cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:8px;
   .sidebar.open{transform:translateX(0)}
   .main{margin-right:0!important}
   .sidebar-toggle{right:16px;top:56px}
-  .hero{padding:50px 24px 40px}
+  .sidebar-open .sidebar-toggle{right:16px}
+  .hero{padding:50px 16px 40px}
   .hero h1{font-size:28px}
-  .book-section{padding:24px 24px 12px}
-  .parsha-cards{padding:0 24px 24px;gap:16px}
+  .hero p{font-size:15px;line-height:1.7}
+  .hero-ornament{display:none}
+  .book-section{padding:20px 16px 10px}
+  .book-title{font-size:24px}
+  .book-subtitle{font-size:13px;margin-bottom:20px}
+  .parsha-cards{padding:0 16px 20px;gap:14px;grid-template-columns:1fr}
   .parsha-cards .parsha-card{min-width:0}
+  .parsha-card-header{padding:14px 16px 12px}
+  .parsha-card-title{font-size:20px}
+  .parsha-card-num{font-size:28px}
+  .parsha-card-ref{font-size:12px}
+  .parsha-card-body{padding:14px 16px 18px}
+  .parsha-card-summary{font-size:13.5px;line-height:1.8}
+  .parsha-card-image{height:110px}
+  .parsha-card-image .parsha-emoji{font-size:42px}
   .detail-panel{width:100%}
-  .detail-content{padding:0 24px 40px}
-  .detail-nav{padding:24px 24px 40px}
+  .detail-content{padding:0 16px 32px}
+  .detail-title{font-size:28px}
+  .detail-ref{font-size:14px;margin-bottom:24px;padding-bottom:16px}
+  .detail-section h3{font-size:17px}
+  .detail-section p,.detail-section li{font-size:14px;line-height:1.85}
+  .detail-verse{padding:16px 18px;font-size:16px;line-height:1.9}
+  .detail-hero-image{height:180px;border-radius:10px}
+  .detail-hero-image .parsha-emoji{font-size:56px}
+  .detail-nav{padding:20px 16px 32px}
+  .detail-nav button{padding:8px 14px;font-size:13px}
+  .detail-close{padding:12px 16px}
+  .easy-explain{padding:18px 20px}
+  .easy-explain p{font-size:14px;line-height:1.95}
+  .modern-section{padding:16px 18px}
+  .modern-section p{font-size:13.5px;line-height:1.9}
+  .commentary-card{padding:14px 16px}
+  .commentary-card .source-name{font-size:13px}
+  .commentary-card .source-text{font-size:13px;line-height:1.8}
 }
 
 /* ========== ANIMATIONS ========== */
@@ -463,19 +492,23 @@ font-size:14.5px;line-height:2;color:var(--text);
 
 /* ========== FOOTER ========== */
 .site-footer{
-background:var(--navy);padding:40px 60px;text-align:center;
-border-top:2px solid var(--gold);margin-top:40px;
+position:fixed;bottom:0;left:0;right:0;z-index:90;
+background:var(--navy);padding:10px 32px;
+border-top:2px solid var(--gold);
+display:flex;align-items:center;justify-content:center;gap:14px;
+box-shadow:0 -2px 12px rgba(0,0,0,0.3);
 }
+body{padding-bottom:52px}
 .footer-logo{
-width:80px;height:80px;border-radius:12px;
-object-fit:contain;margin-bottom:16px;
+width:32px;height:32px;border-radius:6px;
+object-fit:contain;
 }
 .footer-credit{
-font-family:'Frank Ruhl Libre',serif;font-size:15px;
-color:var(--gold);margin-bottom:6px;
+font-family:'Frank Ruhl Libre',serif;font-size:14px;
+color:var(--gold);
 }
 .footer-company{
-font-size:13px;color:rgba(201,168,76,0.6);
+font-size:12px;color:rgba(201,168,76,0.6);
 }
 
 /* ========== SIDEBAR CURRENT INDICATOR ========== */
@@ -486,9 +519,15 @@ background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:10px;
 font-size:9px;font-weight:700;
 }
 @media(max-width:768px){
-  .current-week-banner{margin:16px;flex-direction:column;text-align:center}
-  .site-footer{padding:30px 24px}
+  .current-week-banner{margin:12px 16px;flex-direction:column;text-align:center;padding:16px 18px;gap:12px}
+  .current-week-info h3{font-size:18px}
+  .current-week-info p{font-size:12px}
+  .site-footer{padding:10px 16px;gap:10px}
+  .footer-logo{width:28px;height:28px}
+  .footer-credit{font-size:12px}
+  .footer-company{font-size:10px}
   .family-header{padding:8px 16px}
+  .family-header span{font-size:12px}
 }
 </style>
 </head>
@@ -549,7 +588,7 @@ font-size:9px;font-weight:700;
 <main class="main" id="mainContent"></main>
 
 <!-- Footer -->
-<footer class="main site-footer" id="siteFooter">
+<footer class="site-footer" id="siteFooter">
   <img src="a_digital_logo_design_features_the_text_e_rezults.png" alt="E-REZULTS Logo" class="footer-logo">
   <div class="footer-credit">ארז כהן</div>
   <div class="footer-company">E-REZULTS &copy; 2022</div>
