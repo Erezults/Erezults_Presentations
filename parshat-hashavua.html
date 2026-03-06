@@ -579,6 +579,10 @@ font-size:9px;font-weight:700;
 </style>
 </head>
 <body class="sidebar-open">
+<script>
+if(window.innerWidth<=768){document.body.className='sidebar-closed';document.addEventListener('DOMContentLoaded',function(){document.getElementById('sidebar').classList.add('closed')})}
+else{document.addEventListener('DOMContentLoaded',function(){document.getElementById('sidebar').classList.add('open')})}
+</script>
 
 <!-- Family Header -->
 <div class="family-header">
@@ -593,7 +597,7 @@ font-size:9px;font-weight:700;
 </button>
 
 <!-- Sidebar -->
-<nav class="sidebar open" id="sidebar">
+<nav class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <div class="sidebar-logo">
       פרשת השבוע
