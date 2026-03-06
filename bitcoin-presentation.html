@@ -611,8 +611,79 @@ p {
 }
 
 .logo-item .emoji { font-size: 32px; margin-bottom: 8px; }
+.logo-item .logo-img { width: 48px; height: 48px; object-fit: contain; margin-bottom: 8px; border-radius: 10px; background: #fff; padding: 4px; }
 .logo-item .name { font-size: 14px; color: var(--text-primary); font-weight: 500; }
 .logo-item .detail { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+/* ── Investment Comparison Cards ── */
+.invest-strip {
+  display: flex;
+  gap: 14px;
+  margin-top: 28px;
+  align-items: flex-end;
+  height: 340px;
+  position: relative;
+  padding-bottom: 40px;
+}
+.invest-strip::before {
+  content: '';
+  position: absolute;
+  bottom: 40px;
+  left: 0; right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+.invest-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.invest-bar-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 260px;
+  position: relative;
+}
+.invest-bar {
+  width: 70%;
+  max-width: 52px;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  transition: height 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-height: 0;
+}
+.invest-bar .ib-val {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+.invest-col .ib-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+.invest-col .ib-pct {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: -4px;
+}
+.invest-col.btc-col .ib-val,
+.invest-col.btc-col .ib-pct { color: var(--gold-light); }
+.invest-col.btc-col .invest-bar { background: linear-gradient(to top, #A07D2E, #F0D78C); box-shadow: 0 0 30px rgba(212,168,67,.25); }
+.invest-col.btc-col .ib-name { color: var(--gold); font-weight: 700; }
 
 /* ── Key Points ── */
 .key-point {
@@ -715,8 +786,15 @@ p {
   .logo-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .logo-item { padding: 14px; }
   .logo-item .emoji { font-size: 26px; }
+  .logo-item .logo-img { width: 36px; height: 36px; padding: 3px; }
   .logo-item .name { font-size: 13px; }
   .logo-item .detail { font-size: 11px; }
+  .invest-strip { height: 240px; gap: 6px; padding-bottom: 32px; }
+  .invest-bar-wrap { height: 170px; }
+  .invest-bar { max-width: 36px; }
+  .invest-bar .ib-val { font-size: 10px; top: -22px; }
+  .invest-col .ib-name { font-size: 9px; }
+  .invest-col .ib-pct { font-size: 9px; }
   .feature-list li { font-size: 15px; gap: 12px; }
   .feature-list .icon { font-size: 20px; }
   .img-panel { min-height: 200px; }
@@ -1215,27 +1293,96 @@ p {
     </div>
   </div>
 
-  <!-- ═══════════ SLIDE 9: WHO'S IN + RISKS ═══════════ -->
+  <!-- ═══════════ SLIDE 9: ASSET CLASS COMPARISON ═══════════ -->
   <div class="slide" data-slide="8">
+    <div class="slide-bg">
+      <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80" alt="">
+    </div>
+    <div class="glow-orb gold" style="width:600px;height:600px;top:-200px;left:30%;animation:pulse 5s infinite"></div>
+    <div class="glow-orb purple" style="width:400px;height:400px;bottom:-100px;right:-50px;animation:pulse 6s 1s infinite"></div>
+    <div class="slide-inner">
+      <div class="slide-number">08</div>
+      <div class="subtitle anim-1">סוגי נכסים</div>
+      <h2 class="anim-2">$10,000 שהושקעו ב-2016 — לפי סוג נכס</h2>
+      <div class="gold-line anim-2"></div>
+      <div class="invest-strip anim-3" id="investChart">
+        <div class="invest-col btc-col">
+          <div class="invest-bar-wrap">
+            <div class="invest-bar" data-h="100" style="height:0"><span class="ib-val">$2.17M</span></div>
+          </div>
+          <div class="ib-name">ביטקוין</div>
+          <div class="ib-pct">+21,650%</div>
+        </div>
+        <div class="invest-col">
+          <div class="invest-bar-wrap">
+            <div class="invest-bar" data-h="1.4" style="height:0;background:linear-gradient(to top,#5B21B6,#A78BFA)"><span class="ib-val" style="color:var(--purple)">$30.4K</span></div>
+          </div>
+          <div class="ib-name">S&P 500</div>
+          <div class="ib-pct" style="color:var(--purple)">+204%</div>
+        </div>
+        <div class="invest-col">
+          <div class="invest-bar-wrap">
+            <div class="invest-bar" data-h="1.26" style="height:0;background:linear-gradient(to top,#92400E,#FCD34D)"><span class="ib-val" style="color:#FCD34D">$27.4K</span></div>
+          </div>
+          <div class="ib-name">זהב</div>
+          <div class="ib-pct" style="color:#FCD34D">+174%</div>
+        </div>
+        <div class="invest-col">
+          <div class="invest-bar-wrap">
+            <div class="invest-bar" data-h="1.09" style="height:0;background:linear-gradient(to top,#6B7280,#D1D5DB)"><span class="ib-val" style="color:#D1D5DB">$23.6K</span></div>
+          </div>
+          <div class="ib-name">כסף</div>
+          <div class="ib-pct" style="color:#D1D5DB">+136%</div>
+        </div>
+        <div class="invest-col">
+          <div class="invest-bar-wrap">
+            <div class="invest-bar" data-h="0.82" style="height:0;background:linear-gradient(to top,#065F46,#34D399)"><span class="ib-val" style="color:var(--green)">$17.8K</span></div>
+          </div>
+          <div class="ib-name">נדל"ן</div>
+          <div class="ib-pct" style="color:var(--green)">+78%</div>
+        </div>
+        <div class="invest-col">
+          <div class="invest-bar-wrap">
+            <div class="invest-bar" data-h="0.58" style="height:0;background:linear-gradient(to top,#1E40AF,#60A5FA)"><span class="ib-val" style="color:var(--blue)">$12.8K</span></div>
+          </div>
+          <div class="ib-name">אג"ח</div>
+          <div class="ib-pct" style="color:var(--blue)">+28%</div>
+        </div>
+        <div class="invest-col">
+          <div class="invest-bar-wrap">
+            <div class="invest-bar" data-h="0.46" style="height:0;background:linear-gradient(to top,#991B1B,#F87171)"><span class="ib-val" style="color:var(--red)">$11K</span></div>
+          </div>
+          <div class="ib-name">פיקדון</div>
+          <div class="ib-pct" style="color:var(--red)">+10%</div>
+        </div>
+      </div>
+      <p class="anim-4" style="margin-top:12px;text-align:center;font-size:13px;color:var(--text-muted)">
+        * ביטקוין הניב פי 72 יותר מזהב ופי 197 יותר מפיקדון בנקאי. ביצועי העבר אינם מבטיחים תשואה עתידית.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ SLIDE 10: WHO'S IN + RISKS ═══════════ -->
+  <div class="slide" data-slide="9">
     <div class="slide-bg">
       <img src="https://images.unsplash.com/photo-1559526324-593bc073d938?w=1920&q=80" alt="">
     </div>
     <div class="glow-orb purple" style="width:500px;height:500px;top:-100px;right:20%;animation:pulse 5s infinite"></div>
     <div class="slide-inner">
-      <div class="slide-number">08</div>
+      <div class="slide-number">09</div>
       <div class="two-col">
         <div>
           <div class="subtitle anim-1">מי כבר בפנים?</div>
           <h2 class="anim-2">אימוץ מוסדי</h2>
           <div class="gold-line anim-2"></div>
           <div class="logo-grid anim-3">
-            <div class="logo-item"><div class="emoji">🏢</div><div class="name">BlackRock</div><div class="detail">ETF ביטקוין</div></div>
-            <div class="logo-item"><div class="emoji">⚡</div><div class="name">Tesla</div><div class="detail">מחזיקה BTC</div></div>
-            <div class="logo-item"><div class="emoji">💳</div><div class="name">PayPal</div><div class="detail">קנייה ומכירה</div></div>
-            <div class="logo-item"><div class="emoji">🏦</div><div class="name">Fidelity</div><div class="detail">קרנות קריפטו</div></div>
+            <div class="logo-item"><img class="logo-img" src="https://www.google.com/s2/favicons?domain=blackrock.com&sz=128" alt="BlackRock"><div class="name">BlackRock</div><div class="detail">ETF ביטקוין</div></div>
+            <div class="logo-item"><img class="logo-img" src="https://www.google.com/s2/favicons?domain=tesla.com&sz=128" alt="Tesla"><div class="name">Tesla</div><div class="detail">מחזיקה BTC</div></div>
+            <div class="logo-item"><img class="logo-img" src="https://www.google.com/s2/favicons?domain=paypal.com&sz=128" alt="PayPal"><div class="name">PayPal</div><div class="detail">קנייה ומכירה</div></div>
+            <div class="logo-item"><img class="logo-img" src="https://www.google.com/s2/favicons?domain=fidelity.com&sz=128" alt="Fidelity"><div class="name">Fidelity</div><div class="detail">קרנות קריפטו</div></div>
             <div class="logo-item"><div class="emoji">🇸🇻</div><div class="name">אל סלבדור</div><div class="detail">הילך חוקי</div></div>
-            <div class="logo-item"><div class="emoji">💰</div><div class="name">MicroStrategy</div><div class="detail">190K+ BTC</div></div>
-            <div class="logo-item"><div class="emoji">🏧</div><div class="name">JPMorgan</div><div class="detail">שירותי קריפטו</div></div>
+            <div class="logo-item"><img class="logo-img" src="https://www.google.com/s2/favicons?domain=microstrategy.com&sz=128" alt="MicroStrategy"><div class="name">MicroStrategy</div><div class="detail">190K+ BTC</div></div>
+            <div class="logo-item"><img class="logo-img" src="https://www.google.com/s2/favicons?domain=jpmorgan.com&sz=128" alt="JPMorgan"><div class="name">JPMorgan</div><div class="detail">שירותי קריפטו</div></div>
             <div class="logo-item"><div class="emoji">🇺🇸</div><div class="name">ארה"ב</div><div class="detail">רזרבה אסטרטגית</div></div>
           </div>
         </div>
@@ -1260,8 +1407,8 @@ p {
     </div>
   </div>
 
-  <!-- ═══════════ SLIDE 10: SUMMARY ═══════════ -->
-  <div class="slide" data-slide="9">
+  <!-- ═══════════ SLIDE 11: SUMMARY ═══════════ -->
+  <div class="slide" data-slide="10">
     <div class="slide-bg">
       <img src="https://images.unsplash.com/photo-1519995451813-39e29e054914?w=1920&q=80" alt="">
     </div>
@@ -1331,7 +1478,7 @@ p {
 
 <script>
 let current = 0;
-const total = 10;
+const total = 11;
 const slides = document.querySelectorAll('.slide');
 const progress = document.getElementById('progress');
 const counter = document.getElementById('slideCounter');
@@ -1356,8 +1503,9 @@ function goToSlide(n) {
   document.getElementById('prevBtn').disabled = current === 0;
   document.getElementById('nextBtn').disabled = current === total - 1;
 
-  // Animate bars on slide 7
+  // Animate bars on slide 7 and invest chart on slide 8
   if (current === 7) animateBars();
+  if (current === 8) animateInvest();
 }
 
 function changeSlide(dir) {
@@ -1394,6 +1542,16 @@ function animateBars() {
     setTimeout(() => {
       bar.style.height = bar.dataset.height + '%';
     }, 100 + i * 120);
+  });
+}
+
+function animateInvest() {
+  const bars = document.querySelectorAll('#investChart .invest-bar');
+  bars.forEach((bar, i) => {
+    bar.style.height = '0';
+    setTimeout(() => {
+      bar.style.height = bar.dataset.h + '%';
+    }, 150 + i * 140);
   });
 }
 
