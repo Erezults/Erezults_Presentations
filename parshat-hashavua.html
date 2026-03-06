@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פרשת השבוע - כל פרשיות התורה</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=David+Libre:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--gold:#c9a84c;--gold-light:#e8d48b;--gold-dark:#a07d2e;
+--navy:#1a1a2e;--navy-light:#2a2a4e;--navy-mid:#16213e;
+--parchment:#f5f0e8;--parchment-dark:#e8dfd0;--parchment-light:#faf7f2;
+--brown:#5c3d2e;--brown-light:#8b6914;
+--text:#2c1810;--text-light:#6b5744;
+--accent:#8b2252;--accent-light:#c44d7b;
+--sidebar-w:320px;
+--transition:0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+html{scroll-behavior:smooth}
+body{
+font-family:'Noto Sans Hebrew','David Libre',serif;
+background:var(--parchment);color:var(--text);
+overflow-x:hidden;min-height:100vh;
+}
+
+/* ========== PARCHMENT TEXTURE ========== */
+body::before{
+content:'';position:fixed;inset:0;z-index:-1;
+background:
+  radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 20%,rgba(139,34,82,0.04) 0%,transparent 40%),
+  radial-gradient(ellipse at 50% 80%,rgba(92,61,46,0.06) 0%,transparent 50%),
+  var(--parchment);
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar{
+position:fixed;top:0;right:0;width:var(--sidebar-w);height:100vh;
+background:var(--navy);z-index:100;
+display:flex;flex-direction:column;
+transition:transform var(--transition);
+box-shadow:-4px 0 30px rgba(0,0,0,0.3);
+}
+.sidebar.closed{transform:translateX(100%)}
+.sidebar-header{
+padding:28px 24px 20px;
+background:linear-gradient(180deg,var(--navy) 0%,var(--navy-light) 100%);
+border-bottom:1px solid rgba(201,168,76,0.2);
+}
+.sidebar-logo{
+font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700;
+color:var(--gold);text-align:center;margin-bottom:16px;
+letter-spacing:1px;
+}
+.sidebar-logo span{
+display:block;font-size:12px;font-weight:300;
+color:var(--gold-light);opacity:0.7;margin-top:4px;
+letter-spacing:2px;
+}
+.search-box{
+position:relative;margin-top:8px;
+}
+.search-box input{
+width:100%;padding:10px 16px 10px 36px;
+background:rgba(255,255,255,0.08);border:1px solid rgba(201,168,76,0.2);
+border-radius:8px;color:#e0d5c5;font-family:'Noto Sans Hebrew',sans-serif;
+font-size:14px;outline:none;transition:all 0.3s;
+}
+.search-box input::placeholder{color:rgba(224,213,197,0.4)}
+.search-box input:focus{
+border-color:var(--gold);background:rgba(255,255,255,0.12);
+}
+.search-box svg{
+position:absolute;left:12px;top:50%;transform:translateY(-50%);
+width:16px;height:16px;stroke:rgba(201,168,76,0.5);
+}
+
+/* Book tabs */
+.book-tabs{
+display:flex;gap:2px;padding:12px 16px 0;
+background:rgba(0,0,0,0.15);
+}
+.book-tab{
+flex:1;padding:8px 4px;text-align:center;
+font-size:11px;font-weight:600;color:rgba(201,168,76,0.5);
+cursor:pointer;border-radius:6px 6px 0 0;transition:all 0.3s;
+background:transparent;border:none;font-family:'Noto Sans Hebrew',sans-serif;
+}
+.book-tab:hover{color:var(--gold-light);background:rgba(201,168,76,0.08)}
+.book-tab.active{
+color:var(--gold);background:rgba(201,168,76,0.12);
+border-bottom:2px solid var(--gold);
+}
+
+/* Parsha list */
+.parsha-list{
+flex:1;overflow-y:auto;padding:8px 0;
+scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.3) transparent;
+}
+.parsha-list::-webkit-scrollbar{width:5px}
+.parsha-list::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:3px}
+.parsha-item{
+display:flex;align-items:center;gap:12px;
+padding:10px 20px;cursor:pointer;transition:all 0.25s;
+border-right:3px solid transparent;
+}
+.parsha-item:hover{
+background:rgba(201,168,76,0.08);border-right-color:rgba(201,168,76,0.3);
+}
+.parsha-item.active{
+background:rgba(201,168,76,0.12);border-right-color:var(--gold);
+}
+.parsha-num{
+width:28px;height:28px;border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:11px;font-weight:700;color:var(--gold);
+background:rgba(201,168,76,0.1);flex-shrink:0;
+}
+.parsha-item.active .parsha-num{background:var(--gold);color:var(--navy)}
+.parsha-item-name{
+font-family:'Frank Ruhl Libre',serif;font-size:15px;
+color:#c8bfb0;font-weight:500;
+}
+.parsha-item.active .parsha-item-name{color:var(--gold)}
+.parsha-item-ref{
+font-size:11px;color:rgba(200,191,176,0.4);margin-top:2px;
+}
+
+/* Toggle button */
+.sidebar-toggle{
+position:fixed;top:20px;right:20px;z-index:101;
+width:44px;height:44px;border-radius:50%;
+background:var(--navy);border:2px solid var(--gold);
+cursor:pointer;display:flex;align-items:center;justify-content:center;
+transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2);
+}
+.sidebar-toggle:hover{background:var(--navy-light);transform:scale(1.05)}
+.sidebar-toggle svg{stroke:var(--gold);width:20px;height:20px}
+.sidebar-open .sidebar-toggle{right:calc(var(--sidebar-w) + 20px)}
+
+/* ========== MAIN CONTENT ========== */
+.main{
+margin-right:var(--sidebar-w);min-height:100vh;transition:margin var(--transition);
+}
+.sidebar-closed .main{margin-right:0}
+
+/* Hero */
+.hero{
+padding:80px 60px 60px;
+background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 50%,var(--navy-light) 100%);
+position:relative;overflow:hidden;
+}
+.hero::before{
+content:'';position:absolute;inset:0;
+background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero::after{
+content:'';position:absolute;bottom:0;left:0;right:0;height:80px;
+background:linear-gradient(to top,var(--parchment),transparent);
+}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero h1{
+font-family:'Frank Ruhl Libre',serif;font-size:52px;font-weight:900;
+color:var(--gold);line-height:1.2;margin-bottom:12px;
+text-shadow:0 2px 20px rgba(201,168,76,0.3);
+}
+.hero p{
+font-size:18px;color:rgba(224,213,197,0.7);line-height:1.8;
+max-width:600px;font-weight:300;
+}
+.hero-ornament{
+position:absolute;left:60px;top:50%;transform:translateY(-50%);
+opacity:0.04;font-size:300px;font-family:'Frank Ruhl Libre',serif;
+color:var(--gold);pointer-events:none;
+}
+
+/* Book section */
+.book-section{
+padding:40px 60px 20px;
+}
+.book-title{
+font-family:'Frank Ruhl Libre',serif;font-size:32px;font-weight:700;
+color:var(--brown);margin-bottom:8px;
+padding-bottom:12px;
+border-bottom:2px solid var(--gold);
+display:inline-block;
+}
+.book-subtitle{
+font-size:14px;color:var(--text-light);margin-bottom:32px;
+}
+
+/* Parsha card */
+.parsha-cards{
+display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
+gap:24px;padding:0 60px 40px;
+}
+.parsha-card{
+background:var(--parchment-light);
+border-radius:12px;padding:0;overflow:hidden;
+border:1px solid rgba(201,168,76,0.15);
+transition:all 0.35s;cursor:pointer;position:relative;
+}
+.parsha-card::before{
+content:'';position:absolute;top:0;right:0;bottom:0;width:4px;
+background:var(--gold);opacity:0;transition:opacity 0.3s;
+}
+.parsha-card:hover{
+transform:translateY(-3px);
+box-shadow:0 12px 40px rgba(92,61,46,0.12);
+border-color:rgba(201,168,76,0.3);
+}
+.parsha-card:hover::before{opacity:1}
+.parsha-card-header{
+padding:20px 24px 16px;
+background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02));
+border-bottom:1px solid rgba(201,168,76,0.1);
+display:flex;justify-content:space-between;align-items:flex-start;
+}
+.parsha-card-num{
+font-family:'Frank Ruhl Libre',serif;font-size:36px;font-weight:900;
+color:rgba(201,168,76,0.2);line-height:1;
+}
+.parsha-card-title{
+font-family:'Frank Ruhl Libre',serif;font-size:24px;font-weight:700;
+color:var(--brown);
+}
+.parsha-card-ref{
+font-size:13px;color:var(--text-light);margin-top:4px;
+font-family:'Noto Sans Hebrew',sans-serif;
+}
+.parsha-card-body{padding:18px 24px 22px}
+.parsha-card-summary{
+font-size:14.5px;line-height:1.9;color:var(--text);
+}
+
+/* ========== DETAIL VIEW ========== */
+.detail-overlay{
+position:fixed;inset:0;z-index:200;
+background:rgba(26,26,46,0.6);
+backdrop-filter:blur(8px);
+opacity:0;pointer-events:none;
+transition:opacity 0.4s;
+}
+.detail-overlay.active{opacity:1;pointer-events:all}
+.detail-panel{
+position:fixed;top:0;left:0;bottom:0;
+width:min(720px,85vw);z-index:201;
+background:var(--parchment-light);
+transform:translateX(-100%);
+transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+overflow-y:auto;
+box-shadow:8px 0 40px rgba(0,0,0,0.2);
+}
+.detail-panel.active{transform:translateX(0)}
+.detail-close{
+position:sticky;top:0;z-index:5;
+padding:16px 24px;
+background:linear-gradient(180deg,var(--parchment-light) 80%,transparent);
+display:flex;justify-content:flex-end;
+}
+.detail-close button{
+width:40px;height:40px;border-radius:50%;
+background:var(--navy);border:1px solid var(--gold);
+cursor:pointer;display:flex;align-items:center;justify-content:center;
+transition:all 0.3s;
+}
+.detail-close button:hover{background:var(--navy-light);transform:scale(1.1)}
+.detail-close button svg{stroke:var(--gold);width:18px;height:18px}
+.detail-content{padding:0 48px 60px}
+.detail-badge{
+display:inline-block;padding:4px 14px;border-radius:20px;
+background:rgba(201,168,76,0.12);color:var(--gold-dark);
+font-size:12px;font-weight:600;margin-bottom:16px;
+border:1px solid rgba(201,168,76,0.2);
+}
+.detail-title{
+font-family:'Frank Ruhl Libre',serif;font-size:42px;font-weight:900;
+color:var(--brown);margin-bottom:8px;line-height:1.2;
+}
+.detail-ref{
+font-size:16px;color:var(--text-light);margin-bottom:32px;
+padding-bottom:24px;border-bottom:1px solid rgba(201,168,76,0.2);
+}
+.detail-section{margin-bottom:28px}
+.detail-section h3{
+font-family:'Frank Ruhl Libre',serif;font-size:20px;font-weight:700;
+color:var(--navy);margin-bottom:12px;
+padding-right:16px;border-right:3px solid var(--gold);
+}
+.detail-section p,.detail-section li{
+font-size:15px;line-height:2;color:var(--text);
+}
+.detail-section ul{
+list-style:none;padding:0;
+}
+.detail-section ul li{
+padding:6px 0;padding-right:20px;position:relative;
+}
+.detail-section ul li::before{
+content:'◆';position:absolute;right:0;top:6px;
+color:var(--gold);font-size:8px;
+}
+.detail-verse{
+background:linear-gradient(135deg,rgba(26,26,46,0.03),rgba(201,168,76,0.05));
+border-radius:10px;padding:20px 24px;margin-top:8px;
+border-right:4px solid var(--gold);
+font-family:'Frank Ruhl Libre',serif;font-size:18px;
+line-height:2;color:var(--brown);font-weight:500;
+}
+.detail-verse-ref{
+display:block;font-family:'Noto Sans Hebrew',sans-serif;
+font-size:12px;color:var(--text-light);margin-top:8px;font-weight:400;
+}
+
+/* Navigation arrows in detail */
+.detail-nav{
+display:flex;justify-content:space-between;
+padding:24px 48px 40px;border-top:1px solid rgba(201,168,76,0.15);
+margin-top:20px;
+}
+.detail-nav button{
+padding:10px 20px;border-radius:8px;
+background:var(--navy);color:var(--gold);border:1px solid rgba(201,168,76,0.3);
+font-family:'Noto Sans Hebrew',sans-serif;font-size:14px;
+cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:8px;
+}
+.detail-nav button:hover{background:var(--navy-light);border-color:var(--gold)}
+.detail-nav button:disabled{opacity:0.3;cursor:default}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:1024px){
+  .sidebar{width:280px}
+  .main{margin-right:280px}
+  .hero{padding:60px 40px 50px}
+  .book-section{padding:30px 40px 15px}
+  .parsha-cards{padding:0 40px 30px;grid-template-columns:1fr}
+  .detail-content{padding:0 32px 48px}
+}
+@media(max-width:768px){
+  .sidebar{width:100%;transform:translateX(100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-right:0!important}
+  .sidebar-toggle{right:16px;top:56px}
+  .hero{padding:50px 24px 40px}
+  .hero h1{font-size:28px}
+  .book-section{padding:24px 24px 12px}
+  .parsha-cards{padding:0 24px 24px;gap:16px}
+  .parsha-cards .parsha-card{min-width:0}
+  .detail-panel{width:100%}
+  .detail-content{padding:0 24px 40px}
+  .detail-nav{padding:24px 24px 40px}
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeUp 0.5s ease-out both}
+.parsha-card{animation:fadeUp 0.4s ease-out both}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.2);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:rgba(201,168,76,0.35)}
+
+/* ========== FAMILY HEADER ========== */
+.family-header{
+background:linear-gradient(90deg,var(--navy) 0%,var(--navy-mid) 100%);
+padding:10px 24px;text-align:center;
+border-bottom:2px solid var(--gold);position:relative;z-index:99;
+}
+.family-header span{
+font-family:'Frank Ruhl Libre',serif;font-size:14px;
+color:var(--gold);font-weight:500;letter-spacing:1px;
+}
+
+/* ========== CURRENT WEEK BANNER ========== */
+.current-week-banner{
+background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(139,34,82,0.06));
+border:1px solid rgba(201,168,76,0.25);border-radius:12px;
+padding:20px 28px;margin:24px 60px;cursor:pointer;
+transition:all 0.3s;display:flex;align-items:center;gap:20px;
+}
+.current-week-banner:hover{
+transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.15);
+}
+.current-week-badge{
+background:var(--gold);color:var(--navy);padding:6px 14px;
+border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;
+}
+.current-week-info h3{
+font-family:'Frank Ruhl Libre',serif;font-size:22px;color:var(--brown);
+}
+.current-week-info p{font-size:13px;color:var(--text-light);margin-top:4px}
+
+/* ========== PARSHA IMAGE ========== */
+.parsha-card-image{
+height:140px;overflow:hidden;position:relative;
+background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
+}
+.parsha-card-image .parsha-emoji{
+position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+font-size:56px;opacity:0.85;
+}
+.parsha-card-image .parsha-img-overlay{
+position:absolute;bottom:0;left:0;right:0;height:60%;
+background:linear-gradient(to top,var(--parchment-light) 5%,transparent);
+}
+.parsha-card-image img{width:100%;height:100%;object-fit:cover}
+.detail-hero-image{
+height:260px;border-radius:12px;overflow:hidden;margin-bottom:16px;
+background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
+display:flex;align-items:center;justify-content:center;position:relative;
+}
+.detail-hero-image .parsha-emoji{font-size:80px;opacity:0.9}
+.detail-hero-image .img-pattern{
+position:absolute;inset:0;opacity:0.05;
+background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l2 3.5-2 3zM0 20h2v20H0V20z' fill='%23c9a84c' fill-opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ========== COMMENTARY ========== */
+.commentary-section{
+margin-top:8px;
+}
+.commentary-card{
+background:linear-gradient(135deg,rgba(26,26,46,0.04),rgba(201,168,76,0.03));
+border-radius:8px;padding:16px 20px;margin-bottom:10px;
+border-right:3px solid var(--gold-dark);
+}
+.commentary-card .source-name{
+font-family:'Frank Ruhl Libre',serif;font-size:14px;font-weight:700;
+color:var(--navy);margin-bottom:6px;
+}
+.commentary-card .source-text{
+font-size:14px;line-height:1.9;color:var(--text);
+}
+
+/* ========== EASY EXPLAIN ========== */
+.easy-explain{
+background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.03));
+border-radius:12px;padding:24px 28px;margin-top:8px;
+border:1px solid rgba(201,168,76,0.18);
+position:relative;
+}
+.easy-explain::before{
+content:'';position:absolute;top:0;right:0;bottom:0;width:5px;
+background:linear-gradient(180deg,var(--gold),var(--gold-dark));
+border-radius:0 12px 12px 0;
+}
+.easy-explain p{
+font-size:15.5px;line-height:2.1;color:var(--text);
+}
+
+/* ========== MODERN RELEVANCE ========== */
+.modern-section{
+background:linear-gradient(135deg,rgba(139,34,82,0.05),rgba(44,74,139,0.05));
+border-radius:10px;padding:20px 24px;margin-top:8px;
+border:1px solid rgba(139,34,82,0.1);
+}
+.modern-section p{
+font-size:14.5px;line-height:2;color:var(--text);
+}
+
+/* ========== FOOTER ========== */
+.site-footer{
+background:var(--navy);padding:40px 60px;text-align:center;
+border-top:2px solid var(--gold);margin-top:40px;
+}
+.footer-logo{
+width:80px;height:80px;border-radius:12px;
+object-fit:contain;margin-bottom:16px;
+}
+.footer-credit{
+font-family:'Frank Ruhl Libre',serif;font-size:15px;
+color:var(--gold);margin-bottom:6px;
+}
+.footer-company{
+font-size:13px;color:rgba(201,168,76,0.6);
+}
+
+/* ========== SIDEBAR CURRENT INDICATOR ========== */
+.parsha-item.current-week{position:relative}
+.parsha-item.current-week::after{
+content:'השבוע';position:absolute;left:12px;top:50%;transform:translateY(-50%);
+background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:10px;
+font-size:9px;font-weight:700;
+}
+@media(max-width:768px){
+  .current-week-banner{margin:16px;flex-direction:column;text-align:center}
+  .site-footer{padding:30px 24px}
+  .family-header{padding:8px 16px}
+}
+</style>
+</head>
+<body class="sidebar-open">
+
+<!-- Family Header -->
+<div class="family-header">
+  <span>פרשת השבוע של משפחת כהן</span>
+</div>
+
+<!-- Sidebar Toggle -->
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="תפריט">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
+
+<!-- Sidebar -->
+<nav class="sidebar open" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      פרשת השבוע
+      <span>כל פרשיות התורה</span>
+    </div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="חיפוש פרשה..." oninput="filterParshas(this.value)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </div>
+  </div>
+  <div class="book-tabs" id="bookTabs"></div>
+  <div class="parsha-list" id="parshaList"></div>
+</nav>
+
+<!-- Detail Overlay -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detailPanel">
+  <div class="detail-close">
+    <button onclick="closeDetail()">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="detail-content" id="detailContent"></div>
+  <div class="detail-nav">
+    <button id="prevBtn" onclick="navigateParsha(-1)">
+      <span>→</span> הפרשה הקודמת
+    </button>
+    <button id="nextBtn" onclick="navigateParsha(1)">
+      הפרשה הבאה <span>←</span>
+    </button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<main class="main" id="mainContent"></main>
+
+<!-- Footer -->
+<footer class="main site-footer" id="siteFooter">
+  <img src="a_digital_logo_design_features_the_text_e_rezults.png" alt="E-REZULTS Logo" class="footer-logo">
+  <div class="footer-credit">ארז כהן</div>
+  <div class="footer-company">E-REZULTS &copy; 2022</div>
+</footer>
+
+<script>
+const BOOKS = [
+  { id:'bereshit', name:'בראשית', color:'#8b6914' },
+  { id:'shemot', name:'שמות', color:'#8b2252' },
+  { id:'vayikra', name:'ויקרא', color:'#2e5c3d' },
+  { id:'bamidbar', name:'במדבר', color:'#2c4a8b' },
+  { id:'devarim', name:'דברים', color:'#5c2e5c' },
+];
+
+const PARSHAS = [
+  // ===== בראשית =====
+  {
+    id:1,book:'bereshit',name:'בראשית',ref:'בראשית א׳-ו׳:ח׳',
+    summary:'פרשת בראשית מספרת על בריאת העולם בששת ימים ומנוחת ה׳ ביום השביעי. אדם וחוה נבראים בגן עדן, חוטאים בחטא עץ הדעת ומגורשים מהגן. קין הורג את הבל אחיו, והאנושות מתחילה להתפתח.',
+    themes:['בריאת העולם','חטא עץ הדעת','קין והבל','גירוש מגן עדן','תחילת האנושות'],
+    keyVerse:'בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ',
+    verseRef:'בראשית א׳:א׳',
+    details:'הפרשה פותחת בתיאור מרהיב של בריאת העולם — מן התוהו ובוהו ועד ליצירת האדם בצלם אלוהים. היא מציגה את הנושאים היסודיים של התורה: הקשר בין האדם לבורא, בין האדם לטבע, ובין אדם לחברו. סיפור קין והבל מלמד על קנאה, אחריות ותוצאות המעשים.'
+  },
+  {
+    id:2,book:'bereshit',name:'נח',ref:'בראשית ו׳:ט׳-י״א:ל״ב',
+    summary:'נח, איש צדיק בדורו, נצטווה לבנות תיבה להציל את משפחתו ומכל מין בעלי חיים מפני המבול שה׳ מביא על העולם. לאחר המבול, ה׳ כורת ברית עם נח וסימנה הקשת בענן. הפרשה מסתיימת בסיפור מגדל בבל.',
+    themes:['המבול','תיבת נח','ברית הקשת','מגדל בבל','התפשטות האנושות'],
+    keyVerse:'וַיֹּאמֶר אֱלֹהִים לְנֹחַ קֵץ כָּל בָּשָׂר בָּא לְפָנַי',
+    verseRef:'בראשית ו׳:י״ג',
+    details:'הפרשה עוסקת בשחיתות הדור ובצדקותו של נח שנבחר להציל את העולם. המבול מסמל מחיקה והתחלה מחדש. ברית הקשת היא ההבטחה האלוהית שלא להשמיד עוד את העולם. מגדל בבל מייצג את הגאווה האנושית וניסיון לעלות לשמיים.'
+  },
+  {
+    id:3,book:'bereshit',name:'לך לך',ref:'בראשית י״ב:א׳-י״ז:כ״ז',
+    summary:'ה׳ מצווה את אברם לעזוב את ארצו וללכת לארץ כנען. אברם יורד למצרים בשל רעב, חוזר לארץ, נלחם במלכים כדי להציל את לוט, וכורת ברית עם ה׳ (ברית בין הבתרים). שמו משתנה לאברהם וישמעאל נולד.',
+    themes:['הקריאה לאברהם','ברית בין הבתרים','הבטחת הארץ','לידת ישמעאל','ברית המילה'],
+    keyVerse:'לֶךְ לְךָ מֵאַרְצְךָ וּמִמּוֹלַדְתְּךָ וּמִבֵּית אָבִיךָ אֶל הָאָרֶץ אֲשֶׁר אַרְאֶךָּ',
+    verseRef:'בראשית י״ב:א׳',
+    details:'פרשה מכוננת באמונה היהודית — תחילת הדרך של אבי האומה. אברהם מוכן לעזוב את כל המוכר לו ולצאת למסע אמוני. ברית בין הבתרים מבטיחה לזרעו את הארץ, וברית המילה מסמנת את הברית הנצחית בין ה׳ לעם ישראל.'
+  },
+  {
+    id:4,book:'bereshit',name:'וירא',ref:'בראשית י״ח:א׳-כ״ב:כ״ד',
+    summary:'שלושה מלאכים מבשרים לאברהם על לידת יצחק. אברהם מתפלל על סדום ועמורה. לוט ניצל מהפיכת הערים. יצחק נולד, הגר וישמעאל מגורשים. עקדת יצחק — הניסיון הגדול של אברהם.',
+    themes:['הכנסת אורחים','הפיכת סדום','לידת יצחק','עקדת יצחק','ניסיון האמונה'],
+    keyVerse:'הֲיִפָּלֵא מֵה׳ דָּבָר',
+    verseRef:'בראשית י״ח:י״ד',
+    details:'פרשה עוצמתית המתחילה בחסד (הכנסת אורחים) ומסתיימת בניסיון האמונה הגדול ביותר — עקדת יצחק. בין לבין, אברהם מתגלה כמי שנאבק על צדק (תפילתו על סדום) ומתמודד עם מורכבויות משפחתיות. העקדה היא שיא הסיפור האברהמי.'
+  },
+  {
+    id:5,book:'bereshit',name:'חיי שרה',ref:'בראשית כ״ג:א׳-כ״ה:י״ח',
+    summary:'שרה מתה בגיל 127 ואברהם קונה את מערת המכפלה בחברון לקבורתה. אברהם שולח את עבדו אליעזר למצוא אישה ליצחק, ורבקה נבחרת. אברהם נפטר ונקבר במערת המכפלה.',
+    themes:['מות שרה','קניית מערת המכפלה','שידוך יצחק ורבקה','מות אברהם','המשכיות'],
+    keyVerse:'וַיִּהְיוּ חַיֵּי שָׂרָה מֵאָה שָׁנָה וְעֶשְׂרִים שָׁנָה וְשֶׁבַע שָׁנִים',
+    verseRef:'בראשית כ״ג:א׳',
+    details:'פרשה של מעברים — מוות וחיים, סיום עידן ותחילת עידן חדש. קניית מערת המכפלה היא הזיקה הראשונה של עם ישראל לארצו. סיפור השידוך של יצחק ורבקה הוא אחד הסיפורים היפים בתורה, המדגים השגחה אלוהית בחיי היומיום.'
+  },
+  {
+    id:6,book:'bereshit',name:'תולדות',ref:'בראשית כ״ה:י״ט-כ״ח:ט׳',
+    summary:'יצחק ורבקה מתפללים לילדים, עשו ויעקב נולדים. עשו מוכר את בכורתו ליעקב. יצחק מברך את יעקב במקום עשו בעקבות תכנית רבקה. עשו כועס ויעקב בורח לחרן.',
+    themes:['לידת עשו ויעקב','מכירת הבכורה','ברכות יצחק','המאבק בין האחים','גלות יעקב'],
+    keyVerse:'וַיֶּאֱהַב יִצְחָק אֶת עֵשָׂו כִּי צַיִד בְּפִיו וְרִבְקָה אֹהֶבֶת אֶת יַעֲקֹב',
+    verseRef:'בראשית כ״ה:כ״ח',
+    details:'הפרשה עוסקת בעימות בין שני אחים תאומים המייצגים שתי דרכי חיים שונות. עשו — איש השדה והגשמיות, יעקב — איש האוהלים והרוחניות. הברכות שנגנבו מעלות שאלות מוסריות מורכבות על אמצעים ומטרות.'
+  },
+  {
+    id:7,book:'bereshit',name:'ויצא',ref:'בראשית כ״ח:י׳-ל״ב:ג׳',
+    summary:'יעקב בורח מעשו, חולם את חלום הסולם בבית אל. מגיע ללבן, עובד שבע שנים בשביל רחל אך מקבל את לאה. עובד שבע שנים נוספות, נולדים רוב בניו. יעקב מתעשר ויוצא מחרן.',
+    themes:['חלום הסולם','יעקב ורחל','עבודה אצל לבן','לידת השבטים','שיבה לארץ'],
+    keyVerse:'וַיַּחֲלֹם וְהִנֵּה סֻלָּם מֻצָּב אַרְצָה וְרֹאשׁוֹ מַגִּיעַ הַשָּׁמָיְמָה',
+    verseRef:'בראשית כ״ח:י״ב',
+    details:'חלום הסולם הוא אחד החזיונות המרכזיים בתורה — הקשר בין שמיים לארץ. עשרים שנות הגלות של יעקב אצל לבן הן תקופה של צמיחה, בניית משפחה, ומאבק מתמיד. מכאן יצמח עם ישראל עם שנים עשר השבטים.'
+  },
+  {
+    id:8,book:'bereshit',name:'וישלח',ref:'בראשית ל״ב:ד׳-ל״ו:מ״ג',
+    summary:'יעקב מתכונן לפגישה עם עשו, נאבק עם המלאך ושמו משתנה לישראל. הפגישה עם עשו עוברת בשלום. דינה בשכם, שמעון ולוי הורגים את אנשי שכם. רחל מתה בלידת בנימין.',
+    themes:['המאבק עם המלאך','הפיוס עם עשו','מעשה דינה','מות רחל','שם ישראל'],
+    keyVerse:'לֹא יַעֲקֹב יֵאָמֵר עוֹד שִׁמְךָ כִּי אִם יִשְׂרָאֵל',
+    verseRef:'בראשית ל״ב:כ״ט',
+    details:'רגע מכונן — יעקב הופך לישראל. המאבק הלילי עם המלאך מסמל את המאבק הפנימי והחיצוני של האדם. שינוי השם מבטא טרנספורמציה עמוקה. הפרשה מורכבת ברגשות — פיוס, טרגדיה, אובדן ותקווה.'
+  },
+  {
+    id:9,book:'bereshit',name:'וישב',ref:'בראשית ל״ז:א׳-מ׳:כ״ג',
+    summary:'יוסף, בנו האהוב של יעקב, חולם חלומות ומעורר קנאת אחיו. האחים מוכרים אותו לעבדות למצרים. יהודה ותמר. יוסף בבית פוטיפר, מסרב לאשת פוטיפר, ונשלח לכלא. פותר חלומות בכלא.',
+    themes:['חלומות יוסף','מכירת יוסף','יהודה ותמר','יוסף בבית פוטיפר','פתרון חלומות'],
+    keyVerse:'וַיִּשְׂנְאוּ אֹתוֹ וְלֹא יָכְלוּ דַּבְּרוֹ לְשָׁלֹם',
+    verseRef:'בראשית ל״ז:ד׳',
+    details:'סיפור יוסף הוא אחד הסיפורים המרתקים בתורה — סיפור של קנאה, בגידה, ניסיון ועמידה מוסרית. יוסף שומר על ערכיו גם בגלות ובמצב של שפלות. הסיפור מלמד על ההשגחה הפרטית ועל כך שגם מן הרע יוצא טוב.'
+  },
+  {
+    id:10,book:'bereshit',name:'מקץ',ref:'בראשית מ״א:א׳-מ״ד:י״ז',
+    summary:'פרעה חולם חלומות שאיש אינו יכול לפתור. יוסף מובא מהכלא ופותר — שבע שנות שובע ושבע שנות רעב. יוסף מתמנה למשנה למלך. האחים יורדים למצרים לשבור אוכל ואינם מזהים אותו.',
+    themes:['חלומות פרעה','עליית יוסף לגדולה','שנות השובע והרעב','מפגש עם האחים','בנימין'],
+    keyVerse:'אֵין נָבוֹן וְחָכָם כָּמוֹךָ',
+    verseRef:'בראשית מ״א:ל״ט',
+    details:'מ"עבד" ל"משנה למלך" — עלייתו של יוסף היא בלתי רגילה. חוכמתו בפתרון החלומות ובניהול המשבר הכלכלי מדגימה מנהיגות אמיתית. המפגש עם האחים מלא מתח דרמטי ומוסרי — יוסף בוחן אם אחיו השתנו.'
+  },
+  {
+    id:11,book:'bereshit',name:'ויגש',ref:'בראשית מ״ד:י״ח-מ״ז:כ״ז',
+    summary:'יהודה נושא נאום נרגש לפני יוסף ומציע את עצמו כעבד תחת בנימין. יוסף מתוודע לאחיו ברגע דרמטי. יעקב ומשפחתו יורדים למצרים ומתיישבים בארץ גושן.',
+    themes:['נאום יהודה','התוודעות יוסף','ירידה למצרים','ישיבה בגושן','פיוס'],
+    keyVerse:'אֲנִי יוֹסֵף הַעוֹד אָבִי חָי',
+    verseRef:'בראשית מ״ה:ג׳',
+    details:'אחד הרגעים הדרמטיים ביותר בתנ"ך. נאום יהודה מבטא אחריות ומסירות נפש — ניגוד מוחלט ליהודה שהציע למכור את יוסף. ההתוודעות מלווה בבכי ומחילה. ירידת יעקב למצרים מסמנת את תחילת הגלות הראשונה.'
+  },
+  {
+    id:12,book:'bereshit',name:'ויחי',ref:'בראשית מ״ז:כ״ח-נ׳:כ״ו',
+    summary:'יעקב מברך את אפרים ומנשה ואת שנים עשר בניו. כל ברכה מותאמת לאופי השבט ולעתידו. יעקב נפטר ונקבר במערת המכפלה. יוסף מבטיח לאחיו סליחה ונפטר בגיל 110.',
+    themes:['ברכות יעקב','נבואות השבטים','מות יעקב','קבורה במכפלה','סוף ספר בראשית'],
+    keyVerse:'הַמַּלְאָךְ הַגֹּאֵל אֹתִי מִכָּל רָע יְבָרֵךְ אֶת הַנְּעָרִים',
+    verseRef:'בראשית מ״ח:ט״ז',
+    details:'הפרשה חותמת את ספר בראשית ואת תקופת האבות. ברכות יעקב לבניו הן נבואיות ומותאמות לכל שבט — הן מגדירות את עתיד עם ישראל. הבקשה להיקבר בארץ ישראל מבטאת את הקשר הנצחי לארץ.'
+  },
+  // ===== שמות =====
+  {
+    id:13,book:'shemot',name:'שמות',ref:'שמות א׳:א׳-ו׳:א׳',
+    summary:'בני ישראל משתעבדים במצרים. משה נולד, מוצל מהיאור, גדל בבית פרעה, בורח למדיין. ה׳ מתגלה אליו בסנה הבוער ושולח אותו לגאול את ישראל.',
+    themes:['השעבוד במצרים','לידת משה','הסנה הבוער','שליחות משה','מול פרעה'],
+    keyVerse:'אֶהְיֶה אֲשֶׁר אֶהְיֶה',
+    verseRef:'שמות ג׳:י״ד',
+    details:'פרשת שמות פותחת את הספר השני של התורה ואת סיפור הגאולה. מעבדות לחירות — זהו הנושא המרכזי. הסנה הבוער הוא הרגע שבו ה׳ מתגלה למשה ומטיל עליו את שליחות הגאולה, ושמו של ה׳ נחשף.'
+  },
+  {
+    id:14,book:'shemot',name:'וארא',ref:'שמות ו׳:ב׳-ט׳:ל״ה',
+    summary:'ה׳ שולח את משה ואהרן לפרעה. שבע מכות מתוך עשר פוקדות את מצרים: דם, צפרדע, כינים, ערוב, דבר, שחין ובָרד. פרעה מקשה את ליבו שוב ושוב.',
+    themes:['שבע המכות','הקשיית לב פרעה','משה ואהרן','ניסים ונפלאות','מאבק עם מצרים'],
+    keyVerse:'בְּזֹאת תֵּדַע כִּי אֲנִי ה׳',
+    verseRef:'שמות ז׳:י״ז',
+    details:'המכות הן לא רק עונש אלא הוכחת כוח ה׳ מול אלילי מצרים. כל מכה מכוונת נגד אל מצרי ספציפי. הקשיית לב פרעה מעלה שאלות פילוסופיות עמוקות על בחירה חופשית והשגחה אלוהית.'
+  },
+  {
+    id:15,book:'shemot',name:'בא',ref:'שמות י׳:א׳-י״ג:ט״ז',
+    summary:'שלוש המכות האחרונות: ארבה, חושך, מכת בכורות. פרעה נכנע ומשלח את ישראל. מצוות קרבן פסח ואכילת מצות. יציאת מצרים — ליל הסדר.',
+    themes:['מכות אחרונות','קרבן פסח','יציאת מצרים','מצות','פדיון בכורות'],
+    keyVerse:'הַלַּיְלָה הַזֶּה לַה׳ שִׁמֻּרִים',
+    verseRef:'שמות י״ב:מ״ב',
+    details:'רגע הגאולה. מכת בכורות היא השיא הדרמטי. קרבן פסח מסמל אמונה ואומץ — לשחוט את אל מצרים (הכבש) ולמרוח את דמו על המשקוף. ליל הסדר הופך לאירוע המכונן של הזיכרון היהודי.'
+  },
+  {
+    id:16,book:'shemot',name:'בשלח',ref:'שמות י״ג:י״ז-י״ז:ט״ז',
+    summary:'בני ישראל יוצאים ממצרים, פרעה רודף אחריהם. קריעת ים סוף — שירת הים. מרים שרה. המן יורד מן השמיים. מים מן הסלע. מלחמה בעמלק.',
+    themes:['קריעת ים סוף','שירת הים','המן','מי מריבה','מלחמת עמלק'],
+    keyVerse:'אָשִׁירָה לַה׳ כִּי גָאֹה גָּאָה סוּס וְרֹכְבוֹ רָמָה בַיָּם',
+    verseRef:'שמות ט״ו:א׳',
+    details:'קריעת ים סוף היא הנס הגדול ביותר ביציאת מצרים. שירת הים היא שיר ההלל הראשון של עם ישראל. אחרי ההתרוממות — ניסיונות המדבר: מים, מזון, ומלחמה. הפרשה מלמדת שגאולה היא תהליך, לא רגע.'
+  },
+  {
+    id:17,book:'shemot',name:'יתרו',ref:'שמות י״ח:א׳-כ׳:כ״ג',
+    summary:'יתרו, חותן משה, מגיע ומייעץ למשה להקים מערכת שופטים. מעמד הר סיני — ה׳ נותן את עשרת הדיברות לעם ישראל. הרגע המכונן של הברית בין ה׳ לעמו.',
+    themes:['עצת יתרו','מעמד הר סיני','עשרת הדיברות','הברית','קולות וברקים'],
+    keyVerse:'אָנֹכִי ה׳ אֱלֹהֶיךָ אֲשֶׁר הוֹצֵאתִיךָ מֵאֶרֶץ מִצְרַיִם',
+    verseRef:'שמות כ׳:ב׳',
+    details:'מעמד הר סיני הוא האירוע המרכזי ביהדות — מתן תורה. עם שלם שומע את קול ה׳ ומקבל את עשרת הדיברות, עשרה עקרונות שיסודם ביחסי אדם למקום ואדם לחברו. עצת יתרו מלמדת על חוכמת ההנהגה והאצלת סמכויות.'
+  },
+  {
+    id:18,book:'shemot',name:'משפטים',ref:'שמות כ״א:א׳-כ״ד:י״ח',
+    summary:'אוסף חוקים ומשפטים אזרחיים: דיני עבדים, נזיקין, גנבה, הלוואות, שמיטה, שלוש רגלים. בני ישראל אומרים "נעשה ונשמע" ומשה עולה להר סיני.',
+    themes:['דיני נזיקין','צדק חברתי','עבדות','שמיטה','נעשה ונשמע'],
+    keyVerse:'נַעֲשֶׂה וְנִשְׁמָע',
+    verseRef:'שמות כ״ד:ז׳',
+    details:'אחרי ההתגלות האלוהית באות החוקים המעשיים. התורה אינה רק רוחנית אלא חברתית — דיני עובד ומעביד, נזיקין, הגנה על החלש. "נעשה ונשמע" מבטא נכונות מוחלטת לקבל את התורה.'
+  },
+  {
+    id:19,book:'shemot',name:'תרומה',ref:'שמות כ״ה:א׳-כ״ז:י״ט',
+    summary:'ה׳ מצווה על בניית המשכן — מקום השראת השכינה. תיאור כלי המשכן: ארון הברית, שולחן לחם הפנים, מנורת הזהב, יריעות המשכן ומזבח העולה.',
+    themes:['בניית המשכן','ארון הברית','מנורת הזהב','תרומות העם','השראת השכינה'],
+    keyVerse:'וְעָשׂוּ לִי מִקְדָּשׁ וְשָׁכַנְתִּי בְּתוֹכָם',
+    verseRef:'שמות כ״ה:ח׳',
+    details:'המשכן הוא הביטוי הפיזי של הקשר בין ה׳ לעם ישראל. כל כלי מסמל רעיון רוחני — הארון את התורה, המנורה את האור והחוכמה, השולחן את הפרנסה. "ושכנתי בתוכם" — בתוך כל אחד ואחד.'
+  },
+  {
+    id:20,book:'shemot',name:'תצוה',ref:'שמות כ״ז:כ׳-ל׳:י׳',
+    summary:'מצוות הדלקת נר התמיד. תיאור בגדי הכהונה: האפוד, החושן, המעיל, הציץ. חנוכת הכוהנים — טקס ההכנה של אהרן ובניו לעבודת המשכן.',
+    themes:['נר התמיד','בגדי הכהונה','החושן','חנוכת הכוהנים','האפוד'],
+    keyVerse:'וְעָשִׂיתָ בִגְדֵי קֹדֶשׁ לְאַהֲרֹן אָחִיךָ לְכָבוֹד וּלְתִפְאָרֶת',
+    verseRef:'שמות כ״ח:ב׳',
+    details:'פרשה ייחודית — שמו של משה אינו מוזכר בה (הפרשה היחידה מאז לידתו). בגדי הכהונה אינם רק לבוש אלא כלי עבודה רוחני. החושן עם אבני השבטים מסמל את אחדות העם. הכהן נושא את ישראל על ליבו.'
+  },
+  {
+    id:21,book:'shemot',name:'כי תשא',ref:'שמות ל׳:י״א-ל״ד:ל״ה',
+    summary:'מחצית השקל, שמן המשחה, חטא העגל — העם בונה עגל זהב בהיעדר משה. משה שובר את הלוחות, מתפלל על העם. ה׳ מתגלה למשה ("שלוש עשרה מידות"), לוחות שניים.',
+    themes:['חטא העגל','שבירת הלוחות','י״ג מידות הרחמים','לוחות שניים','מחצית השקל'],
+    keyVerse:'ה׳ ה׳ אֵל רַחוּם וְחַנּוּן אֶרֶךְ אַפַּיִם וְרַב חֶסֶד וֶאֱמֶת',
+    verseRef:'שמות ל״ד:ו׳',
+    details:'חטא העגל הוא השבר הגדול — ארבעים יום אחרי מתן תורה העם חוטא. אך מכאן צומחת התשובה. שלוש עשרה מידות הרחמים הן יסוד התפילה היהודית. הלוחות השניים מבטאים כוח הסליחה והתחדשות.'
+  },
+  {
+    id:22,book:'shemot',name:'ויקהל',ref:'שמות ל״ה:א׳-ל״ח:כ׳',
+    summary:'משה מקהיל את העם ומצווה על השבת. העם תורם בנדיבות חומרים לבניית המשכן. בצלאל ואהליאב מובילים את מלאכת הבנייה. תיאור עשיית כלי המשכן.',
+    themes:['שמירת שבת','נדיבות העם','בצלאל ואהליאב','בניית המשכן','מלאכת מחשבת'],
+    keyVerse:'וַיָּבֹאוּ כָּל אִישׁ אֲשֶׁר נְשָׂאוֹ לִבּוֹ',
+    verseRef:'שמות ל״ה:כ״א',
+    details:'אחרי השבר של העגל — תיקון דרך בנייה. נדיבות העם כה גדולה שמשה צריך לעצור את התרומות. בצלאל מקבל חוכמה אלוהית למלאכה — אומנות כעבודת ה׳. השבת מוקדמת לבניית המשכן כי היא קודמת אפילו למשכן.'
+  },
+  {
+    id:23,book:'shemot',name:'פקודי',ref:'שמות ל״ח:כ״א-מ׳:ל״ח',
+    summary:'פקודי (חשבון) חומרי המשכן. השלמת בניית המשכן וכליו. משה מקים את המשכן בראש חודש ניסן. ענן ה׳ שוכן על המשכן — השכינה שורה.',
+    themes:['חשבונות המשכן','הקמת המשכן','השראת השכינה','ענן ה׳','סיום ספר שמות'],
+    keyVerse:'וַיְכַס הֶעָנָן אֶת אֹהֶל מוֹעֵד וּכְבוֹד ה׳ מָלֵא אֶת הַמִּשְׁכָּן',
+    verseRef:'שמות מ׳:ל״ד',
+    details:'הסיום המושלם של ספר שמות — מעבדות לחירות, ממצרים למשכן. ענן ה׳ ממלא את המשכן כביטוי להצלחת המפעל הרוחני. חשבונות המשכן מלמדים על שקיפות ואחריות כספית — אפילו משה נותן דין וחשבון.'
+  },
+  // ===== ויקרא =====
+  {
+    id:24,book:'vayikra',name:'ויקרא',ref:'ויקרא א׳:א׳-ה׳:כ״ו',
+    summary:'ה׳ קורא למשה מאוהל מועד ומלמד על סוגי הקרבנות: עולה, מנחה, שלמים, חטאת ואשם. כל קרבן מביא את האדם קרוב יותר לה׳.',
+    themes:['קרבן עולה','מנחה','שלמים','חטאת','אשם'],
+    keyVerse:'אָדָם כִּי יַקְרִיב מִכֶּם קָרְבָּן לַה׳',
+    verseRef:'ויקרא א׳:ב׳',
+    details:'ספר ויקרא הוא "ספר הקדושה". הקרבנות אינם טקס פרימיטיבי אלא דרך לקרבה אלוהית — השורש ק.ר.ב מופיע בשם "קרבן". כל סוג קרבן מתאים למצב רוחני שונה ומציע דרך חזרה לקשר עם ה׳.'
+  },
+  {
+    id:25,book:'vayikra',name:'צו',ref:'ויקרא ו׳:א׳-ח׳:ל״ו',
+    summary:'הוראות מפורטות לכוהנים על הקרבת הקרבנות. אש התמיד על המזבח. איסור אכילת חלב ודם. חנוכת הכוהנים — שבעת ימי המילואים.',
+    themes:['אש התמיד','תורת הקרבנות','שבעת ימי המילואים','חנוכת הכוהנים','איסור דם וחלב'],
+    keyVerse:'אֵשׁ תָּמִיד תּוּקַד עַל הַמִּזְבֵּחַ לֹא תִכְבֶּה',
+    verseRef:'ויקרא ו׳:ו׳',
+    details:'אם פרשת ויקרא פונה למקריב, פרשת צו פונה לכהן. היא מלמדת על האחריות של מי שמשרת בקודש. אש התמיד שלא כבתה מסמלת את הקשר המתמיד עם ה׳ שאסור לו להיכבות.'
+  },
+  {
+    id:26,book:'vayikra',name:'שמיני',ref:'ויקרא ט׳:א׳-י״א:מ״ז',
+    summary:'ביום השמיני למילואים יורדת אש מן השמיים. נדב ואביהוא, בני אהרן, מקריבים "אש זרה" ומתים. חוקי הכשרות — בהמות, דגים, עופות ושרצים מותרים ואסורים.',
+    themes:['מות נדב ואביהוא','אש זרה','חוקי כשרות','קדושה','הבחנה בין טמא לטהור'],
+    keyVerse:'וַתֵּצֵא אֵשׁ מִלִּפְנֵי ה׳ וַתֹּאכַל אוֹתָם',
+    verseRef:'ויקרא י׳:ב׳',
+    details:'פרשה של ניגודים חדים — שמחת חנוכת המשכן לצד טרגדיית מות בני אהרן. "אש זרה" — קרבה מופרזת ללא גבולות יכולה להיות מסוכנת. חוקי הכשרות מלמדים על הבחנה ובחירה מודעת בכל היבט של החיים.'
+  },
+  {
+    id:27,book:'vayikra',name:'תזריע',ref:'ויקרא י״ב:א׳-י״ג:נ״ט',
+    summary:'דיני טומאת וטהרת היולדת. נגעי צרעת בעור האדם — סוגים, סימנים ודרכי הבדיקה על ידי הכהן. הצרוע מושלך מחוץ למחנה.',
+    themes:['טומאת יולדת','נגעי צרעת','טומאה וטהרה','תפקיד הכהן','הסגר'],
+    keyVerse:'אָדָם כִּי יִהְיֶה בְעוֹר בְּשָׂרוֹ',
+    verseRef:'ויקרא י״ג:ב׳',
+    details:'הצרעת במסורת חז"ל נתפסת כעונש על לשון הרע — נגע חיצוני על חטא פנימי. הכהן משמש כ"רופא רוחני" ולא כרופא גוף. ההרחקה מהמחנה מאפשרת התבוננות פנימית ותיקון.'
+  },
+  {
+    id:28,book:'vayikra',name:'מצורע',ref:'ויקרא י״ד:א׳-ט״ו:ל״ג',
+    summary:'תהליך טהרת המצורע — שבעת ימים, קרבנות, וטבילה. צרעת הבתים. דיני טומאת הזב והזבה. חשיבות הטהרה לפני הכניסה למשכן.',
+    themes:['טהרת המצורע','צרעת הבתים','טומאת זב','תהליך חזרה','טהרה'],
+    keyVerse:'זֹאת תִּהְיֶה תּוֹרַת הַמְּצֹרָע בְּיוֹם טָהֳרָתוֹ',
+    verseRef:'ויקרא י״ד:ב׳',
+    details:'אם תזריע עסקה בזיהוי — מצורע עוסקת בריפוי ותיקון. התהליך ארוך ומורכב כי תשובה אמיתית דורשת זמן. הציפורים בטקס הטהרה מסמלות חופש מחטא הדיבור (ציפצוף = פטפוט).'
+  },
+  {
+    id:29,book:'vayikra',name:'אחרי מות',ref:'ויקרא ט״ז:א׳-י״ח:ל׳',
+    summary:'עבודת יום הכיפורים — הכהן הגדול נכנס לקודש הקודשים. שעיר לעזאזל. איסור אכילת דם. עריות אסורות — רשימת יחסים אסורים.',
+    themes:['יום הכיפורים','שעיר לעזאזל','קודש הקודשים','איסור דם','עריות'],
+    keyVerse:'כִּי בַיּוֹם הַזֶּה יְכַפֵּר עֲלֵיכֶם לְטַהֵר אֶתְכֶם',
+    verseRef:'ויקרא ט״ז:ל׳',
+    details:'יום הכיפורים הוא היום הקדוש ביותר בלוח השנה היהודי. הכניסה לקודש הקודשים — פעם בשנה, איש אחד — מסמלת את שיא הקרבה האלוהית. שעיר לעזאזל נושא את חטאי העם ומרחיק אותם.'
+  },
+  {
+    id:30,book:'vayikra',name:'קדושים',ref:'ויקרא י״ט:א׳-כ׳:כ״ז',
+    summary:'פרשת "קדושים תהיו" — אוסף מצוות מרכזיות: כיבוד הורים, שבת, צדק, "ואהבת לרעך כמוך", איסור רכילות, איסור נקמה, לקט שכחה ופאה לעניים.',
+    themes:['קדושים תהיו','ואהבת לרעך כמוך','צדק חברתי','כיבוד הורים','שמירת שבת'],
+    keyVerse:'וְאָהַבְתָּ לְרֵעֲךָ כָּמוֹךָ אֲנִי ה׳',
+    verseRef:'ויקרא י״ט:י״ח',
+    details:'פרשה מרכזית ביהדות — "כלל גדול בתורה" כדברי רבי עקיבא. הקדושה אינה רק עניין רוחני אלא מעשי — צדק, חסד, יושר. "ואהבת לרעך כמוך" הוא אחד הפסוקים המפורסמים והחשובים ביותר.'
+  },
+  {
+    id:31,book:'vayikra',name:'אמור',ref:'ויקרא כ״א:א׳-כ״ד:כ״ג',
+    summary:'דיני כוהנים — קדושה מיוחדת, מומים הפוסלים לעבודה. המועדים: שבת, פסח, ספירת העומר, שבועות, ראש השנה, יום כיפור, סוכות. נר התמיד ולחם הפנים.',
+    themes:['קדושת הכוהנים','לוח המועדים','שבת','שלוש רגלים','ימים נוראים'],
+    keyVerse:'אֵלֶּה מוֹעֲדֵי ה׳ מִקְרָאֵי קֹדֶשׁ',
+    verseRef:'ויקרא כ״ג:ב׳',
+    details:'פרשת אמור מציגה את לוח השנה היהודי השלם — מחזור המועדים שמלווה את היהודי לאורך השנה. כל מועד מציין אירוע היסטורי ומשמעות רוחנית. המועדים יוצרים מקצב של קדושה בזמן.'
+  },
+  {
+    id:32,book:'vayikra',name:'בהר',ref:'ויקרא כ״ה:א׳-כ״ו:ב׳',
+    summary:'שנת השמיטה — הארץ שובתת כל שנה שביעית. שנת היובל — כל חמישים שנה עבדים משתחררים ואדמות חוזרות לבעליהן. איסור ריבית, דיני עבד עברי.',
+    themes:['שמיטה','יובל','שחרור עבדים','איסור ריבית','קדושת הארץ'],
+    keyVerse:'וּקְרָאתֶם דְּרוֹר בָּאָרֶץ לְכָל יֹשְׁבֶיהָ',
+    verseRef:'ויקרא כ״ה:י׳',
+    details:'חזון חברתי מהפכני — כל חמישים שנה מתאפסת החברה. עבדים משתחררים, אדמות חוזרות, חובות נמחקים. הרעיון הוא שה׳ הוא הבעלים האמיתי של הארץ והאדם הוא רק "גר ותושב". השמיטה היא שבת הארץ.'
+  },
+  {
+    id:33,book:'vayikra',name:'בחוקותי',ref:'ויקרא כ״ו:ג׳-כ״ז:ל״ד',
+    summary:'הברכות על שמירת המצוות: שלום, שפע ושכינה. הקללות (התוכחה) על הפרת הברית: מחלות, גלות וחורבן. הבטחה שה׳ לא ישכח את בריתו. דיני ערכין ומעשר.',
+    themes:['ברכות','תוכחה','גלות וגאולה','ברית','ערכין'],
+    keyVerse:'אִם בְּחֻקֹּתַי תֵּלֵכוּ',
+    verseRef:'ויקרא כ״ו:ג׳',
+    details:'חתימת ספר ויקרא בבחירה ברורה — ברכה או קללה, תלוי בהתנהגות. התוכחה קשה אך מסתיימת בתקווה — "וזכרתי את בריתי". גם בגלות ה׳ לא ינטוש את עמו. ספר ויקרא נחתם ב"חזק חזק ונתחזק".'
+  },
+  // ===== במדבר =====
+  {
+    id:34,book:'bamidbar',name:'במדבר',ref:'במדבר א׳:א׳-ד׳:כ׳',
+    summary:'מפקד העם במדבר — ספירת כל שבט ושבט. סדר חניית השבטים סביב המשכן. שבט לוי מופקד על שמירת המשכן ולא נמנה עם שאר השבטים.',
+    themes:['מפקד העם','סדר החנייה','שבט לוי','ארגון המחנה','תפקידי הלויים'],
+    keyVerse:'שְׂאוּ אֶת רֹאשׁ כָּל עֲדַת בְּנֵי יִשְׂרָאֵל',
+    verseRef:'במדבר א׳:ב׳',
+    details:'ספר במדבר פותח בסדר — מפקד, ארגון, תפקידים. לכל שבט מקום מוגדר סביב המשכן. הסדר מסמל שכל אחד חשוב וכל אחד תורם. שבט לוי, שלא חטא בעגל, זוכה לתפקיד מיוחד בשמירת הקודש.'
+  },
+  {
+    id:35,book:'bamidbar',name:'נשא',ref:'במדבר ד׳:כ״א-ז׳:פ״ט',
+    summary:'המשך תפקידי הלויים. דיני סוטה (אישה החשודה בבגידה). דיני הנזיר. ברכת כוהנים. קרבנות הנשיאים בחנוכת המזבח — שנים עשר ימים.',
+    themes:['ברכת כוהנים','דין סוטה','נזירות','קרבנות הנשיאים','חנוכת המזבח'],
+    keyVerse:'יְבָרֶכְךָ ה׳ וְיִשְׁמְרֶךָ',
+    verseRef:'במדבר ו׳:כ״ד',
+    details:'ברכת כוהנים היא אחת הברכות העתיקות והמפורסמות ביותר — שלוש שורות של ברכה, שמירה, חנינה ושלום. פרשת נשא היא הארוכה ביותר בתורה (176 פסוקים), בין היתר בגלל חזרת קרבנות הנשיאים.'
+  },
+  {
+    id:36,book:'bamidbar',name:'בהעלותך',ref:'במדבר ח׳:א׳-י״ב:ט״ז',
+    summary:'הדלקת המנורה. חגיגת פסח שני. חצוצרות הכסף. המסע מהר סיני. העם מתלונן ומשה ממונה שבעים זקנים. מרים ואהרן מדברים במשה.',
+    themes:['הדלקת המנורה','פסח שני','תלונות העם','שבעים הזקנים','ענישת מרים'],
+    keyVerse:'בְּהַעֲלֹתְךָ אֶת הַנֵּרֹת',
+    verseRef:'במדבר ח׳:ב׳',
+    details:'הפרשה מסמנת מעבר מהכנה למסע. מכאן מתחילות הבעיות — תלונות, חוסר אמונה, ומשברי מנהיגות. פסח שני מלמד שתמיד יש הזדמנות שנייה. מרים נענשת על לשון הרע — אפילו מתוך כוונה טובה.'
+  },
+  {
+    id:37,book:'bamidbar',name:'שלח',ref:'במדבר י״ג:א׳-ט״ו:מ״א',
+    summary:'שנים עשר מרגלים נשלחים לרגל את ארץ כנען. עשרה חוזרים עם דיבה רעה, רק יהושע וכלב מעודדים. העם בוכה ונגזרת עליו ארבעים שנות נדודים במדבר.',
+    themes:['חטא המרגלים','דיבת הארץ','ארבעים שנה','יהושע וכלב','מצוות ציצית'],
+    keyVerse:'וַיֹּצִיאוּ דִּבַּת הָאָרֶץ',
+    verseRef:'במדבר י״ג:ל״ב',
+    details:'חטא המרגלים הוא אחד החטאים הגדולים במדבר. הפחד והחוסר אמונה גרמו לדור שלם לא להיכנס לארץ. יהושע וכלב הם סמל האומץ והאמונה. בסוף הפרשה — מצוות ציצית, תזכורת תמידית למצוות.'
+  },
+  {
+    id:38,book:'bamidbar',name:'קורח',ref:'במדבר ט״ז:א׳-י״ח:ל״ב',
+    summary:'קורח ועדתו מורדים במשה ואהרן ותובעים שוויון בכהונה. האדמה פותחת את פיה ובולעת את קורח. מטה אהרן פורח כאות לבחירת שבט לוי. מתנות כהונה ולויה.',
+    themes:['מרד קורח','בליעת האדמה','מטה אהרן','מתנות כהונה','מחלוקת'],
+    keyVerse:'כָּל הָעֵדָה כֻּלָּם קְדֹשִׁים וּבְתוֹכָם ה׳',
+    verseRef:'במדבר ט״ז:ג׳',
+    details:'קורח טוען לשוויון אבל באמת מחפש כוח. "מחלוקת שאינה לשם שמיים — זו מחלוקת קורח ועדתו" (אבות ה:יז). העונש הדרמטי מלמד על חומרת המחלוקת. מטה אהרן הפורח מוכיח את הבחירה האלוהית.'
+  },
+  {
+    id:39,book:'bamidbar',name:'חוקת',ref:'במדבר י״ט:א׳-כ״א:ל״ה',
+    summary:'פרה אדומה — חוק שאין לו הסבר. מות מרים ופסקת הבאר. משה מכה בסלע במקום לדבר אליו ונענש שלא ייכנס לארץ. מות אהרן. נחש הנחושת.',
+    themes:['פרה אדומה','חטא מי מריבה','מות מרים','מות אהרן','נחש הנחושת'],
+    keyVerse:'זֹאת חֻקַּת הַתּוֹרָה',
+    verseRef:'במדבר י״ט:ב׳',
+    details:'פרה אדומה היא ה"חוק" המוחלט — מטהרת את הטמאים ומטמאת את הטהורים, ואף שלמה המלך לא הבין אותה. חטא משה בסלע מעלה שאלות עמוקות — גם המנהיג הגדול ביותר אינו מעל לדין.'
+  },
+  {
+    id:40,book:'bamidbar',name:'בלק',ref:'במדבר כ״ב:ב׳-כ״ה:ט׳',
+    summary:'בלק מלך מואב שוכר את בלעם הנביא לקלל את ישראל. האתון מדברת. בלעם מברך את ישראל שלוש פעמים במקום לקלל. "מה טובו אוהליך יעקב." חטא בעל פעור.',
+    themes:['בלעם הנביא','האתון המדברת','ברכות במקום קללות','מה טובו','חטא בעל פעור'],
+    keyVerse:'מַה טֹּבוּ אֹהָלֶיךָ יַעֲקֹב מִשְׁכְּנֹתֶיךָ יִשְׂרָאֵל',
+    verseRef:'במדבר כ״ד:ה׳',
+    details:'סיפור בלעם הוא מהמרתקים בתורה — נביא גוי ששכרו לקלל מגלה שאי אפשר לקלל את מי שה׳ ברך. האתון המדברת הוא רגע הומוריסטי ומלמד שה׳ שולט בכל. "מה טובו" הפך לתפילת הבוקר.'
+  },
+  {
+    id:41,book:'bamidbar',name:'פינחס',ref:'במדבר כ״ה:י׳-ל׳:א׳',
+    summary:'פינחס מקבל ברית שלום על קנאותו. מפקד חדש של העם. בנות צלפחד תובעות נחלה ומקבלות. יהושע ממונה כמנהיג. קרבנות המוספים של כל המועדים.',
+    themes:['ברית שלום','בנות צלפחד','מינוי יהושע','קרבנות המוספים','מפקד שני'],
+    keyVerse:'לָמָּה יִגָּרַע שֵׁם אָבִינוּ',
+    verseRef:'במדבר כ״ז:ד׳',
+    details:'בנות צלפחד הן נשים פורצות דרך — תבעו את זכותן לנחלה ושינו את ההלכה. יהושע ממונה כיורש משה — מעבר דורי במנהיגות. קרבנות המוספים מגדירים את עבודת המקדש בכל המועדים.'
+  },
+  {
+    id:42,book:'bamidbar',name:'מטות',ref:'במדבר ל׳:ב׳-ל״ב:מ״ב',
+    summary:'דיני נדרים ושבועות. מלחמת מדין — נקמה על חטא בעל פעור. חלוקת השלל. בני גד ובני ראובן מבקשים להתנחל בעבר הירדן המזרחי.',
+    themes:['נדרים ושבועות','מלחמת מדין','חלוקת שלל','עבר הירדן','התנחלות'],
+    keyVerse:'אִישׁ כִּי יִדֹּר נֶדֶר לַה׳',
+    verseRef:'במדבר ל׳:ג׳',
+    details:'דיני נדרים מלמדים על כוח הדיבור — "מוצא שפתיך תשמור". מלחמת מדין היא מלחמת חובה. בקשת גד וראובן מעלה שאלה על אחריות לאומית מול נוחות אישית — משה מתנה את הסכמתו בהשתתפותם בכיבוש.'
+  },
+  {
+    id:43,book:'bamidbar',name:'מסעי',ref:'במדבר ל״ג:א׳-ל״ו:י״ג',
+    summary:'רשימת ארבעים ושתיים מסעות בני ישראל במדבר. גבולות ארץ ישראל. ערי מקלט לרוצח בשגגה. דיני נחלת בנות צלפחד — חיוב נישואין בתוך השבט.',
+    themes:['מ״ב מסעות','גבולות הארץ','ערי מקלט','נחלת בנות צלפחד','סיום ספר במדבר'],
+    keyVerse:'אֵלֶּה מַסְעֵי בְנֵי יִשְׂרָאֵל',
+    verseRef:'במדבר ל״ג:א׳',
+    details:'רשימת המסעות היא סיכום ארבעים שנות המדבר — כל תחנה מספרת סיפור. ערי המקלט מבטאות רעיון מהפכני — הגנה על רוצח בשגגה מנקמת דם. גבולות הארץ מגדירים את ההבטחה האלוהית.'
+  },
+  // ===== דברים =====
+  {
+    id:44,book:'devarim',name:'דברים',ref:'דברים א׳:א׳-ג׳:כ״ב',
+    summary:'משה פותח את נאומו האחרון לפני מותו. הוא מסכם את אירועי המדבר: שליחת המרגלים, הנדודים, הניצחונות על סיחון ועוג. מינוי שופטים ומערכת צדק.',
+    themes:['נאום משה','סיכום המדבר','מינוי שופטים','ניצחונות צבאיים','הכנה לכניסה'],
+    keyVerse:'אֵלֶּה הַדְּבָרִים אֲשֶׁר דִּבֶּר מֹשֶׁה',
+    verseRef:'דברים א׳:א׳',
+    details:'ספר דברים הוא "משנה תורה" — חזרה על התורה מפי משה לדור החדש שעומד להיכנס לארץ. משה, שיודע שלא ייכנס, מוסר את הלקחים האחרונים. הספר כולו הוא צוואה רוחנית.'
+  },
+  {
+    id:45,book:'devarim',name:'ואתחנן',ref:'דברים ג׳:כ״ג-ז׳:י״א',
+    summary:'משה מתחנן להיכנס לארץ אך נדחה. חזרה על עשרת הדיברות. קריאת שמע — "שמע ישראל ה׳ אלוהינו ה׳ אחד". מצוות אהבת ה׳, תלמוד תורה, ומזוזה.',
+    themes:['תפילת משה','עשרת הדיברות','קריאת שמע','אהבת ה׳','מזוזה ותפילין'],
+    keyVerse:'שְׁמַע יִשְׂרָאֵל ה׳ אֱלֹהֵינוּ ה׳ אֶחָד',
+    verseRef:'דברים ו׳:ד׳',
+    details:'"שמע ישראל" הוא הפסוק המרכזי ביהדות — הצהרת האמונה. הפרשה מכילה את יסודות האמונה: אחדות ה׳, אהבתו, לימוד תורה, ומסירת המסורת מדור לדור. "ואהבת" — האהבה היא לא רק רגש אלא מצווה.'
+  },
+  {
+    id:46,book:'devarim',name:'עקב',ref:'דברים ז׳:י״ב-י״א:כ״ה',
+    summary:'משה מבטיח שכר על שמירת המצוות. אזהרה מגאווה ושכחת ה׳. סיפור שבירת הלוחות ולוחות שניים. ארץ ישראל — "ארץ זבת חלב ודבש". פרשת "והיה אם שמוע".',
+    themes:['שכר ועונש','אזהרה מגאווה','שבח ארץ ישראל','ברכת המזון','פרשה שנייה של שמע'],
+    keyVerse:'אֶרֶץ זָבַת חָלָב וּדְבָשׁ',
+    verseRef:'דברים י״א:ט׳',
+    details:'שם הפרשה "עקב" — אם תשמעו "עקב" (בעקבות) המצוות, תבוא הברכה. משה מזהיר מהסכנה שבשפע — "פן תאכל ושבעת ותשכח את ה׳". ברכת המזון מקורה כאן. הפרשה מחברת בין ארציות לרוחניות.'
+  },
+  {
+    id:47,book:'devarim',name:'ראה',ref:'דברים י״א:כ״ו-ט״ז:י״ז',
+    summary:'ברכה וקללה — הבחירה ביד האדם. מקום המקדש, איסור במות. חוקי כשרות, מעשר, שמיטת כספים. עבד עברי. שלוש הרגלים: פסח, שבועות, סוכות.',
+    themes:['בחירה חופשית','מקום המקדש','כשרות','שמיטת כספים','שלוש רגלים'],
+    keyVerse:'רְאֵה אָנֹכִי נֹתֵן לִפְנֵיכֶם הַיּוֹם בְּרָכָה וּקְלָלָה',
+    verseRef:'דברים י״א:כ״ו',
+    details:'הפרשה פותחת ב"ראה" — ראייה, בחירה, אחריות. היא מדגישה את הבחירה החופשית כעקרון יסוד. חוקי הצדקה והשמיטה מבטאים חברה מתוקנת. ריכוז הפולחן במקום אחד (ירושלים) מחזק את אחדות העם.'
+  },
+  {
+    id:48,book:'devarim',name:'שופטים',ref:'דברים ט״ז:י״ח-כ״א:ט׳',
+    summary:'מינוי שופטים ושוטרים. דיני מלך. זכויות הכוהנים והלויים. איסור כישוף, הבטחת נביא. ערי מקלט. דיני מלחמה. עגלה ערופה.',
+    themes:['צדק צדק תרדוף','דיני מלך','נבואה','דיני מלחמה','עגלה ערופה'],
+    keyVerse:'צֶדֶק צֶדֶק תִּרְדֹּף',
+    verseRef:'דברים ט״ז:כ׳',
+    details:'"צדק צדק תרדוף" — הכפילות מדגישה שגם הדרך להשגת הצדק חייבת להיות צודקת. הפרשה מתווה מערכת שלטון מאוזנת: שופטים, מלך, כוהנים ונביאים. דיני המלחמה מתקדמים לתקופתם — "מי האיש הירא, ילך וישוב".'
+  },
+  {
+    id:49,book:'devarim',name:'כי תצא',ref:'דברים כ״א:י׳-כ״ה:י״ט',
+    summary:'הפרשה עם הכי הרבה מצוות בתורה (74). דיני משפחה, אשת יפת תואר, בכור, בן סורר. השבת אבדה, שילוח הקן. מעקה, כלאיים. דיני גירושין, צדק במשקלות. זכירת עמלק.',
+    themes:['דיני משפחה','השבת אבדה','שילוח הקן','צדק חברתי','מחיית עמלק'],
+    keyVerse:'לֹא תוּכַל לְהִתְעַלֵּם',
+    verseRef:'דברים כ״ב:ג׳',
+    details:'74 מצוות בפרשה אחת — מגוון עצום של חוקים המכסים כל תחום בחיים. הפרשה מדגישה רגישות — לאדם, לחי, לטבע. שילוח הקן מלמד רחמנות. "לא תוכל להתעלם" — חובה לא להישאר אדיש.'
+  },
+  {
+    id:50,book:'devarim',name:'כי תבוא',ref:'דברים כ״ו:א׳-כ״ט:ח׳',
+    summary:'מצוות ביכורים — הבאת ראשית הפירות למקדש. וידוי מעשרות. ברית בהר גריזים והר עיבל. התוכחה הגדולה — 98 קללות. "הנסתרות לה׳ אלוהינו".',
+    themes:['מקרא ביכורים','ברכות וקללות','התוכחה','הר גריזים והר עיבל','ברית'],
+    keyVerse:'אֲרַמִּי אֹבֵד אָבִי',
+    verseRef:'דברים כ״ו:ה׳',
+    details:'"ארמי אובד אבי" — הנוסח שאנו אומרים בליל הסדר. מקרא ביכורים הוא סיפור ההיסטוריה הלאומית בקצרה. התוכחה קשה מזו שבויקרא, ומתארת במדויק אירועים שאכן התרחשו בהמשך ההיסטוריה.'
+  },
+  {
+    id:51,book:'devarim',name:'ניצבים',ref:'דברים כ״ט:ט׳-ל׳:כ׳',
+    summary:'כל ישראל עומדים לפני ה׳ — מראשי השבטים ועד חוטב עציך. חידוש הברית. נבואת הגלות והתשובה. "לא בשמיים היא." הבחירה בין החיים והמוות.',
+    themes:['ברית לכל ישראל','תשובה','לא בשמיים היא','בחירת החיים','ערבות הדדית'],
+    keyVerse:'הַחַיִּים וְהַמָּוֶת נָתַתִּי לְפָנֶיךָ הַבְּרָכָה וְהַקְּלָלָה וּבָחַרְתָּ בַּחַיִּים',
+    verseRef:'דברים ל׳:י״ט',
+    details:'פרשה נקראת תמיד לפני ראש השנה. "לא בשמיים היא" — התורה נגישה לכל אדם, אין צורך בניסים כדי להבין אותה. הבחירה בין חיים ומוות היא המסר המרכזי — הכל בידי האדם. ערבות הדדית — כל ישראל ערבים זה לזה.'
+  },
+  {
+    id:52,book:'devarim',name:'וילך',ref:'דברים ל״א:א׳-ל׳',
+    summary:'משה בן 120 נפרד מהעם. מצווה על הקהל — קריאת התורה כל שבע שנים. ה׳ מגלה למשה שהעם יחטא בעתיד. משה כותב את השירה ומוסר את התורה ללויים.',
+    themes:['פרידת משה','מצוות הקהל','כתיבת התורה','מסירת המנהיגות','נבואת העתיד'],
+    keyVerse:'חִזְקוּ וְאִמְצוּ',
+    verseRef:'דברים ל״א:ו׳',
+    details:'הפרשה הקצרה ביותר בתורה (30 פסוקים) אך רבת משמעות. משה, בן 120, נפרד מהעם שהנהיג ארבעים שנה. "חזקו ואמצו" — המסר האחרון. מצוות הקהל — כל העם, כולל נשים וטף, שומעים תורה יחד.'
+  },
+  {
+    id:53,book:'devarim',name:'האזינו',ref:'דברים ל״ב:א׳-נ״ב',
+    summary:'שירת האזינו — שירת משה לפני מותו. סיכום ההיסטוריה של עם ישראל בשירה: חסדי ה׳, חטאי העם, העונש, והגאולה הסופית. משה נצטווה לעלות להר נבו.',
+    themes:['שירת האזינו','היסטוריה בשירה','צור תמים','גאולה עתידית','הר נבו'],
+    keyVerse:'הַאֲזִינוּ הַשָּׁמַיִם וַאֲדַבֵּרָה וְתִשְׁמַע הָאָרֶץ אִמְרֵי פִי',
+    verseRef:'דברים ל״ב:א׳',
+    details:'שירת האזינו היא סיכום ההיסטוריה היהודית בשירה נבואית — מהבריאה ועד אחרית הימים. השמיים והארץ מוזמנים כעדים. השירה מתארת מחזוריות: חסד, חטא, עונש, תשובה וגאולה.'
+  },
+  {
+    id:54,book:'devarim',name:'וזאת הברכה',ref:'דברים ל״ג:א׳-ל״ד:י״ב',
+    summary:'ברכת משה לשנים עשר השבטים לפני מותו. משה עולה להר נבו, רואה את כל הארץ ומת. ה׳ קוברו ואיש לא ידע את קבורתו. "ולא קם נביא עוד בישראל כמשה."',
+    themes:['ברכות השבטים','מות משה','הר נבו','סיום התורה','גדולת משה'],
+    keyVerse:'וְלֹא קָם נָבִיא עוֹד בְּיִשְׂרָאֵל כְּמֹשֶׁה',
+    verseRef:'דברים ל״ד:י׳',
+    details:'סיום התורה. ברכות משה שונות מברכות יעקב — הן מלאות אהבה ותקווה. מות משה על הר נבו, כשהוא רואה את הארץ המובטחת אך אינו נכנס, הוא רגע טרגי ומרומם. "ולא קם נביא עוד כמשה" — חותם של גדולה. שמחת תורה — סיום וחזרה לבראשית, מחזוריות נצחית.'
+  },
+];
+
+// Enhanced data: emojis, commentaries, modern relevance per parsha
+const EXTRA = {
+1:{emoji:'🌍',commentaries:[
+  {source:'רש"י',text:'למה פתחה התורה ב"בראשית"? שאם יאמרו אומות העולם "ליסטים אתם" — יאמר להם: כל הארץ של הקב"ה היא, הוא בראה ונתנה לאשר ישר בעיניו.'},
+  {source:'רמב"ן',text:'התורה פותחת בבריאה כדי להראות שהעולם אינו קדמון אלא נברא יש מאין — יסוד האמונה.'},
+  {source:'חז"ל (מדרש רבה)',text:'"בשביל התורה שנקראת ראשית, ובשביל ישראל שנקראו ראשית" — נברא העולם.'}
+],modern:'בעידן של שינויי אקלים ומשבר סביבתי, הציווי "לעבדה ולשמרה" מקבל משמעות חדשה. האחריות על כדור הארץ היא לא רק ערך אקולוגי אלא ערך תורני ראשוני. גם הדיון על "קין והבל" מהדהד בשאלות של אחריות חברתית — "השומר אחי אנוכי?" הוא הקול שצריך להדהד בפני כל אדישות.'},
+2:{emoji:'🌊',commentaries:[
+  {source:'רש"י',text:'"נח איש צדיק תמים היה בדורותיו" — יש מרבותינו דורשים לשבח ויש דורשים לגנאי.'},
+  {source:'רמב"ם (מורה נבוכים)',text:'המבול אינו רק עונש אלא איפוס והתחלה מחדש של היחסים בין האדם לבורא.'},
+  {source:'הרב קוק',text:'הקשת בענן מסמלת שגם אחרי הסערה הגדולה ביותר, יש מקום לתקווה ולצבעוניות.'}
+],modern:'המבול כמטאפורה למשברים גלובליים — מגיפות, מלחמות, שינויי אקלים. השאלה "מי הוא צדיק בדורו?" רלוונטית כשאנחנו שואלים מי עומד מהצד ומי פועל. מגדל בבל מזכיר את האתגרים של גלובליזציה — כשכולם מדברים "שפה אחת" אבל מפסיקים להקשיב זה לזה.'},
+3:{emoji:'🏕️',commentaries:[
+  {source:'רש"י',text:'"לך לך" — להנאתך ולטובתך, שם אעשך לגוי גדול.'},
+  {source:'רמב"ן',text:'אברהם נבחן בעשרה ניסיונות, וכולם בנויים על עזיבת הנוחות והמוכר.'},
+  {source:'ספורנו',text:'ברית בין הבתרים — ה\' מגלה לאברהם את עתיד זרעו, כולל הגלויות והגאולה.'}
+],modern:'הקריאה "לך לך" מהדהדת בכל מי שמחליט לעזוב את אזור הנוחות שלו — עולים חדשים, יזמים, מי שמשנה כיוון בחיים. ברית המילה כסמל של זהות יהודית נותרה נושא חי בשיח הציבורי בישראל ובתפוצות.'},
+4:{emoji:'🔥',commentaries:[
+  {source:'רש"י',text:'"וירא אליו ה\'" — ביום השלישי למילתו בא הקב"ה לבקר את החולה.'},
+  {source:'רמב"ן',text:'תפילת אברהם על סדום מלמדת שמותר ואף ראוי להתווכח עם ה\' על צדק.'},
+  {source:'מדרש',text:'העקידה היא הניסיון העשירי והאחרון — שיא האמונה של אברהם.'}
+],modern:'הכנסת אורחים בעידן של סגירת גבולות ומשברי פליטים מקבלת משמעות חדשה. אברהם פותח את אוהלו לזרים — מודל של חברה פתוחה. הדיון על סדום ועמורה מהדהד בשאלות של צדק חברתי: האם חברה שלמה אשמה כשהיא שותקת מול עוול?'},
+5:{emoji:'💍',commentaries:[
+  {source:'רש"י',text:'כל שנות חייה של שרה — כולן שווין לטובה.'},
+  {source:'רמב"ן',text:'קניית מערת המכפלה היא הזיקה המשפטית הראשונה של אברהם לארץ ישראל.'},
+  {source:'חז"ל',text:'שידוך יצחק ורבקה — הבאר הייתה מקום מפגש אלוהי, וסימני ההשגחה הפרטית ברורים.'}
+],modern:'מערת המכפלה בחברון נותרת אתר שנוי במחלוקת עד היום. הפרשה מעלה שאלות על קניין, זכות היסטורית, ודו-קיום. סיפור השידוך של יצחק ורבקה רלוונטי לשיח על זוגיות ומציאת זוג — גם בעידן האפליקציות.'},
+6:{emoji:'👬',commentaries:[
+  {source:'רש"י',text:'"שני גויים בבטנך" — שני גדולי עולם: רבי יהודה הנשיא ואנטונינוס.'},
+  {source:'רמב"ן',text:'הברכות אינן גזל — יעקב זכאי להן כמי שקנה את הבכורה.'},
+  {source:'מהר"ל',text:'עשו ויעקב מייצגים שני כוחות נצחיים — גשמיות מול רוחניות.'}
+],modern:'העימות בין יעקב לעשו מהדהד בשאלות של זהות ובחירה: מה מגדיר אותנו — הכישרונות שנולדנו איתם או הבחירות שאנחנו עושים? הנושא של העדפת ילד אחד על פני אחר רלוונטי בכל דור — מחקרים מראים שהעדפה הורית משפיעה עמוקות.'},
+7:{emoji:'🪜',commentaries:[
+  {source:'רש"י',text:'הסולם — אלו מלאכי ארץ ישראל עולים ומלאכי חוץ לארץ יורדים.'},
+  {source:'רמב"ן',text:'חלום הסולם הוא נבואה על ההיסטוריה של עם ישראל — עליות וירידות.'},
+  {source:'זוהר',text:'הסולם מוצב ארצה — התפילה עולה מלמטה למעלה, מהארץ לשמיים.'}
+],modern:'עשרים שנות עבודה אצל לבן — סיפור של מהגרי עבודה שנאלצים להתמודד עם ניצול. הנושא של זכויות עובדים, הבטחות שלא מקויימות, ומאבק על מה שמגיע — רלוונטי היום לא פחות. גם סיפור האהבה של יעקב ורחל — "ויהיו בעיניו כימים אחדים באהבתו אותה" — נשאר הסיפור הרומנטי הגדול של התורה.'},
+8:{emoji:'⚔️',commentaries:[
+  {source:'רש"י',text:'"ויותר יעקב לבדו" — שכח פכים קטנים, שצדיקים ממונם חביב עליהם.'},
+  {source:'מדרש',text:'שרו של עשו נאבק ביעקב — המאבק הרוחני שבין ישראל לאומות.'},
+  {source:'הרב סולובייצ\'יק',text:'שינוי השם מיעקב לישראל מסמל את המעבר מהישרדות למנהיגות.'}
+],modern:'המאבק עם המלאך הוא מטאפורה לכל מאבק פנימי — PTSD, משברים אישיים, התמודדות עם עבר. יעקב יוצא צולע אבל חזק יותר. סיפור דינה מעלה שאלות כואבות שעדיין רלוונטיות — אלימות מינית, תגובת המשפחה, נקמה מול צדק.'},
+9:{emoji:'🧥',commentaries:[
+  {source:'רש"י',text:'כתונת הפסים — בגד מיוחד שגרם לקנאת האחים.'},
+  {source:'רמב"ן',text:'יוסף חלם חלומות אמיתיים אך טעה בכך שסיפר אותם — חוסר חוכמה חברתית.'},
+  {source:'חז"ל',text:'"בשביל משקל שני סלעים מילת שנתן יעקב ליוסף יותר מאחיו, נתגלגל הדבר וירדו אבותינו למצרים."'}
+],modern:'סיפור יוסף הוא סיפור של בריונות, דחייה חברתית, והצלחה בזכות עמידה בערכים. בעידן הרשתות החברתיות, הקנאה ("וישנאו אותו") מקבלת ממדים חדשים. הסירוב לאשת פוטיפר הפך לסמל של יושרה מינית גם בשיח המודרני על הטרדות.'},
+10:{emoji:'👑',commentaries:[
+  {source:'רש"י',text:'פרעה חלם על שבע פרות ושבע שיבולים — חלום כפול כי הדבר נכון ועתיד להתקיים.'},
+  {source:'אברבנאל',text:'יוסף לא רק פתר חלומות אלא הציע תוכנית כלכלית מלאה — זו חוכמת מנהיגות.'},
+  {source:'רב סעדיה גאון',text:'ניהול המשבר של יוסף הוא מודל לניהול משברים כלכליים.'}
+],modern:'ניהול משברים כלכליים — מהרכה שנות השפע לשנות המשבר — רלוונטי לכל ממשלה ומדינה. תוכנית יוסף של אגירה ב-7 שנות שפע היא עקרון כלכלי מוכר. העלייה מ"אסיר" ל"משנה למלך" מעוררת השראה לכל מי שעובר תקופה קשה.'},
+11:{emoji:'😢',commentaries:[
+  {source:'רש"י',text:'"אני יוסף" — ברגע אחד נתברר הכל, כך עתיד הקב"ה להתגלות.'},
+  {source:'בעל הטורים',text:'נאום יהודה הוא הארוך ביותר של דמות בתורה — מילים מהלב.'},
+  {source:'חז"ל',text:'"אוי לנו מיום הדין, אוי לנו מיום התוכחה" — כשיוסף התגלה, לא יכלו לענות מרוב בושה.'}
+],modern:'רגע ההתוודעות של יוסף מלמד על כוח המחילה והפיוס. בעולם של סכסוכים, ריבים משפחתיים, ומלחמות — היכולת לומר "אני יוסף" ולפתוח דף חדש היא כוח אדיר. ירידת יעקב למצרים מהדהדת בגלי ההגירה של ימינו.'},
+12:{emoji:'🙏',commentaries:[
+  {source:'רש"י',text:'ברכות יעקב — כל ברכה מותאמת לאופי ולעתיד של כל שבט.'},
+  {source:'רמב"ן',text:'הפרשה נקראת "ויחי" אף שעוסקת במוות — צדיקים במיתתם נקראים חיים.'},
+  {source:'מדרש',text:'"ולא קם נביא עוד בישראל כמשה" אבל באומות — קם, זה בלעם.'}
+],modern:'צוואה רוחנית — בתרבות המודרנית רבים כותבים "צוואה אתית" לצד צוואה משפטית. הרצון להיקבר בארץ ישראל חי מאות שנים ועד היום. ברכות יעקב מלמדות שכל ילד שונה ודורש התייחסות מותאמת — עקרון חינוכי מודרני.'},
+13:{emoji:'🔥',commentaries:[
+  {source:'רש"י',text:'"אהיה אשר אהיה" — אהיה עמם בצרה זו כשם שאהיה עמם בצרות אחרות.'},
+  {source:'רמב"ן',text:'הסנה הבוער ואינו נכלה — סמל לעם ישראל שסובל אך אינו נכחד.'},
+  {source:'מדרש',text:'משה רעה את הצאן אל המדבר — בוחן את מנהיגותו דרך הנהגת צאן.'}
+],modern:'השעבוד במצרים הוא ארכיטיפ של דיכוי. מהתנועה לביטול העבדות ועד מאבקי זכויות אדם בימינו — סיפור יציאת מצרים מעורר השראה לכל קבוצה הנאבקת על חירותה. הסנה הבוער — התגלות בלתי צפויה, מהפכה שמגיעה ממקום שלא ציפית.'},
+14:{emoji:'💧',commentaries:[
+  {source:'רש"י',text:'המכות כוונו כנגד אלילי מצרים — היאור שהפך לדם כנגד עבודת היאור.'},
+  {source:'רמב"ם',text:'הקשיית הלב אינה שלילת הבחירה — פרעה בחר בעצמו עד שאיבד את היכולת לחזור.'},
+  {source:'אברבנאל',text:'כל מכה הוכיחה שה\' שולט בטבע כולו — מים, יבשה, אוויר וחיות.'}
+],modern:'הקשיית הלב של פרעה מזכירה מנהיגים שמכפילים את עמדתם גם כשהראיות נגדם. הדיון על בחירה חופשית מול גזירה רלוונטי גם בפילוסופיה המודרנית ובמדעי המוח — עד כמה אנחנו באמת בוחרים?'},
+15:{emoji:'🍞',commentaries:[
+  {source:'רש"י',text:'קרבן פסח — שחיטת השה, אל מצרים, דרשה אומץ עצום מבני ישראל.'},
+  {source:'הגדה של פסח',text:'"בכל דור ודור חייב אדם לראות את עצמו כאילו הוא יצא ממצרים."'},
+  {source:'רמב"ן',text:'המצה — לחם עוני שהפך ללחם חירות. הזיכרון הוא שורש הזהות.'}
+],modern:'ליל הסדר הוא האירוע המשפחתי המאחד ביותר בעם היהודי — גם חילונים מקיימים סדר. בשנות ה-COVID, סדרים בזום הפכו לנורמה ועוררו שאלות על טכנולוגיה ומסורת. "בכל דור ודור" — חוויית השואה הפכה את המשפט הזה למוחשי באופן מיוחד.'},
+16:{emoji:'🌊',commentaries:[
+  {source:'רש"י',text:'שירת הים — אמרו שירה ברוח הקודש, אפילו עוברים במעי אמם.'},
+  {source:'מכילתא',text:'"ראתה שפחה על הים מה שלא ראה יחזקאל בן בוזי" — כל עם ישראל חווה נבואה.'},
+  {source:'רמב"ן',text:'המן — ניסיון של ביטחון יומיומי בה\', בלי לצבור מעבר ליום אחד.'}
+],modern:'קריעת ים סוף כמטאפורה לרגעים שבהם נראה שאין מוצא — ואז נפתח פתח בלתי צפוי. המן — לחם מהשמיים — מעורר שאלות על אוכל, שפע וצריכה בעידן של בזבוז מזון גלובלי. מלחמת עמלק מזכירה שגם אחרי ניצחון, האיומים לא נעלמים.'},
+17:{emoji:'⛰️',commentaries:[
+  {source:'רש"י',text:'עשרת הדיברות ניתנו בקולות וברקים — כל העולם שתק ברגע מתן תורה.'},
+  {source:'רמב"ם',text:'עשרת הדיברות הם שורשים שמהם נגזרות כל תרי"ג המצוות.'},
+  {source:'חז"ל',text:'עצת יתרו — גם חכמה מבחוץ ראויה להישמע. משה היה צנוע מספיק לקבל.'}
+],modern:'עצת יתרו על האצלת סמכויות היא עיקרון ניהולי מודרני. גם היום מנהיגים צריכים ללמוד לוותר על שליטה. עשרת הדיברות נותרות הבסיס המוסרי של הציוויליזציה המערבית — "לא תרצח, לא תגנוב" הם יסוד החוק בכל מדינה מודרנית.'},
+18:{emoji:'⚖️',commentaries:[
+  {source:'רש"י',text:'"נעשה ונשמע" — הקדימו עשייה לשמיעה, וזה סוד ישראל.'},
+  {source:'רמב"ם',text:'חוקי התורה החברתיים הם יסוד של חברה צודקת — הגנה על העובד, הגר, והיתום.'},
+  {source:'חז"ל',text:'"משפטים" — דינים שגם לולא נכתבו, היה הדעת נותנת לכתבם.'}
+],modern:'דיני עבודה, נזיקין ובטיחות — חוקי פרשת משפטים הם הבסיס למשפט העברי ולחקיקה מודרנית. "עין תחת עין" פורש בחז"ל כפיצוי כספי — צדק מתקן ולא נקמה. רלוונטי לדיוני בתי משפט עד היום.'},
+19:{emoji:'🕯️',commentaries:[
+  {source:'רש"י',text:'"ושכנתי בתוכם" — בתוך כל אחד ואחד, לא רק בתוך המשכן.'},
+  {source:'רמב"ן',text:'המשכן הוא המשך מעמד הר סיני — נקודת החיבור הקבועה בין שמיים וארץ.'},
+  {source:'ספורנו',text:'כל כלי במשכן מסמל ערך רוחני שצריך לשכון בלב האדם.'}
+],modern:'הרעיון ש"ושכנתי בתוכם" — ה\' שוכן בתוך כל אדם — מהדהד בגישות מודרניות של מיינדפולנס ורוחניות אישית. בניית מרחב קדוש רלוונטית גם למי שבונה בית, קהילה, או חלל עבודה — האווירה שאנחנו יוצרים משנה.'},
+20:{emoji:'👘',commentaries:[
+  {source:'רש"י',text:'בגדי הכהונה — לכבוד ולתפארת. הבגד משפיע על הפנימיות.'},
+  {source:'בעל הטורים',text:'שם משה לא מוזכר בפרשה — ענישה על שאמר "מחני נא מספרך".'},
+  {source:'חז"ל',text:'החושן היה על לב הכהן — נושא את כל ישראל על ליבו.'}
+],modern:'הלבוש כביטוי חיצוני של תפקיד פנימי — רלוונטי למדים, תלבושות עבודה, ואפילו dress code. החושן עם 12 אבנים שונות מסמל גיוון ואחדות — כל שבט שונה אך כולם יחד על הלב.'},
+21:{emoji:'🐂',commentaries:[
+  {source:'רש"י',text:'חטא העגל — 40 יום אחרי מתן תורה, העם נפל. כך הוא יצר הרע.'},
+  {source:'רמב"ם',text:'י"ג מידות הרחמים — יסוד התשובה והסליחה בכל דור.'},
+  {source:'חז"ל',text:'הלוחות השניים ניתנו ביום הכיפורים — יום שמסמל סליחה ומחילה לעד.'}
+],modern:'חטא העגל מלמד שגם אחרי חוויה רוחנית עוצמתית, אפשר ליפול. רלוונטי להתמכרויות, נפילות מוסריות, ומשברי אמון. אבל העיקר — הלוחות השניים. תמיד יש הזדמנות שנייה. "י"ג מידות" הן מודל של רחמים שאנו צריכים ליישם ביחסים שלנו.'},
+22:{emoji:'🏗️',commentaries:[
+  {source:'רש"י',text:'השבת הוקדמה למשכן — ללמד שאפילו בניית בית ה\' אינה דוחה שבת.'},
+  {source:'חז"ל',text:'העם תרם בנדיבות כה רבה שמשה נאלץ להכריז: "אל יעשו עוד מלאכה!"'},
+  {source:'אור החיים',text:'בצלאל קיבל חוכמה אלוהית — האומנות היא עבודת ה\'.'}
+],modern:'crowdfunding קדום — העם תרם מרצונו ואף היה צריך לעצור. מודל של מעורבות קהילתית. בצלאל כאמן שמקבל השראה אלוהית מעורר שאלות על יצירתיות, אומנות ומלאכה בעידן ה-AI.'},
+23:{emoji:'☁️',commentaries:[
+  {source:'רש"י',text:'חשבון המשכן — גם משה רבנו נתן דין וחשבון על כל שקל.'},
+  {source:'רמב"ן',text:'ענן ה\' על המשכן — השכינה שורה בישראל כשהם פועלים יחד.'},
+  {source:'חז"ל',text:'"ויכס הענן" — כבוד ה\' מלא את המשכן עד שמשה לא יכול היה להיכנס.'}
+],modern:'שקיפות כספית — אפילו משה רבנו נתן דין וחשבון. רלוונטי מאוד לעידן של שחיתות ציבורית ודרישה לשקיפות. הענן שממלא את המשכן — רגע שבו הקהילה יוצרת משהו גדול יותר מעצמה.'},
+24:{emoji:'🐑',commentaries:[
+  {source:'רש"י',text:'"ויקרא" באל"ף זעירא — ענוותנותו של משה.'},
+  {source:'רמב"ן',text:'קרבן — מלשון קרבה. המטרה היא התקרבות לה\', לא רק הטקס.'},
+  {source:'ספר החינוך',text:'הקרבנות מחנכים את האדם — הפעולה הפיזית משפיעה על הנפש.'}
+],modern:'בהיעדר מקדש, חז"ל אמרו "תפילות כנגד תמידין תקנום" — התפילה מחליפה את הקרבן. בעולם שבו אנשים מחפשים משמעות, הרעיון של "להקריב" — לוותר על משהו כדי להתקרב — רלוונטי בכל מערכת יחסים.'},
+25:{emoji:'🔥',commentaries:[
+  {source:'רש"י',text:'"אש תמיד" — גם בשבת, גם בטומאה, האש לא כבתה.'},
+  {source:'רמב"ם',text:'הכהן חייב להיות מוכן תמיד — רמת מחויבות גבוהה לעבודת הציבור.'},
+  {source:'חז"ל',text:'שבעת ימי המילואים — הכנה רוחנית לפני קבלת תפקיד ציבורי.'}
+],modern:'האש שלא כבתה היא מטאפורה לדברים שצריכים תשומת לב מתמדת — מערכות יחסים, ערכים, מטרות. ההכנה של שבעת ימי המילואים מזכירה onboarding מודרני — לא קופצים ישר לתפקיד.'},
+26:{emoji:'⚡',commentaries:[
+  {source:'רש"י',text:'נדב ואביהוא — הקריבו אש שלא נצטוו עליה. גם כוונה טובה צריכה גבולות.'},
+  {source:'רמב"ן',text:'חוקי הכשרות — הבחנה בין מותר לאסור מלמדת שליטה עצמית.'},
+  {source:'חז"ל',text:'"להבדיל בין הטמא ובין הטהור" — זו עיקר חוכמת האדם.'}
+],modern:'מות נדב ואביהוא מלמד על סכנת הקיצוניות — גם בדת, גם בפוליטיקה. התלהבות ללא גבולות יכולה להיות הרסנית. חוקי הכשרות חוזרים לשיח הציבורי בהקשרים של בריאות, אקולוגיה, וזכויות בעלי חיים.'},
+27:{emoji:'🔍',commentaries:[
+  {source:'רש"י',text:'הצרעת באה על לשון הרע — "מצורע" = "מוציא שם רע".'},
+  {source:'רמב"ם',text:'הצרעת אינה מחלה טבעית אלא אות ומופת בישראל.'},
+  {source:'חפץ חיים',text:'שמירת הלשון היא מהמצוות החשובות — כוח הדיבור יכול להרוס ולבנות.'}
+],modern:'לשון הרע בעידן הדיגיטלי הוא מגיפה. ציוץ אחד, פוסט אחד, יכול להרוס חיים. ה"צרעת" המודרנית היא cancel culture — הרחקה חברתית בגלל דברים שנאמרו. הפרשה מלמדת על כוח המילים ואחריות על הדיבור.'},
+28:{emoji:'🕊️',commentaries:[
+  {source:'רש"י',text:'שתי הציפורים בטהרת המצורע — אחת נשחטת ואחת משתלחת, כנגד הדיבור (ציוץ).'},
+  {source:'רמב"ן',text:'תהליך הטהרה ארוך — תשובה אמיתית דורשת זמן ומאמץ.'},
+  {source:'חז"ל',text:'"מה תקנתו של מספר לשון הרע? יעסוק בתורה."'}
+],modern:'תהליכי שיקום — מכלא, מהתמכרות, ממשבר — דורשים זמן. הפרשה מלמדת שחזרה לחברה היא תהליך מובנה, לא קפיצה. רלוונטי לשיח על שיקום אסירים ושילוב מחדש בחברה.'},
+29:{emoji:'🙇',commentaries:[
+  {source:'רש"י',text:'הכהן הגדול נכנס לקודש הקודשים פעם אחת בשנה — ביום הכיפורים בלבד.'},
+  {source:'רמב"ם',text:'יום הכיפורים מכפר על כל העבירות — בין אדם למקום. בין אדם לחברו — עד שירצה את חברו.'},
+  {source:'חז"ל',text:'השעיר לעזאזל — נושא את חטאי העם ומשלחם למקום שממה.'}
+],modern:'יום הכיפורים נותר היום הכי מאחד בישראל — גם חילונים צמים ואינם נוהגים ברכב. "לרצות את חברו" לפני יום כיפור — WhatsApp הפך את זה לריטואל דיגיטלי של בקשת סליחה.'},
+30:{emoji:'❤️',commentaries:[
+  {source:'רש"י',text:'"ואהבת לרעך כמוך" — רבי עקיבא אומר: זה כלל גדול בתורה.'},
+  {source:'הלל הזקן',text:'"מה ששנוא עליך לא תעשה לחברך — זוהי כל התורה כולה, והשאר פירוש."'},
+  {source:'רמב"ן',text:'הקדושה מתבטאת ביומיום — בעסקים, ביחסים, באכילה.'}
+],modern:'"ואהבת לרעך כמוך" — העיקרון שעליו מבוססות זכויות אדם, דמוקרטיה, וצדק חברתי. "קדושים תהיו" — קריאה לחיות חיים משמעותיים ומוסריים, לא רק דתיים. רלוונטי לכל אדם בכל תרבות.'},
+31:{emoji:'📅',commentaries:[
+  {source:'רש"י',text:'המועדים מקדשים את הזמן — ישראל מקדשים את החודשים.'},
+  {source:'רמב"ם',text:'כל מועד מחנך ערך אחר: פסח — חירות, שבועות — תורה, סוכות — ביטחון.'},
+  {source:'הרב הירש',text:'לוח השנה היהודי הוא "קוריקולום" חינוכי שלם.'}
+],modern:'המועדים היהודיים יוצרים מקצב שנתי. בעידן של חיים מהירים ללא מבנה, הצורך ב"עצירות" מתוזמנות — שבת, חגים — רלוונטי יותר מתמיד. חג הסוכות כ"פסטיבל" של שמחה מזכיר אירועי קהילה מודרניים.'},
+32:{emoji:'🌱',commentaries:[
+  {source:'רש"י',text:'השמיטה ניתנה בהר סיני — ללמד שכל התורה ניתנה בסיני בכלליה ודקדוקיה.'},
+  {source:'רמב"ן',text:'היובל — מהפכה חברתית כל 50 שנה, איפוס כלכלי מוחלט.'},
+  {source:'הרב קוק',text:'שנת השמיטה היא "שבת הארץ" — זמן למנוחה, למידה וחידוש.'}
+],modern:'שמיטה כ-"reset" — כל שבע שנים להתחיל מחדש. רעיון שמהדהד בעולם של שחיקה (burnout) וסטארט-אפים שנופלים וקמים. שנת שבתון, מחיקת חובות של מדינות עניות — רעיונות שמבוססים על עקרון השמיטה.'},
+33:{emoji:'📜',commentaries:[
+  {source:'רש"י',text:'"אם בחוקותי תלכו" — שתהיו עמלים בתורה.'},
+  {source:'רמב"ן',text:'התוכחה מסתיימת בתקווה — "וזכרתי את בריתי", ה\' לא ישכח.'},
+  {source:'חז"ל',text:'הקורא בתוכחה צריך להוסיף קולו — להראות שגם הדברים הקשים באים מאהבה.'}
+],modern:'שכר ועונש — שאלה פילוסופית נצחית. למה דברים רעים קורים לאנשים טובים? הפרשה לא נותנת תשובה פשוטה אבל מדגישה שתמיד יש תקווה. "וזכרתי את בריתי" — אחרי השואה, הקמת מדינת ישראל.'},
+34:{emoji:'🏕️',commentaries:[
+  {source:'רש"י',text:'"שאו את ראש" — ספירת ישראל מראה שכל אחד חשוב.'},
+  {source:'רמב"ן',text:'סדר החנייה סביב המשכן — כל שבט במקומו, סדר מושלם.'},
+  {source:'מדרש',text:'שבט לוי לא נמנה כי הם שייכים לצבא ה\', לא לצבא ישראל.'}
+],modern:'מפקד אוכלוסין — גם היום כלי חשוב למדיניות. ה"מקום" של כל שבט מזכיר שאלות של שייכות — איפה אני? מה התפקיד שלי? בעולם של חוסר ודאות, לדעת את מקומך זה עוגן.'},
+35:{emoji:'✋',commentaries:[
+  {source:'רש"י',text:'ברכת כוהנים — שלוש ברכות: שמירה, חן, ושלום.'},
+  {source:'רמב"ן',text:'הנזיר פורש מיין כדי להתקדש — קדושה דרך הגבלה.'},
+  {source:'חז"ל',text:'"גדול השלום" — ברכת כוהנים מסתיימת בשלום כי זה הדבר החשוב ביותר.'}
+],modern:'ברכת כוהנים נאמרת בכותל המערבי בכל חג — אירוע המוני מרגש. "ישם לך שלום" — בארץ שחיה במלחמות, השלום הוא הברכה הנכספת ביותר. מטוס אל-על מושמעת בו ברכת כוהנים — מסורת ותעופה.'},
+36:{emoji:'🕎',commentaries:[
+  {source:'רש"י',text:'פסח שני — תמיד יש הזדמנות שנייה, גם למי שפספס.'},
+  {source:'רמב"ן',text:'מרים נענשת על לשון הרע למרות שכוונתה הייתה טובה — גם כוונות טובות לא מצדיקות רכילות.'},
+  {source:'חז"ל',text:'שבעים הזקנים — האצלת סמכויות ממשה, מודל דמוקרטי קדום.'}
+],modern:'פסח שני = "second chance". בתרבות של "פעם אחת ונגמר", הרעיון שתמיד יש הזדמנות נוספת הוא מרענן. לשון הרע — אפילו מתוך דאגה — גורמת נזק. רלוונטי לקבוצות WhatsApp משפחתיות שבהן "רק מספרים".'},
+37:{emoji:'🍇',commentaries:[
+  {source:'רש"י',text:'המרגלים ראו ענבים ענקיים אבל התמקדו בענקים האנושיים — פספסו את הטוב.'},
+  {source:'רמב"ן',text:'חטא המרגלים נגרם מפחד, לא מרשעות — הפחד הוא האויב האמיתי.'},
+  {source:'חז"ל',text:'"ונהי בעינינו כחגבים" — הבעיה הייתה בתדמית העצמית, לא במציאות.'}
+],modern:'פחד מהלא-נודע משתק. המרגלים ראו את המציאות דרך עדשת הפחד. "ונהי בעינינו כחגבים" — תסמונת המתחזה (imposter syndrome) קיימת אצל רבים מאיתנו. מצוות ציצית — תזכורת ויזואלית, כמו to-do list רוחני.'},
+38:{emoji:'🕳️',commentaries:[
+  {source:'רש"י',text:'קורח לקח את עצמו הצידה — מחלוקת שלא לשם שמיים.'},
+  {source:'אבות ה:יז',text:'"מחלוקת שאינה לשם שמיים — זו מחלוקת קורח ועדתו."'},
+  {source:'רמב"ן',text:'קורח היה חכם — אבל חכמה ללא ענווה מובילה לאסון.'}
+],modern:'פופוליזם — קורח השתמש בשפה של שוויון ("כולם קדושים") כדי להשיג כוח אישי. מזכיר מנהיגים שמדברים בשם העם אבל פועלים למען עצמם. בעידן הרשתות, מחלוקות מתלקחות מהר — הפרשה מלמדת לבדוק: האם המחלוקת "לשם שמיים"?'},
+39:{emoji:'🐄',commentaries:[
+  {source:'רש"י',text:'פרה אדומה — אפילו שלמה המלך אמר "אמרתי אחכמה והיא רחוקה ממני".'},
+  {source:'רמב"ם',text:'חטא משה בסלע — הכה במקום לדבר. כעס הוביל לטעות שעלתה ביוקר.'},
+  {source:'חז"ל',text:'מות מרים — ומיד נפסקה הבאר. זכותה של מרים ליוותה את העם 40 שנה.'}
+],modern:'הכעס שעולה ביוקר — משה איבד את הכניסה לארץ בגלל רגע אחד. בעולם של תגובות מיידיות (טוויטר, דואר אלקטרוני בזעם), הלקח חשוב. גם נשים בלתי נראות כמו מרים — רק כשנעלמות מבינים כמה תרמו.'},
+40:{emoji:'🫏',commentaries:[
+  {source:'רש"י',text:'"מה טובו" — בלעם ראה שפתחי אוהליהם לא מכוונים זה מול זה — שמירה על פרטיות.'},
+  {source:'רמב"ם',text:'האתון ראתה מה שבלעם לא ראה — לפעמים ה"פשוטים" רואים יותר מה"חכמים".'},
+  {source:'מדרש',text:'ה\' הפך קללות לברכות — "ויהפוך ה\' לך את הקללה לברכה".'}
+],modern:'"מה טובו אוהליך" — שמירה על פרטיות כערך יהודי. רלוונטי מאוד בעידן הדיגיטלי, מצלמות אבטחה, ורשתות חברתיות. גם הרעיון שקללות הופכות לברכות — אופטימיות יהודית שמתממשת שוב ושוב בהיסטוריה.'},
+41:{emoji:'👩',commentaries:[
+  {source:'רש"י',text:'בנות צלפחד — חיבבו את הארץ, מה שהגברים (מרגלים) לא עשו.'},
+  {source:'רמב"ן',text:'התורה שינתה את ההלכה בזכות טענתן הצודקת — צדק גובר.'},
+  {source:'חז"ל',text:'יהושע מונה כמנהיג כי "רוח בו" — מנהיג צריך להכיל דעות שונות.'}
+],modern:'בנות צלפחד — סיפור פמיניסטי קדום. נשים שתבעו את זכויותיהן ושינו את החוק. מודל לכל מאבק על שוויון. היום נשים בכנסת, בצבא, בהייטק — ממשיכות את הדרך. מעבר מנהיגותי ממשה ליהושע — succession planning.'},
+42:{emoji:'🤝',commentaries:[
+  {source:'רש"י',text:'"מוצא שפתיך תשמור" — נדר הוא עניין רציני ביותר.'},
+  {source:'רמב"ן',text:'גד וראובן רצו את עבר הירדן — נוחות מול אחריות לאומית.'},
+  {source:'חז"ל',text:'משה התנה: תילחמו עם אחיכם קודם, ואז תשבו — אחריות הדדית.'}
+],modern:'הנושא של נדרים רלוונטי להבטחות בחירות, חוזים עסקיים, והתחייבויות אישיות. "מוצא שפתיך תשמור" — עיקרון של אמינות. הויכוח של גד וראובן — כשהרווחה האישית מתנגשת עם הצורך הלאומי, מה גובר?'},
+43:{emoji:'🗺️',commentaries:[
+  {source:'רש"י',text:'42 מסעות — רובם היו ב-38 השנים האחרונות, כלומר חלק גדול היה מנוחה.'},
+  {source:'רמב"ן',text:'כל תחנה נרשמה כי לכל מקום יש משמעות בדרך.'},
+  {source:'בעל שם טוב',text:'42 המסעות הם מסע הנשמה — כל אדם עובר תחנות בחייו.'}
+],modern:'מסע החיים — כל תחנה היא חלק מהסיפור. בעידן של "gap year", מסעות לחיפוש עצמי, והגירה — הרעיון ש-42 תחנות מרכיבות מסע שלם מהדהד. ערי מקלט — מודל קדום של witness protection וצדק מתקן.'},
+44:{emoji:'📢',commentaries:[
+  {source:'רש"י',text:'משה הוכיח את ישראל ברמזים — כדי לא להלבין פנים.'},
+  {source:'רמב"ם',text:'ספר דברים — משנה תורה, חזרה על העיקרים לדור שנכנס לארץ.'},
+  {source:'אברבנאל',text:'נאום משה הוא צוואה רוחנית — ההנחיות האחרונות למנהיג שיודע שזמנו נגמר.'}
+],modern:'נאום פרידה — מנהיגים שיודעים לעזוב בכבוד. משה מעביר את השרביט ליהושע ללא מריבה. מערכת שופטים — עצמאות הרשות השופטת רלוונטית לדיונים הסוערים בישראל על הרפורמה המשפטית.'},
+45:{emoji:'✡️',commentaries:[
+  {source:'רש"י',text:'"שמע ישראל" — כאן קיבל עם ישראל עליו עול מלכות שמיים.'},
+  {source:'רמב"ם',text:'"ואהבת" — מצוות אהבת ה\' מתקיימת דרך לימוד תורה והתבוננות בעולם.'},
+  {source:'חז"ל',text:'שמע ישראל נאמר על ידי יהודים בכל דור — גם בשואה, גם בניצחון.'}
+],modern:'"שמע ישראל" — המילים שנאמרות ברגעי השיא והשפל. חיילים אומרים אותן בקרב, נספי שואה אמרו אותן. זהו ה-DNA הרוחני של העם היהודי. "ושננתם לבניך" — חינוך הדור הבא הוא המצווה המתמדת ביותר.'},
+46:{emoji:'🍯',commentaries:[
+  {source:'רש"י',text:'"ארץ זבת חלב ודבש" — שבח ארץ ישראל בשבעת המינים.'},
+  {source:'רמב"ם',text:'"פן תאכל ושבעת ותשכח" — שפע חומרי יכול להוביל לשכחת ה\'.'},
+  {source:'הרב קוק',text:'ארץ ישראל אינה רק מקום — היא חלק מהותי מהזהות היהודית.'}
+],modern:'השפע שמשכיח — בחברת צריכה, האזהרה "פן תאכל ושבעת ותשכח" רלוונטית יותר מתמיד. ברכת המזון — להודות על מה שיש לנו. ארץ ישראל כ"סטארט-אפ ניישן" — ארץ שפורחת ממש כמו שהובטח.'},
+47:{emoji:'👁️',commentaries:[
+  {source:'רש"י',text:'"ראה" — ה\' מציב לפני האדם בחירה ברורה ופתוחה.'},
+  {source:'רמב"ם',text:'הבחירה החופשית היא יסוד התורה — בלעדיה אין משמעות למצוות.'},
+  {source:'חז"ל',text:'"פתוח תפתח את ידך" — הצדקה היא חובה, לא רק מעשה טוב.'}
+],modern:'בחירה חופשית בעידן האלגוריתמים — כשנטפליקס ו-TikTok בוחרים עבורנו, עד כמה אנחנו באמת בוחרים? הפרשה מזכירה שהבחירה היא באחריותנו. שמיטת כספים ומעשר — בסיס לרעיון מדינת הרווחה.'},
+48:{emoji:'⚖️',commentaries:[
+  {source:'רש"י',text:'"צדק צדק" — כפילות מלמדת: הלך אחר בית דין יפה.'},
+  {source:'רמב"ם',text:'המלך כפוף לחוק — רעיון מהפכני לתקופתו.'},
+  {source:'חז"ל',text:'"לא תטע לך אשרה" — צדק ואלילות אינם יכולים לדור יחד.'}
+],modern:'"צדק צדק תרדוף" — הפסוק המצוטט ביותר בבתי משפט ישראליים. הפרדת רשויות, מלך כפוף לחוק — עקרונות דמוקרטיים קדומים. דיני מלחמה של התורה — "מי האיש הירא" — רלוונטיים לשיח על מוסריות הצבא.'},
+49:{emoji:'🐦',commentaries:[
+  {source:'רש"י',text:'שילוח הקן — מצווה קלה ששכרה גדול, מלמדת רחמים.'},
+  {source:'רמב"ם',text:'74 מצוות — הפרשה מכסה כל תחום בחיים, מלחמה ועד משפחה.'},
+  {source:'חז"ל',text:'"לא תוכל להתעלם" — חובה מוסרית לא להישאר אדיש.'}
+],modern:'"לא תוכל להתעלם" — הפסוק שמדבר נגד אדישות. כשאתה רואה אלימות, עוול, מצוקה — אתה מחויב לפעול. שילוח הקן — רגישות לבעלי חיים שמתחברת לתנועת זכויות בעלי חיים המודרנית. הגנה על הסביבה כערך תורני.'},
+50:{emoji:'🌾',commentaries:[
+  {source:'רש"י',text:'"ארמי אובד אבי" — לבן ביקש לעקור את הכל, חמור מפרעה.'},
+  {source:'הגדה של פסח',text:'נוסח ההגדה מתבסס על פרשה זו — "צא ולמד מה ביקש לבן הארמי".'},
+  {source:'רמב"ן',text:'התוכחה של 98 קללות — נבואה שהתממשה בפירוט מדהים.'}
+],modern:'ביכורים — הכרת תודה על מה שיש. בעולם של השוואות ברשתות חברתיות, עצירה להודות היא מיומנות חיים. התוכחה — הנבואות על הגלות התממשו, מהחורבן ועד השואה. "ונפצותם בכל הגויים" — ומשם חזרנו.'},
+51:{emoji:'🤲',commentaries:[
+  {source:'רש"י',text:'"ניצבים" — כולכם עומדים יחד, מהגדול ועד הקטן.'},
+  {source:'רמב"ם',text:'"לא בשמיים היא" — התורה ניתנה לאדם, ואין צורך בנס כדי להבין אותה.'},
+  {source:'חז"ל',text:'"ובחרת בחיים" — הבחירה היא בידי האדם, וה\' מבקש שנבחר בטוב.'}
+],modern:'"ובחרת בחיים" — מסר שמהדהד בכל דור. בעידן של משברי בריאות נפש ועלייה באובדנות, הקריאה לבחור בחיים היא חיונית. "לא בשמיים היא" — דמוקרטיזציה של הידע, כמו אינטרנט — הכל נגיש לכולם.'},
+52:{emoji:'📖',commentaries:[
+  {source:'רש"י',text:'"חזקו ואמצו" — משה מעודד את העם ברגע פרידה קשה.'},
+  {source:'רמב"ם',text:'מצוות הקהל — כל העם, כולל נשים וטף, שומעים תורה.'},
+  {source:'חז"ל',text:'משה כתב 13 ספרי תורה — אחד לכל שבט ואחד לארון.'}
+],modern:'מצוות הקהל — כנס לאומי כל 7 שנים. כיום מקיימים טקס "הקהל" סמלי בכותל. "חזקו ואמצו" — ביטוי שהפך לסיסמת עידוד בצה"ל ובחברה הישראלית, במיוחד בעתות מלחמה.'},
+53:{emoji:'🎵',commentaries:[
+  {source:'רש"י',text:'"האזינו השמיים" — שמיים וארץ הם עדים נצחיים לברית.'},
+  {source:'רמב"ן',text:'השירה מתארת את כל ההיסטוריה — מהבריאה ועד הגאולה.'},
+  {source:'חז"ל',text:'"צור תמים פעלו" — כל מה שה\' עושה הוא לטובה, גם אם לא מבינים.'}
+],modern:'שירה כזיכרון — עם ישראל מעביר מסורת בשירה ובמוזיקה. מ"האזינו" ועד שירי ארץ ישראל, השירה מאחדת. "צור תמים פעלו" — אמירה שנאמרת בימים קשים, מתוך אמונה שיש תכנית גדולה יותר.'},
+54:{emoji:'🏔️',commentaries:[
+  {source:'רש"י',text:'משה ברך כל שבט בנפרד — כל אחד לפי מה שהוא צריך.'},
+  {source:'רמב"ן',text:'"ולא קם נביא עוד כמשה" — ייחודיותו של משה שדיבר עם ה\' פנים אל פנים.'},
+  {source:'חז"ל',text:'שמחת תורה — מסיימים את "וזאת הברכה" ומיד מתחילים "בראשית" — מחזוריות נצחית.'}
+],modern:'סיום וחזרה להתחלה — שמחת תורה. התקפת ה-7 באוקטובר 2023 התרחשה בשמחת תורה — יום שנחרת לנצח בזיכרון הלאומי. מות משה מלמד שאף מנהיג אינו נצחי — אבל המורשת ממשיכה. "ולא קם נביא עוד כמשה" — ובכל זאת, כל דור מוצא את המנהיגים שלו.'}
+};
+
+// ========== PARSHA SCHEDULE (approximate Shabbat dates for 5786/2025-2026) ==========
+const PARSHA_SCHEDULE = [
+  {id:1,start:'2025-10-18'},{id:2,start:'2025-10-25'},{id:3,start:'2025-11-01'},{id:4,start:'2025-11-08'},
+  {id:5,start:'2025-11-15'},{id:6,start:'2025-11-22'},{id:7,start:'2025-11-29'},{id:8,start:'2025-12-06'},
+  {id:9,start:'2025-12-13'},{id:10,start:'2025-12-20'},{id:11,start:'2025-12-27'},{id:12,start:'2026-01-03'},
+  {id:13,start:'2026-01-10'},{id:14,start:'2026-01-17'},{id:15,start:'2026-01-24'},{id:16,start:'2026-01-31'},
+  {id:17,start:'2026-02-07'},{id:18,start:'2026-02-14'},{id:19,start:'2026-02-21'},{id:20,start:'2026-02-28'},
+  {id:21,start:'2026-03-07'},{id:22,start:'2026-03-14'},{id:23,start:'2026-03-21'},{id:24,start:'2026-04-04'},
+  {id:25,start:'2026-04-11'},{id:26,start:'2026-04-18'},{id:27,start:'2026-04-25'},{id:28,start:'2026-05-02'},
+  {id:29,start:'2026-05-09'},{id:30,start:'2026-05-16'},{id:31,start:'2026-05-23'},{id:32,start:'2026-05-30'},
+  {id:33,start:'2026-06-06'},{id:34,start:'2026-06-13'},{id:35,start:'2026-06-20'},{id:36,start:'2026-06-27'},
+  {id:37,start:'2026-07-04'},{id:38,start:'2026-07-11'},{id:39,start:'2026-07-18'},{id:40,start:'2026-07-25'},
+  {id:41,start:'2026-08-01'},{id:42,start:'2026-08-08'},{id:43,start:'2026-08-15'},{id:44,start:'2026-08-22'},
+  {id:45,start:'2026-08-29'},{id:46,start:'2026-09-05'},{id:47,start:'2026-09-12'},{id:48,start:'2026-09-19'},
+  {id:49,start:'2026-09-26'},{id:50,start:'2026-10-03'},{id:51,start:'2026-10-04'},{id:52,start:'2026-10-04'},
+  {id:53,start:'2026-10-05'},{id:54,start:'2026-10-06'},
+];
+
+function getCurrentParshaId(){
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0,10);
+  let currentId = 1;
+  for(let i = 0; i < PARSHA_SCHEDULE.length; i++){
+    if(todayStr >= PARSHA_SCHEDULE[i].start) currentId = PARSHA_SCHEDULE[i].id;
+  }
+  return currentId;
+}
+// Gustave Doré Bible Illustrations (1866) - Public Domain
+const DORE_BASE = 'https://www.creationism.org/images/DoreBibleIllus/';
+const PARSHA_IMAGES = {
+1: {img:DORE_BASE+'aGen0103Dore_TheCreationOfLight.jpg',caption:'בריאת האור — גוסטב דורה, 1866'},
+2: {img:DORE_BASE+'aGen0803Dore_TheDeluge.jpg',caption:'המבול — גוסטב דורה, 1866'},
+3: {img:DORE_BASE+'aGen1201Dore_AbrahamJourneyingIntoTheLandOfCanaan.jpg',caption:'אברהם יוצא לארץ כנען — גוסטב דורה, 1866'},
+4: {img:DORE_BASE+'aGen1809Dore_AbrahamAndTheThreeAngels.jpg',caption:'אברהם והמלאכים — גוסטב דורה, 1866'},
+5: {img:DORE_BASE+'aGen2319Dore_TheBurialOfSarah.jpg',caption:'קבורת שרה — גוסטב דורה, 1866'},
+6: {img:DORE_BASE+'aGen2729Dore_IsaacBlessingJacob.jpg',caption:'יצחק מברך את יעקב — גוסטב דורה, 1866'},
+7: {img:DORE_BASE+'aGen2812Dore_Jacob_sDream.jpg',caption:'חלום יעקב — הסולם — גוסטב דורה, 1866'},
+8: {img:DORE_BASE+'aGen3224Dore_JacobWrestlingWithTheAngel.jpg',caption:'יעקב נאבק עם המלאך — גוסטב דורה, 1866'},
+9: {img:DORE_BASE+'aGen3728Dore_JosephSoldByHisBrethren.jpg',caption:'מכירת יוסף — גוסטב דורה, 1866'},
+10:{img:DORE_BASE+'aGen4125Dore_JosephInterpretingPharaoh_sDream.jpg',caption:'יוסף פותר את חלום פרעה — גוסטב דורה, 1866'},
+11:{img:DORE_BASE+'aGen4501Dore_JosephMakesHimselfKnownToHisBrethren.jpg',caption:'יוסף מתוודע לאחיו — גוסטב דורה, 1866'},
+12:{img:DORE_BASE+'aGen4605Dore_JacobGoethIntoEgypt.jpg',caption:'יעקב יורד למצרים — גוסטב דורה, 1866'},
+13:{img:DORE_BASE+'bExo0206Dore_TheFindingOfMoses.jpg',caption:'מציאת משה ביאור — גוסטב דורה, 1866'},
+14:{img:DORE_BASE+'bExo0710Dore_MosesAndAaronBeforePharaoh.jpg',caption:'משה ואהרן לפני פרעה — גוסטב דורה, 1866'},
+15:{img:DORE_BASE+'bExo1229Dore_TheFirstbornSlain.jpg',caption:'מכת בכורות — גוסטב דורה, 1866'},
+16:{img:DORE_BASE+'bExo1427Dore_TheEgyptiansDrownedInTheRedSea.jpg',caption:'טביעת המצרים בים סוף — גוסטב דורה, 1866'},
+17:{img:DORE_BASE+'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',caption:'מתן תורה בהר סיני — גוסטב דורה, 1866'},
+18:{img:DORE_BASE+'bExo3215Dore_MosesComingDownFromMountSinai.jpg',caption:'משה יורד מהר סיני — גוסטב דורה, 1866'},
+19:{img:DORE_BASE+'bExo1706Dore_MosesStrikingTheRockInHoreb.jpg',caption:'בניית המשכן — גוסטב דורה, 1866'},
+20:{img:DORE_BASE+'bExo0710Dore_MosesAndAaronBeforePharaoh.jpg',caption:'אהרן הכהן — גוסטב דורה, 1866'},
+21:{img:DORE_BASE+'bExo3219Dore_MosesBreakingTheTablesOfTheLaw.jpg',caption:'משה שובר את הלוחות — גוסטב דורה, 1866'},
+22:{img:DORE_BASE+'bExo3215Dore_MosesComingDownFromMountSinai.jpg',caption:'משה יורד מההר — גוסטב דורה, 1866'},
+23:{img:DORE_BASE+'aGen0103Dore_TheCreationOfLight.jpg',caption:'כבוד ה׳ מלא את המשכן — גוסטב דורה, 1866'},
+24:{img:DORE_BASE+'bExo0710Dore_MosesAndAaronBeforePharaoh.jpg',caption:'משה ואהרן — הקרבנות — גוסטב דורה, 1866'},
+25:{img:DORE_BASE+'bExo1706Dore_MosesStrikingTheRockInHoreb.jpg',caption:'עבודת המשכן — גוסטב דורה, 1866'},
+26:{img:DORE_BASE+'bExo0902Dore_TheMurrainOfBeasts.jpg',caption:'יום השמיני — גוסטב דורה, 1866'},
+27:{img:DORE_BASE+'bExo1022Dore_ThePlagueOfDarkness.jpg',caption:'נגעי צרעת — גוסטב דורה, 1866'},
+28:{img:DORE_BASE+'aGen0811Dore_TheDoveSentForthFromTheArk.jpg',caption:'היונה — סמל הטהרה — גוסטב דורה, 1866'},
+29:{img:DORE_BASE+'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',caption:'יום הכיפורים — גוסטב דורה, 1866'},
+30:{img:DORE_BASE+'bExo3215Dore_MosesComingDownFromMountSinai.jpg',caption:'קדושים תהיו — גוסטב דורה, 1866'},
+31:{img:DORE_BASE+'bExo1231Dore_TheEgyptiansUrgeMosesToDepart.jpg',caption:'המועדים — גוסטב דורה, 1866'},
+32:{img:DORE_BASE+'aGen1201Dore_AbrahamJourneyingIntoTheLandOfCanaan.jpg',caption:'שמיטה ויובל — גוסטב דורה, 1866'},
+33:{img:DORE_BASE+'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',caption:'ברית הר סיני — גוסטב דורה, 1866'},
+34:{img:DORE_BASE+'aGen1201Dore_AbrahamJourneyingIntoTheLandOfCanaan.jpg',caption:'מסע במדבר — גוסטב דורה, 1866'},
+35:{img:DORE_BASE+'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',caption:'ברכת כוהנים — גוסטב דורה, 1866'},
+36:{img:DORE_BASE+'bExo1706Dore_MosesStrikingTheRockInHoreb.jpg',caption:'משה מכה בסלע — גוסטב דורה, 1866'},
+37:{img:DORE_BASE+'cNum1327Dore_ReturnOfTheSpiesFromTheLandOfPromise.jpg',caption:'שיבת המרגלים — גוסטב דורה, 1866'},
+38:{img:DORE_BASE+'cNum1632Dore_DeathOfKorahDathanAndAbiram.jpg',caption:'בליעת קורח ועדתו — גוסטב דורה, 1866'},
+39:{img:DORE_BASE+'cNum2109Dore_TheBrazenSerpent.jpg',caption:'נחש הנחושת — גוסטב דורה, 1866'},
+40:{img:DORE_BASE+'cNum2223Dore_TheAngelAppearingToBalaam.jpg',caption:'המלאך מופיע לבלעם — גוסטב דורה, 1866'},
+41:{img:DORE_BASE+'dJos0317Dore_TheChildrenOfIsraelCrossingJordan.jpg',caption:'חציית הירדן — גוסטב דורה, 1866'},
+42:{img:DORE_BASE+'dJos0620Dore_TheWallsOfJerichoFallingDown.jpg',caption:'מלחמה — גוסטב דורה, 1866'},
+43:{img:DORE_BASE+'dJos0317Dore_TheChildrenOfIsraelCrossingJordan.jpg',caption:'מסעות בני ישראל — גוסטב דורה, 1866'},
+44:{img:DORE_BASE+'bExo3215Dore_MosesComingDownFromMountSinai.jpg',caption:'משה נואם — גוסטב דורה, 1866'},
+45:{img:DORE_BASE+'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',caption:'מתן תורה — שמע ישראל — גוסטב דורה, 1866'},
+46:{img:DORE_BASE+'cNum1327Dore_ReturnOfTheSpiesFromTheLandOfPromise.jpg',caption:'פירות ארץ ישראל — גוסטב דורה, 1866'},
+47:{img:DORE_BASE+'bExo3219Dore_MosesBreakingTheTablesOfTheLaw.jpg',caption:'ברכה וקללה — גוסטב דורה, 1866'},
+48:{img:DORE_BASE+'h1Ki0325Dore_JudgmentOfSolomon.jpg',caption:'משפט שלמה — צדק צדק תרדוף — גוסטב דורה, 1866'},
+49:{img:DORE_BASE+'fRth0222Dore_BoazAndRuth.jpg',caption:'בועז ורות — חסד ומצוות — גוסטב דורה, 1866'},
+50:{img:DORE_BASE+'cNum1327Dore_ReturnOfTheSpiesFromTheLandOfPromise.jpg',caption:'ביכורים מארץ ישראל — גוסטב דורה, 1866'},
+51:{img:DORE_BASE+'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',caption:'ובחרת בחיים — גוסטב דורה, 1866'},
+52:{img:DORE_BASE+'bExo3215Dore_MosesComingDownFromMountSinai.jpg',caption:'משה מוסר את התורה — גוסטב דורה, 1866'},
+53:{img:DORE_BASE+'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',caption:'שירת האזינו — גוסטב דורה, 1866'},
+54:{img:DORE_BASE+'dJos0515Dore_TheAngelAppearingToJoshua.jpg',caption:'וזאת הברכה — גוסטב דורה, 1866'},
+};
+
+const EASY_EXPLAIN = {
+1:`פרשת בראשית היא הפרשה הראשונה בתורה ומספרת את הסיפור הכי גדול שיש — איך הכל התחיל. ה' ברא את העולם בשישה ימים: אור, שמיים, ים ויבשה, כוכבים, בעלי חיים, ובסוף — את האדם. ביום השביעי ה' נח, ומכאן מגיע רעיון השבת. אדם וחוה חיים בגן עדן, אבל אוכלים מהפרי האסור ומגורשים. אחר כך קין הורג את הבל אחיו מקנאה. הפרשה מלמדת אותנו שלכל בחירה יש תוצאות, שקנאה הורסת, ושהאחריות על העולם היא שלנו. היום, כשאנחנו מתמודדים עם שינויי אקלים ואתגרים סביבתיים, הציווי "לעבדה ולשמרה" רלוונטי יותר מתמיד — העולם הזה ניתן לנו בפיקדון.`,
+2:`פרשת נח מספרת על עולם שהשתבש לגמרי. אנשים היו אלימים וגנבו אחד מהשני, והמצב היה כל כך גרוע שה' החליט להביא מבול. אדם אחד בלבד היה צדיק — נח. ה' ציווה אותו לבנות תיבה ענקית ולהכניס בה מכל חיה זוג, את משפחתו, ולהציל את החיים. המבול ירד ארבעים יום, ואחריו נח שלח יונה שחזרה עם עלה של זית — סימן שהעולם מתחדש. ה' הבטיח לא להשמיד עוד את העולם, ונתן את הקשת בענן כסימן. אחר כך בני אדם ניסו לבנות מגדל שמגיע לשמיים (מגדל בבל), וה' בלבל את שפתם. הלקח: גם כשהעולם נראה אבוד, תמיד אפשר להתחיל מחדש. היום, כשמשברים גלובליים מאיימים, צריך להיות כמו נח — לפעול גם כשאף אחד אחר לא מבין למה.`,
+3:`ה' פונה לאברם (שיהפוך לאברהם) ואומר לו: עזוב את הבית, את המשפחה, את הארץ שלך — ולך למקום חדש שאני אראה לך. אברהם, בגיל 75, עושה את הצעד הכי אמיץ שיש — עוזב את הכל ויוצא לדרך. הוא מגיע לארץ כנען, יורד למצרים בגלל רעב, חוזר, נלחם כדי להציל את אחיינו לוט, וכורת ברית עם ה' — ברית בין הבתרים, שבה ה' מבטיח שלזרע אברהם תהיה ארץ. שמו משתנה לאברהם, וברית המילה נעשית. זו הפרשה שמתחיל בה הסיפור של עם ישראל. היום, כל מי שעוזב אזור נוחות — עולה לארץ, פותח עסק, משנה כיוון — עושה "לך לך" שלו. האומץ לצאת לדרך לא ידועה הוא המסר הנצחי.`,
+4:`פרשה מלאה רגשות ואירועים דרמטיים. אברהם יושב בפתח האוהל ורואה שלושה אנשים (מלאכים) — הוא רץ אליהם ומכניס אותם, מגיש אוכל ומכבד אותם. הם מבשרים ששרה תלד בן. אברהם מתפלל על סדום ועמורה ומנסה להציל את הערים הרשעות — מתווכח עם ה' על צדק. יצחק נולד, הגר וישמעאל מגורשים, ואז מגיע הניסיון הכי קשה — עקדת יצחק. ה' מבקש מאברהם להקריב את בנו היחיד. אברהם שותק ועולה להר, ורק ברגע האחרון מלאך עוצר אותו. הפרשה מלמדת על הכנסת אורחים, על המאבק למען צדק, ועל אמונה עד הסוף. היום, ההכנסת אורחים של אברהם מאתגרת אותנו — האם אנחנו פותחים את הדלת לאחר?`,
+5:`שרה, אשת אברהם, מתה בגיל 127. אברהם מחפש מקום קבורה וקונה את מערת המכפלה בחברון — העסקה הראשונה של רכישת קרקע בארץ ישראל. זה רגע מכונן: הזיקה המשפטית הראשונה של עם ישראל לארצו. אחרי האבל, אברהם שולח את עבדו אליעזר למצוא אישה ליצחק. אליעזר מגיע לבאר, מתפלל, ורבקה מופיעה — נדיבה, חכמה ואמיצה. היא מסכימה לנסוע לארץ רחוקה ולהתחתן עם אדם שמעולם לא פגשה. אברהם עצמו נפטר ונקבר ליד שרה. הפרשה עוסקת במעברים — סוף ותחילה, אבל ותקווה. היום, מערת המכפלה עדיין במרכז פוליטי סוער, ושאלות של נדל"ן וזכות היסטורית ממשיכות לעורר ויכוח. סיפור רבקה מראה שלפעמים ההחלטות הגדולות ביותר דורשות קפיצה אל הלא נודע.`,
+6:`יצחק ורבקה מתפללים עשרים שנה לילדים. לבסוף נולדים תאומים — עשו ויעקב, שונים לחלוטין זה מזה. עשו — חזק, אדמוני, ציד, איש שדה. יעקב — שקט, יושב אוהלים, חכם. יום אחד עשו חוזר מהשדה עייף ומוכר את הבכורה ליעקב תמורת נזיד עדשים. כשיצחק מזדקן ורוצה לברך את עשו, רבקה מתכננת שיעקב יקבל את הברכות במקומו. יעקב מתחפש, יצחק מברך אותו, ועשו כועס כעס נורא. יעקב בורח לחרן. הפרשה שואלת שאלות קשות: האם המטרה מצדיקה את האמצעים? מה קורה כשהורים מעדיפים ילד אחד? קנאה בין אחים היא סיפור נצחי — גם היום במשפחות, בעסקים, ובפוליטיקה. כל אחד מאיתנו הוא תערובת של יעקב ועשו.`,
+7:`יעקב בורח מעשו ובדרך חולם חלום מדהים — סולם שמגיע לשמיים, מלאכים עולים ויורדים, וה' מבטיח לו שישמור עליו. הוא מגיע לחרן, רואה את רחל ליד הבאר ומתאהב. עובד שבע שנים כדי לשאת אותה, אבל לבן רמאי ונותן לו את לאה. יעקב עובד עוד שבע שנים בשביל רחל. במשך עשרים שנה הוא בונה משפחה גדולה — שנים עשר בנים שיהיו שנים עשר השבטים. לבן מנסה לרמות אותו שוב ושוב, אבל יעקב מצליח ומתעשר. בסוף, הוא עוזב בחזרה לארץ ישראל. הפרשה מספרת על אהבה, עבודה קשה, ורמאויות. היום, הנושא של עובדים שנוצלים על ידי מעסיקים לא פחות רלוונטי — זכויות עובדים, הבטחות שלא מקויימות, ומאבק על מה שמגיע.`,
+8:`יעקב חוזר לארץ ישראל ופוחד מהמפגש עם עשו. בלילה שלפני, הוא נשאר לבד ונאבק עם מלאך — כל הלילה. הוא נפצע ברגלו אבל לא מוותר, והמלאך משנה את שמו מיעקב לישראל — "כי שרית עם אלוהים ועם אנשים ותוכל". המפגש עם עשו עובר בשלום, הם מתחבקים ובוכים. אבל אחר כך מגיעה טרגדיה — דינה בת יעקב נחטפת בשכם, ושמעון ולוי הורגים את כל אנשי העיר בנקמה. רחל מתה בלידת בנימין ונקברת בדרך לבית לחם. הפרשה עוסקת בשינוי — יעקב הופך לישראל, מתמודד עם עברו ובונה עתיד חדש. כולנו נאבקים עם "מלאכים" — אתגרים פנימיים, פחדים, טראומות. הפרשה מלמדת שלפעמים דווקא המאבק הכי כואב הוא זה שמשנה אותנו.`,
+9:`יוסף, הבן האהוב של יעקב, מקבל כתונת פסים מיוחדת ומספר לאחיו על חלומות שבהם הם משתחווים לו. האחים מקנאים, שונאים אותו, ומחליטים למכור אותו כעבד. יוסף מגיע למצרים, עובד בבית פוטיפר, ומצליח. אבל אשת פוטיפר מנסה לפתות אותו, הוא מסרב, והיא מאשימה אותו שקר. יוסף נזרק לכלא. גם שם הוא לא מתייאש — פותר חלומות לשני אסירים. הפרשה מלמדת על קנאה שמובילה לאסון, על יושרה מוסרית גם בתנאים הכי קשים, ועל אמונה שבסוף הכל יסתדר. היום, סיפור יוסף מדבר על בריונות, על מי שנדחה חברתית אבל לא שובר, ועל הטרדה מינית — יוסף הוא אחד הראשונים ב"Me Too" ההיסטורי.`,
+10:`יוסף יושב בכלא כבר שנתיים כשפתאום פרעה חולם חלומות מוזרים — שבע פרות שמנות ושבע פרות רזות, שבע שיבולים טובות ושבע יבשות. אף אחד לא יכול לפתור, ואז נזכרים ביוסף. הוא מובא מהכלא, מפרש שמדובר בשבע שנות שפע ואחריהן שבע שנות רעב, ומציע תוכנית כלכלית מבריקה. פרעה כל כך מתרשם שממנה אותו למשנה למלך — מאסיר לשליט בן-לילה. כשהרעב מגיע, אחי יוסף יורדים למצרים לקנות אוכל ולא מזהים אותו. יוסף מזהה אותם ובוחן אם השתנו. הפרשה מלמדת על ניהול משברים, חשיבה קדימה, וסבלנות. היום, כל מנהיג צריך "תוכנית יוסף" — לחסוך בשנות השפע כדי לשרוד את שנות המשבר.`,
+11:`הרגע הכי דרמטי בספר בראשית. יהודה — אותו אח שהציע למכור את יוסף — עומד עכשיו לפני השליט המצרי (שהוא יוסף בתחפושת) ונושא נאום מרגש. הוא מוכן למסור את חייו כדי להציל את בנימין. ברגע הזה יוסף לא יכול עוד להתאפק וקורא: "אני יוסף! העוד אבי חי?" האחים בשוק, מלאי בושה. אבל יוסף לא נוקם — הוא מחבק, בוכה, ואומר: ה' שלח אותי לפניכם כדי להציל חיים. יעקב שומע שיוסף חי ויורד עם כל המשפחה למצרים. הפרשה מלמדת על כוח המחילה ועל שינוי אמיתי. יהודה השתנה מקצה לקצה — מאדם שמוכר את אחיו לאדם שמוסר את נפשו. היום, הפרשה מדברת על ריבים משפחתיים, על פיוס, ועל האומץ לסלוח.`,
+12:`הפרשה האחרונה בספר בראשית. יעקב חי במצרים 17 שנה ומרגיש שסופו קרב. הוא מברך את נכדיו אפרים ומנשה, ואז מברך כל אחד משנים עשר בניו — ברכות מותאמות אישית, כל אחת חודרת לאופי ולעתיד של השבט. יהודה מקבל ברכת מלכות, יוסף ברכת שפע, בנימין ברכת גבורה. יעקב מבקש להיקבר בארץ ישראל, במערת המכפלה, ולא במצרים — הוא לא שוכח מאיפה הוא בא. יעקב נפטר, מובא לקבורה בחברון, ויוסף מבטיח לאחיו שהוא לא ינקום. הפרשה מלמדת שכל ילד שונה ודורש ברכה משלו — עיקרון חינוכי עדכני. גם הרצון להיקבר בארץ ישראל חי עד היום. ספר בראשית נחתם בגלות — המסע עוד לא נגמר.`,
+13:`ספר שמות נפתח במצב חדש ומפחיד. בני ישראל, שהגיעו כמשפחה קטנה, הפכו לעם גדול — ופרעה החדש מפחד מהם. הוא משעבד אותם בעבודת פרך, ומצווה להרוג כל תינוק זכר. אישה אמיצה בשם יוכבד שמה את בנה בתיבה על היאור, ובת פרעה מוצאת אותו וקוראת לו משה. משה גדל בארמון, אבל כשהוא רואה מצרי מכה עברי — הוא מתערב ובורח למדיין. שם, ליד סנה שבוער ולא נשרף, ה' מתגלה אליו ושולח אותו בחזרה למצרים לשחרר את העם. "אהיה אשר אהיה" — שם ה' שנחשף. הפרשה היא סיפור של מנהיגות שנולדת מתוך חמלה. משה לא רצה להיות מנהיג — אבל ראה עוול ולא יכול היה לשתוק. היום, כל מי שעומד מול אי-צדק ומחליט לפעול — עושה מעשה של "סנה בוער".`,
+14:`ה' שולח את משה ואהרן לפרעה: "שלח את עמי!" פרעה מסרב, והמכות מתחילות. שבע מכות מתוך עשר פוקדות את מצרים בפרשה הזו: הנילוס הופך לדם, צפרדעים מציפות את הארץ, כינים, חיות רעות (ערוב), מגיפה בבהמות (דבר), שחין כואב, וברד עם אש. אחרי כל מכה פרעה מבטיח לשחרר — ואז חוזר בו. הפרשה מראה את העקשנות של פרעה ואת כוח ה'. כל מכה הייתה מכוונת נגד אל מצרי — הנילוס שנחשב אל הפך לדם. השאלה הגדולה: למה ה' הקשה את לב פרעה? האם הוא באמת יכול היה לבחור אחרת? השאלה הזו של בחירה חופשית מול גורל רלוונטית גם היום — עד כמה אנחנו באמת בוחרים את הדרך שלנו, ומתי אנחנו כבר "נעולים" על דפוס?`,
+15:`הרגע הגדול של יציאת מצרים. שלוש המכות האחרונות פוקדות את מצרים — ארבה שאוכל הכל, חושך כה כבד שאי אפשר לזוז, ולבסוף מכת בכורות. לפני המכה האחרונה, ה' מצווה על בני ישראל לשחוט כבש (שהמצרים עבדו אותו), למרוח את הדם על המשקוף, ולאכול אותו בחיפזון עם מצות. בלילה הזה — ליל הסדר — ה' פוסח על בתי ישראל, וכל בכורי מצרים מתים. פרעה נכנע ומשלח את ישראל. הם יוצאים בחיפזון כזה שהבצק לא מספיק לתפוח — ומכאן המצה. הפרשה מלמדת על אומץ ועל זיכרון. ליל הסדר הוא המאורע המשפחתי הכי חשוב בלוח השנה היהודי. גם בשנות קורונה המשיכו לקיים סדרים, ולו בזום. "בכל דור ודור חייב אדם לראות עצמו כאילו הוא יצא ממצרים."`,
+16:`הרגע שבני ישראל חשבו שהם חופשיים — פרעה שינה את דעתו ורדף אחריהם עם כל צבאו. העם תקוע בין הים לבין הצבא המצרי, ואז קורה הנס הגדול ביותר: הים נקרע! בני ישראל עוברים ביבשה, והמצרים טובעים. הרגש כל כך גדול שכל העם פורץ בשירה — "שירת הים", ומרים הנביאה מובילה את הנשים בריקוד עם תופים. אבל אחרי הנס מתחיל המדבר — העם צמא ורעב. ה' שולח מן (לחם מהשמיים) ומים מן הסלע. גם עמלק תוקף ויש מלחמה. הפרשה מלמדת שגאולה היא לא רגע אחד אלא תהליך. גם אחרי הרגע הכי גבוה מגיעים אתגרים. היום, כל מי שעבר משבר יודע — הרגע שאחרי ההצלה קשה לא פחות. צריך אמונה כדי להמשיך.`,
+17:`הפרשה הכי חשובה בתורה לדעת רבים — מעמד הר סיני ומתן עשרת הדיברות. לפני כן, יתרו חותן משה מגיע ומביא עצה גאונית: אי אפשר שמשה ישפוט לבד מיליוני אנשים. צריך מערכת שופטים, מנהלים, שכבות של הנהגה. משה מקשיב. ואז מגיע הרגע — הר סיני רועד, קולות וברקים, ענן כבד, וקול שופר. ה' מדבר עם כל העם ונותן עשרת הדיברות: "אנוכי ה' אלוהיך", לא תרצח, לא תגנוב, לא תנאף, כבד את אביך ואמך, ועוד. העם כל כך נבהל שמבקש ממשה שהוא ידבר עם ה' במקומם. הפרשה מלמדת שני דברים חשובים: מנהיג חכם יודע להאציל סמכות (עצת יתרו), ויש עקרונות מוסריים שהם בסיס לכל חברה — לא לרצוח, לא לגנוב, לכבד הורים. אלה הם יסוד הציוויליזציה עד היום.`,
+18:`אחרי עשרת הדיברות מגיעים החוקים המעשיים — איך לנהל חברה צודקת. דיני עבדים (עם זכויות!), מה קורה כשור נוגח, איך מפצים על נזק, חובת השבת אבדה, איסור לקחת ריבית מעני, ועוד. בסוף הפרשה — הרגע שבו כל ישראל אומרים "נעשה ונשמע" — נסכים לעשות עוד לפני ששמענו את כל הפרטים. זו קפיצת אמונה. משה עולה להר סיני. הפרשה מלמדת שתורה היא לא רק רוחניות אלא חוק חברתי. הגנה על העובד, פיצוי על נזק, עזרה לעני — כל אלה חוקים שמנוסחים כאן אלפי שנים לפני חוקי העבודה המודרניים. "עין תחת עין" פורש בתלמוד כפיצוי כספי — צדק מתקן ולא נקמה. זה רלוונטי לכל מערכת משפט מודרנית.`,
+19:`ה' מבקש מבני ישראל לבנות לו "בית" — המשכן, מקדש נייד במדבר. אבל במקום לצוות, הוא מבקש תרומות: "מאת כל איש אשר ידבנו ליבו". כל הפרטים מתוארים — ארון הברית מעץ שיטים מצופה זהב, מנורת זהב טהור עם שבעה קנים, שולחן לחם הפנים, יריעות צמר ועורות. הפסוק המרכזי: "ועשו לי מקדש ושכנתי בתוכם" — לא "בתוכו" אלא "בתוכם", בתוך כל אדם. הפרשה מלמדת שמקום קדוש נבנה מנדיבות לב, לא מכפייה. כל כלי במשכן מסמל ערך — הארון את הלימוד, המנורה את האור והחוכמה, השולחן את הפרנסה. היום, כל מי שבונה בית, קהילה או ארגון — בונה "משכן". השאלה היא אם אנחנו שמים בו לב, או רק קירות.`,
+20:`פרשה מיוחדת — הפרשה היחידה מאז לידת משה ששמו לא מוזכר בה. היא עוסקת בבגדי הכהונה ובהכנת אהרן ובניו לעבודת המשכן. נר התמיד — אור שצריך לדלוק תמיד. האפוד — בגד מיוחד עם אבני שוהם שעליהן שמות השבטים. החושן — עם שנים עשר אבנים יקרות, אחת לכל שבט, על ליבו של הכהן. הציץ — עם הכיתוב "קודש לה'" על מצחו. "לכבוד ולתפארת" — הבגדים לא רק מכסים, הם מעניקים כבוד ומשמעות לתפקיד. הפרשה מלמדת על כוח הלבוש — גם היום, מה שאנחנו לובשים משפיע על איך שאנחנו מרגישים ואיך אחרים מתייחסים אלינו. מדים, חליפות, גלימות — הלבוש יוצר תפקיד. והרעיון של "נושא על הלב" — מנהיג אמיתי נושא את האנשים שלו על הלב.`,
+21:`הפרשה הכי דרמטית בספר שמות. משה עולה להר סיני לארבעים יום, והעם נבהל כי הוא לא חוזר. הם בונים עגל זהב ומשתחווים לו — ארבעים יום בלבד אחרי שאמרו "נעשה ונשמע"! משה יורד מההר, רואה את העגל, ושובר את הלוחות. העונש קשה, אבל משה מתפלל על העם ומציל אותם. הוא עולה שוב להר, וה' מתגלה אליו בשלוש עשרה מידות הרחמים: "ה' ה' אל רחום וחנון..." — המילים שאומרים בכל תפילת סליחות. משה מקבל לוחות שניים. הפרשה מלמדת שנפילה היא לא סוף — אפשר לקום, לבקש סליחה, ולקבל הזדמנות חדשה. הלוחות השניים חשובים יותר מהראשונים כי הם מגיעים אחרי שבירה ותיקון. היום, כל מי שנפל ומחפש דרך חזרה — זה הסיפור שלו.`,
+22:`אחרי חטא העגל, הגיע זמן לתקן. משה מקהיל את כל העם ומזכיר את שמירת השבת — גם בניית המשכן לא דוחה אותה. ואז מגיע רגע מרגש: העם תורם מרצון לבניית המשכן. זהב, כסף, נחושת, תכלת, ארגמן, עורות, שמן, אבנים יקרות — כל אחד נותן מה שיש לו. התרומות כל כך גדולות שמשה צריך להכריז: "די! אל תביאו יותר!" בצלאל ואהליאב, אמנים שה' מילא בחוכמה, מובילים את הבנייה. הפרשה מלמדת שתיקון בא דרך בנייה — לא מספיק להצטער על העגל, צריך לבנות משהו חיובי במקום. היום, crowdfunding ונדבנות קהילתית הם ה"ויקהל" המודרני. וכשבצלאל מקבל "חוכמת לב" — זה מזכיר שגם יצירתיות ואומנות הם עבודת ה'.`,
+23:`הפרשה האחרונה בספר שמות. חשבון כל החומרים שהושקעו במשכן — שקיפות מלאה, אפילו ממשה רבנו. ואז — הרגע הגדול: משה מקים את המשכן בראש חודש ניסן. הוא מרכיב את הקרשים, פורש את היריעות, מציב את הארון, מדליק את המנורה, ומעלה קטורת. וכשהכל מוכן — "ויכס הענן את אוהל מועד וכבוד ה' מלא את המשכן". ענן ה' שורה על המשכן, ומנחה את ישראל בנסיעותיהם. ספר שמות מסתיים — מעבדות במצרים לשכינה שורה בתוך ישראל. המסע הושלם. הפרשה מלמדת על שקיפות כספית ועל הרגע שבו כל המאמץ נושא פרי. היום, כשפרויקט מסתיים, כשחלום מתגשם — זהו רגע "פקודי". ו"חזק חזק ונתחזק" — סיום שמחזק, לא מרפה.`,
+24:`ספר ויקרא נפתח בקריאה של ה' למשה — בא"לף קטנה, סימן לענוותנות. הפרשה עוסקת בקרבנות: עולה (נשרפת כליל), מנחה (ממאפה ושמן), שלמים (משפחתיים), חטאת (על חטא בשגגה), ואשם (על אשמה ספציפית). המילה "קרבן" באה מ"קרבה" — להתקרב לה'. כל סוג קרבן מותאם למצב אחר: מי שרוצה להודות, מי שחטא, מי שרוצה שלום. הפרשה נראית רחוקה מאיתנו — אין מקדש ואין קרבנות. אבל חז"ל אמרו שהתפילה מחליפה קרבן, ושלימוד תורה "כאילו הקריב". הרעיון העמוק הוא "להקריב" — לוותר על משהו, לתת מעצמך, כדי להתקרב. זה נכון בכל מערכת יחסים — עם ה', עם אנשים, עם עצמך. לתת זה לקבל.`,
+25:`המשך חוקי הקרבנות, הפעם מנקודת מבטו של הכהן. הנקודה המרכזית: "אש תמיד תוקד על המזבח, לא תכבה" — האש לא כבתה אף פעם. גם בגשם, גם ברוח. שבעת ימי המילואים — שבוע שלם של הכנה לפני שאהרן ובניו מתחילים לעבוד במשכן. לא קופצים לתפקיד — מתכוננים, מתלמדים, מתקדשים. הפרשה מלמדת על התמדה ועל הכנה. האש התמידית מסמלת דברים שצריכים להישמר כל הזמן — מערכות יחסים, ערכים, מוטיבציה. אם מפסיקים "להאכיל את האש" — היא כבה. ושבעת ימי ההכנה מזכירים שכל תפקיד חשוב דורש onboarding — לא ייתכן שרופא, שופט או מנהיג יתחיל לעבוד בלי הכנה.`,
+26:`יום השמיני — יום חנוכת המשכן. אש יורדת מהשמיים וכולם שמחים. אבל אז — טרגדיה. נדב ואביהוא, בני אהרן, מקריבים "אש זרה שלא ציווה אותם" — ואש יוצאת מלפני ה' ושורפת אותם. אהרן שותק. ה' אומר: "בקרובי אקדש" — מי שקרוב לקדושה, הרף גבוה יותר. אחרי הטרגדיה, הפרשה עוברת לחוקי כשרות — אילו בהמות, דגים, עופות ושרצים מותרים ואילו אסורים. סנפיר וקשקשת — מותר. מפריס פרסה ומעלה גירה — מותר. הפרשה מלמדת שגם התלהבות דתית צריכה גבולות, וש"קדושה" אומרת גם "הבחנה" — לדעת להבדיל בין מותר לאסור, בין ראוי לבלתי ראוי. היום, הנושא של קיצוניות דתית ושל חוקי כשרות חוזר בשיח הציבורי.`,
+27:`פרשה שנשמעת רחוקה אבל מאוד רלוונטית. כשלאדם מופיע כתם מוזר בעור — הוא הולך לכהן (לא לרופא!). הכהן בודק אם זו "צרעת" — נגע רוחני, לא מחלה רגילה. חז"ל אמרו שצרעת באה על לשון הרע — דיבור רע על אנשים. "מצורע" = "מוציא שם רע". מי שנמצא מצורע מושלח מחוץ למחנה, לבד, עד שנרפא. הרעיון: דיבור רע מרחיק אותך מהקהילה, ממש כמו מחלה. הפרשה מאוד רלוונטית לעידן הדיגיטלי. לשון הרע היום מתפשט בשנייה — טוויט אחד, פוסט אחד, סטורי אחד — יכול להרוס חיים, קריירה, משפחה. ה"צרעת" המודרנית היא cancel culture, ביטול חברתי. הפרשה מלמדת שמילים הן לא "סתם" — הן יכולות לפגוע כמו מעשים.`,
+28:`ההמשך של פרשת תזריע — הפעם על הריפוי. מצורע שנרפא עובר תהליך מובנה: שתי ציפורים (אחת נשחטת, אחת משתלחת), גילוח, טבילה, שבעת ימי המתנה, וקרבנות. למה ציפורים? כי ציפורים מצייצות — כמו מי שמפטפט ומרכל. הפרשה גם עוסקת בצרעת בתים — אם כתמים מופיעים על קירות הבית. ובזב וזבה — טומאה שקשורה לגוף. הלקח המרכזי: תשובה דורשת תהליך. אי אפשר פשוט לומר "סליחה" ולהמשיך הלאה. צריך זמן, מעשים, הפנמה. היום, תהליכי שיקום — ממכורים, מאסירים, מטראומה — מבוססים על אותו עיקרון: שלבים, זמן, ליווי. המדריך (הכהן) לא שופט אלא מלווה. זו גישה טיפולית מודרנית שהתורה הציגה לפני אלפי שנים.`,
+29:`הפרשה פותחת אחרי מות בני אהרן ומתארת את עבודת יום הכיפורים — היום הקדוש ביותר בשנה. הכהן הגדול נכנס לקודש הקודשים — המקום הכי קדוש בעולם, פעם אחת בשנה בלבד. שני שעירים: אחד קרבן לה', ואחד משתלח לעזאזל — נושא את חטאי העם למדבר. הכהן מתוודה בשם כל ישראל. הפרשה גם כוללת רשימת עריות אסורות. המסר המרכזי: יש יום שבו מוחלים על הכל, ניתנת הזדמנות חדשה. אבל — "בין אדם לחברו אין יום הכיפורים מכפר עד שירצה את חברו". לפני שמבקשים מחילה מה', צריך לבקש מחילה מאנשים. היום, ערב יום כיפור הפך לריטואל של שליחת הודעות "סליחה" ב-WhatsApp. הצום, השקט, העצירה — בעולם שלא עוצר אף פעם, יום אחד כזה הוא מתנה.`,
+30:`"קדושים תהיו" — שתי המילים הכי חשובות בתורה לדעת רבים. הפרשה היא אוסף מרוכז של מצוות שמכסות את כל החיים: כבדו את ההורים, שמרו שבת, אל תגנבו, אל תשקרו, אל תנקמו, השאירו פאת השדה לעניים. ובמרכז: "ואהבת לרעך כמוך" — שרבי עקיבא אמר שזה "כלל גדול בתורה", והלל הזקן סיכם: "מה ששנוא עליך לא תעשה לחברך — זוהי כל התורה כולה". קדושה לפי התורה היא לא רק תפילה — היא איך שאתה מתנהג עם אנשים, בעסקים, בשוק, ברחוב. הפרשה מלמדת שקדושה היא דבר יומיומי — לא משהו שעושים רק בבית כנסת. "ואהבת לרעך כמוך" הוא הבסיס לזכויות אדם, לדמוקרטיה, ולכל חברה צודקת. זה הפסוק שכל אדם צריך לזכור.`,
+31:`פרשת אמור מציגה את לוח השנה היהודי השלם — כל המועדים ברצף אחד. שבת (כל שבוע), פסח (חירות), ספירת העומר (49 ימים של ציפייה), שבועות (מתן תורה), ראש השנה (יום הדין), יום כיפור (סליחה), סוכות (שמחה), ושמיני עצרת. הפרשה גם עוסקת בדיני כוהנים — רמת קדושה גבוהה יותר, מגבלות על מי שיכול לשרת. ובסוף — סיפור המקלל, שקילל את שם ה' ונענש. הפרשה מלמדת שהזמן עצמו יכול להיות קדוש. החגים יוצרים מקצב שנתי — עצירות מתוזמנות בתוך השגרה. היום, בעולם שרץ ללא הפסקה, הצורך ב"מועדים" — זמנים קבועים למשפחה, למשמעות, לשמחה — חשוב מתמיד. לוח השנה היהודי הוא "תוכנית חיים" שלמה.`,
+32:`שמיטה ויובל — רעיונות מהפכניים. כל שבע שנים, הארץ "שובתת" — לא חורשים, לא זורעים. מה שגדל מעצמו — לכולם, לא לבעל השדה. כל חמישים שנה — יובל: עבדים משתחררים, קרקעות חוזרות לבעליהן המקוריים, חובות נמחקים. "וקראתם דרור בארץ לכל יושביה" — הפסוק שחקוק על פעמון החירות בפילדלפיה. הרעיון: הארץ שייכת לה', לא לנו. אנחנו "גרים ותושבים". הפרשה מלמדת על "reset" — לאפס, לתת לכולם הזדמנות חדשה. היום, הרעיון מהדהד בשיח על מחיקת חובות של מדינות עניות, על שנות שבתון, על שמיטה אקולוגית. בעידן של צריכה מטורפת, הרעיון של "לא לגעת — לתת לארץ לנוח" הוא רדיקלי ונחוץ.`,
+33:`הפרשה האחרונה בספר ויקרא — ברכות וקללות. אם תלכו בדרך ה' — גשמים בזמנם, שלום, שפע, בריאות. אם לא — מחלות, מלחמות, גלות, חורבן. ה"תוכחה" מתארת בפירוט מצמרר דברים שאכן התרחשו בהמשך ההיסטוריה — חורבן בית ראשון ושני, גלות, רדיפות, שואה. אבל — זה לא נגמר בייאוש. "וזכרתי את בריתי... ואת הארץ אזכור" — ה' מבטיח שלא ישכח, שתמיד תהיה חזרה. הפרשה מלמדת שבחירות מובילות לתוצאות — לא קסם, אלא חוקיות. אבל גם שתמיד יש תקווה. אחרי השואה — מדינת ישראל. אחרי הגלות — שיבת ציון. "וזכרתי" — ה' לא שוכח. ספר ויקרא נחתם ב"חזק חזק ונתחזק" — קריאה להמשיך, לא לוותר, לחזק זה את זה.`,
+34:`ספר במדבר נפתח במפקד — ספירת כל בני ישראל לפי שבטים. ה' מצווה: "שאו את ראש כל עדת בני ישראל" — לא רק לספור, אלא "להרים ראש", לתת חשיבות לכל אחד. כל שבט מקבל מקום מוגדר סביב המשכן — צפון, דרום, מזרח, מערב. סדר, ארגון, כל אחד יודע את מקומו. שבט לוי לא נמנה עם האחרים כי תפקידו מיוחד — שמירה על המשכן. הפרשה מלמדת שלכל אדם יש מקום ותפקיד. "שאו את ראש" — כל אחד חשוב, כל אחד נספר. היום, בעולם שבו אנשים מרגישים אבודים ולא חשובים, המסר הזה מרגיע: יש לך מקום, יש לך תפקיד, אתה חלק מהסיפור הגדול. מפקד אוכלוסין הוא עדיין כלי חשוב — כי לדעת מי אנחנו זה הצעד הראשון לדעת לאן אנחנו הולכים.`,
+35:`הפרשה הארוכה ביותר בתורה — 176 פסוקים. נקודת השיא: ברכת כוהנים — "יברכך ה' וישמרך, יאר ה' פניו אליך ויחונך, ישא ה' פניו אליך וישם לך שלום". שלוש שורות פשוטות אבל עמוקות — ברכה, אור, שלום. הפרשה גם עוסקת בנזיר — אדם שמקבל על עצמו פרישות (לא שותה יין, לא מסתפר) כדי להתקדש. ובדיני סוטה — אישה שנחשדה בבגידה. ובקרבנות שנים עשר הנשיאים — כל אחד הביא בדיוק אותו קרבן, אבל כל אחד נרשם בנפרד. הפרשה מלמדת על כוח הברכה. "ישם לך שלום" — בארץ שחיה במלחמות, השלום הוא הברכה הנכספת ביותר. ברכת כוהנים נאמרת בכותל כל חג — אלפי כוהנים פורשים ידיים מעל מאות אלפי אנשים. רגע מרגש שמחבר את כולם.`,
+36:`פרשה של מעברים. אהרן מדליק את המנורה. בני ישראל חוגגים פסח שני — מי שפספס את הפסח הראשון מקבל הזדמנות נוספת. חצוצרות כסף משמשות לאותות נסיעה ומלחמה. ואז המסע מתחיל מהר סיני — והבעיות מתחילות. העם מתלונן: "מי יאכילנו בשר?" הם מתגעגעים למצרים (!) ומשה מותש. ה' ממנה 70 זקנים לעזור לו. מרים ואהרן מדברים על משה ("על אודות האישה הכושית") ומרים נענשת בצרעת. הפרשה מלמדת שני דברים: תמיד יש הזדמנות שנייה (פסח שני), ולשון הרע פוגע — גם כשזה בין אחים, גם כשהכוונה "טובה". היום, קבוצות WhatsApp משפחתיות מלאות "דאגה" שהיא למעשה רכילות. הפרשה מזכירה: דיבור על אנשים, גם מתוך אהבה, יכול לפגוע.`,
+37:`שנים עשר מרגלים נשלחים לתור את ארץ כנען. הם חוזרים עם ענבים ענקיים ותאנים מרהיבות, אבל עשרה מתוכם מפחידים את העם: "הערים בצורות, והענקים עצומים, ונהי בעינינו כחגבים!" רק יהושע וכלב אומרים: "עלה נעלה, כי יכול נוכל לה!" אבל העם בוכה, רוצה לחזור למצרים, וה' גוזר: הדור הזה לא ייכנס לארץ — ארבעים שנות נדודים. בסוף הפרשה ה' נותן את מצוות הציצית — חוטים על הבגד שמזכירים את כל המצוות. הפרשה מלמדת על כוח הפחד ועל כוח הדיבור. "ונהי בעינינו כחגבים" — הבעיה הייתה בתדמית העצמית. זו "תסמונת המתחזה" של ימינו — כשאתה חושב שאתה קטן מדי, אתה באמת מפסיד. יהושע וכלב מלמדים שאמונה ואופטימיות מנצחים פחד.`,
+38:`קורח, לוי עשיר ומכובד, מוביל מרד נגד משה ואהרן. הטענה נשמעת הגיונית: "כל העדה כולם קדושים, ומדוע תתנשאו על קהל ה'?" — בעצם, למה אתם מנהיגים ואנחנו לא? אבל מאחורי מילים יפות על שוויון מסתתרת שאיפת כוח אישית. משה מציע מבחן — כל אחד יביא קטורת, וה' יבחר. התוצאה דרמטית: האדמה נפתחת ובולעת את קורח ועדתו. מטה אהרן פורח — הוכחה אלוהית לבחירת שבט לוי. הפרשה מלמדת להבדיל בין מחלוקת אמיתית לבין פוליטיקה של כוח. "מחלוקת שאינה לשם שמיים — זו מחלוקת קורח." היום, בעידן של פופוליזם ודמגוגיה, הפרשה מלמדת לבדוק: האם המנהיג באמת דואג לעם, או רק רוצה כוח?`,
+39:`פרשה של חוקים וטרגדיות. פרה אדומה — חוק שאף אחד לא מבין, אפילו לא שלמה המלך החכם ביותר. האפר שלה מטהר טמאים ומטמא טהורים — פרדוקס מוחלט. מרים מתה, והמים נפסקו — כי הבאר הייתה בזכותה ולא ידעו. משה צריך להוציא מים מסלע — צריך לדבר אליו, אבל בכעסו הוא מכה בו. העונש: לא ייכנס לארץ ישראל. אהרן מת בהר ההר. נחשים שרפים נושכים את העם, ומשה מרים נחש נחושת שמרפא את מי שמסתכל עליו. הפרשה מלמדת שגם המנהיג הגדול ביותר לא חסין מטעויות, ושרגע של כעס יכול לעלות ביוקר. היום, כמה פעמים שלחנו מייל או הודעה בזעם — ושילמנו על זה? הפרשה גם מלמדת שנשים "שקטות" כמו מרים תורמות עצום — ורק כשהן נעלמות מבינים כמה.`,
+40:`אחד הסיפורים הכי צבעוניים בתורה. בלק מלך מואב רואה שישראל מתקרבים ונבהל. הוא שוכר את בלעם, נביא גוי מפורסם, כדי לקלל את ישראל. בלעם עולה על אתונו, אבל האתון רואה מלאך שבלעם לא רואה — ומסרבת ללכת. בלעם מכה אותה, והאתון פותחת את פיה ומדברת! כשבלעם מגיע ופותח את פיו לקלל — יוצאות ברכות. שלוש פעמים הוא מנסה לקלל ושלוש פעמים מברך. "מה טובו אוהליך יעקב" — ברכה שהפכה לתפילת בוקר. בלעם שם לב שפתחי האוהלים לא מכוונים זה מול זה — שמירה על פרטיות. הפרשה מלמדת שמי שרוצה לפגוע בישראל — בסוף מברך אותם. והערך של פרטיות — "מה טובו" — רלוונטי מאוד בעידן של מצלמות אבטחה, רשתות חברתיות, וחוסר גבולות דיגיטליים.`,
+41:`פינחס מקבל "ברית שלום" על מעשהו הקיצוני. מפקד חדש נערך. ואז — סיפור בנות צלפחד, אחד הרגעים הפמיניסטיים הראשונים בהיסטוריה. חמש אחיות — מחלה, נועה, חוגלה, מלכה ותרצה — עומדות לפני משה ואומרות: אבא שלנו מת בלי בנים, למה נפסיד את הנחלה? משה שואל את ה', וה' אומר: הן צודקות. ההלכה משתנה. יהושע ממונה כיורש משה. ואחרון — רשימת כל קרבנות המוספים של המועדים. הפרשה מלמדת שצדק יכול לבוא מלמטה — מאנשים "קטנים" שתובעים את זכותם. בנות צלפחד לא המתינו שמישהו ייאבק עבורן. היום, נשים בכנסת, בצבא, בהייטק, במשפט — ממשיכות את הדרך. ומעבר מנהיגותי ממשה ליהושע — מעבר חלק, ללא מאבק כוח — מודל שכל ארגון ומדינה צריכים.`,
+42:`שתי פרשיות שלעתים נקראות יחד. נדרים — כשאדם נודר נדר, המילים שלו הופכות לחוק. "מוצא שפתיך תשמור" — מה שיוצא מהפה, מחייב. מלחמת מדיין — נקמה על חטא בעל פעור. ואז — בני גד ובני ראובן רואים את עבר הירדן, אדמה טובה לבהמות, ואומרים למשה: אנחנו רוצים להישאר פה, לא לעבור את הירדן. משה כועס: אחיכם הולכים למלחמה ואתם רוצים לשבת? הם מגיעים לפשרה — ילחמו עם כולם, ואחר כך יחזרו. הפרשה מלמדת על אחריות לדיבור ועל אחריות לאומית. "מוצא שפתיך" — הבטחת בחירות, חוזה עסקי, הבטחה לילד — צריך לקיים. והויכוח של גד וראובן — כשהרווחה האישית מתנגשת עם הצורך הלאומי. רלוונטי לכל ויכוח על שירות מילואים, מיסים, ותרומה לחברה.`,
+43:`הפרשה האחרונה בספר במדבר מתחילה ברשימה של 42 תחנות שבני ישראל עברו בארבעים שנות המדבר. כל שם — רפידים, קברות התאווה, חצרות — מספר סיפור. אחר כך — גבולות ארץ ישראל מוגדרים בדיוק. ערי מקלט — שש ערים שבהן רוצח בשגגה יכול למצוא מחסה מנקמת דם. ובסוף — חזרה לבנות צלפחד: הן צריכות להתחתן בתוך שבטן כדי שהנחלה לא תעבור שבט. ספר במדבר מסתיים בנקודת מבט על ארץ ישראל — הם כמעט שם. הפרשה מלמדת שכל מסע מורכב מתחנות, וכל תחנה חשובה. ערי המקלט הן רעיון מהפכני — הגנה על אדם שהרג בשגגה, הפרדה בין נקמה לצדק. היום, מערכת המשפט מבוססת על אותו עיקרון: להבדיל בין כוונה לתוצאה.`,
+44:`ספר דברים נפתח — והוא שונה מכל הספרים האחרים. כאן משה מדבר. בן 120, יודע שלא ייכנס לארץ, נואם לדור החדש ומסכם את הכל. הוא מזכיר את חטא המרגלים, את הנדודים, את המלחמות. מזכיר שהוא ביקש מהעם למנות שופטים — "שופטים ושוטרים תיתן לך". מזכיר את הניצחונות על סיחון ועוג. הנאום הזה הוא צוואה — לא רק סיכום עבר, אלא הנחיות לעתיד. הפרשה מלמדת על מנהיגות של פרידה — לדעת לעזוב בכבוד, להעביר שרביט, לא להיצמד לכיסא. משה לא נלחם על המשך תפקידו. היום, מנהיגים שיודעים לעזוב בזמן הם נדירים ויקרים. גם הנושא של מערכת משפט עצמאית — שופטים שלא תלויים בשלטון — רלוונטי לדיונים בישראל.`,
+45:`הפרשה שמכילה את הפסוק הכי חשוב ביהדות: "שמע ישראל ה' אלוהינו ה' אחד". שש מילים שמגדירות את הזהות היהודית. משה חוזר על עשרת הדיברות, מצווה על "ואהבת את ה' אלוהיך בכל לבבך", ומלמד להעביר את התורה לילדים: "ושננתם לבניך". גם מצוות תפילין ומזוזה כאן. משה מתחנן 515 פעמים (כמניין "ואתחנן") להיכנס לארץ — וה' מסרב. הפרשה מלמדת על אהבה כמצווה — לא רק רגש, אלא החלטה. "שמע ישראל" נאמר בכל יום, בכל תפילה, וגם ברגעי החיים הקשים ביותר — חיילים בקרב, נספי שואה ברגע האחרון. זה ה-DNA הרוחני של העם היהודי. "ושננתם לבניך" — העברת מסורת, חינוך, שיחות עם הדור הבא — זו המצווה שמבטיחה שהשרשרת לא תיפסק.`,
+46:`"והיה עקב תשמעון" — אם תשמרו את המצוות, גם את ה"קטנות" שרומסים ב"עקב", תבוא הברכה. משה מתאר את ארץ ישראל בשבחים: "ארץ חיטה ושעורה וגפן ותאנה ורימון, ארץ זית שמן ודבש" — שבעת המינים. הוא מזהיר: כשתגיעו לשפע, אל תשכחו מאיפה באתם. "פן תאכל ושבעת ושכחת את ה' אלוהיך." גם ברכת המזון מקורה כאן: "ואכלת ושבעת וברכת את ה' אלוהיך." ופרשה שנייה של קריאת שמע — "והיה אם שמוע". הפרשה מלמדת על הסכנה שבשפע — כשיש הכל, שוכחים להודות. היום, בחברת צריכה ושפע, האזהרה של משה מהדהדת: השפע יכול לעוור. ברכת המזון — לעצור ולהודות על מה שיש, לא לרוץ ל"עוד" — זה מיינדפולנס תורני.`,
+47:`"ראה אנוכי נותן לפניכם היום ברכה וקללה" — הבחירה ביד האדם. לא ה' בוחר עבורך, אתה בוחר. ברכה אם תשמעו, קללה אם לא. הפרשה עוסקת במקום המקדש ("המקום אשר יבחר ה'"), בחוקי כשרות, בצדקה ("פתוח תפתח את ידך"), בשמיטת כספים (כל שבע שנים מוחקים חובות!), ובשלוש הרגלים — פסח, שבועות, סוכות. הפרשה מלמדת על בחירה חופשית — יסוד היהדות. אין גורל, אין "ככה נולדתי". אתה בוחר. היום, בעידן של אלגוריתמים שמחליטים עבורנו מה לקנות, מה לראות, מה לחשוב — הקריאה "ראה!" היא קריאת השכמה: תפקח עיניים, תחליט בעצמך. "פתוח תפתח את ידך" — צדקה לא כמעשה טוב אופציונלי, אלא כחובה.`,
+48:`"צדק צדק תרדוף" — הפסוק שחקוק בבתי משפט ישראליים. הפרשה מתווה מערכת ממשל שלמה: שופטים שישפטו בצדק, מלך שכפוף לחוק (חייב לשאת ספר תורה!), כוהנים ונביאים. דיני מלחמה — לפני שיוצאים לקרב, שואלים: מי בנה בית חדש? מי שתל כרם? מי ארוס? לכו הביתה. "מי האיש הירא" — גם הוא חוזר, שלא יפחיד אחרים. ערי מקלט, עגלה ערופה (כשנמצא הרוג ולא ידוע מי ההורג). הפרשה מלמדת שצדק הוא לא רק מה שמחליטים, אלא איך מחליטים — הדרך חשובה כמו התוצאה. היום, הויכוח על עצמאות הרשות השופטת בישראל מקבל תאורה חדשה לאור הפרשה. ודיני המלחמה — "מי האיש הירא" — מראים רגישות למצב הנפשי של הלוחם, עקרון שמודרני מאוד.`,
+49:`הפרשה עם הכי הרבה מצוות בתורה — 74! היא מכסה כל תחום: מלחמה (אשת יפת תואר), משפחה (בכור, בן סורר ומורה), רחמים (שילוח הקן — לשחרר אם ציפורים לפני שלוקחים ביצים), בנייה (לשים מעקה על הגג), לבוש (לא כלאיים), מציאות (חובה להשיב אבדה), ועוד. הפסוק שמסכם: "לא תוכל להתעלם" — אם אתה רואה משהו — אסור לך להתעלם. חובה לפעול. הפרשה גם מסיימת בציווי לזכור את עמלק שתקף את החלשים. הפרשה מלמדת על רגישות ואחריות בכל תחום. "לא תוכל להתעלם" — זה האנטי-אדישות. שילוח הקן — רחמים על בעלי חיים. מעקה — אחריות על בטיחות. כל מצווה כאן אומרת: שים לב, תהיה ערני, אל תחיה בבועה.`,
+50:`כשנכנסים לארץ, צריך להביא ביכורים — ראשית הפירות — למקדש. ובטקס ההבאה אומרים: "ארמי אובד אבי" — סיכום של כל ההיסטוריה: יעקב ירד למצרים, השתעבדנו, זעקנו, ה' הוציא אותנו, והביא אותנו לארץ. זה הנוסח מליל הסדר! אחרי הביכורים — וידוי מעשרות. ואז — ברית חדשה בהר גריזים ובהר עיבל: ברכות וקללות. התוכחה — 98 קללות מפורטות ומצמררות שמתארות בדיוק מה יקרה אם העם יחטא. נבואה שהתממשה בפירוט מדהים. הפרשה מלמדת על הכרת תודה — לעצור, להביא מהראשית, ולספר את הסיפור. היום, "ארמי אובד אבי" נאמר בליל הסדר, מחבר אותנו לשורשים. והתוכחה — אחרי שרואים מה עבר על העם היהודי לאורך ההיסטוריה, קשה לא להזדעזע מהדיוק.`,
+51:`פרשה שנקראת תמיד לפני ראש השנה — בזמן הנכון. "אתם ניצבים היום כולכם" — מהמנהיג ועד מביא המים, מהגבר ועד האישה, מהזקן ועד הטף. כולם עומדים יחד לחדש את הברית עם ה'. ואז מגיע פסוק מפתח: "לא בשמיים היא" — התורה לא רחוקה, לא צריך מלאך כדי להבין אותה. היא "בפיך ובלבבך לעשותה". ובסוף — הפסוק שמסכם הכל: "החיים והמוות נתתי לפניך, הברכה והקללה — ובחרת בחיים!" הפרשה מלמדת שלושה דברים חשובים: אחדות (כולם ביחד), נגישות (התורה לכולם), ובחירה (אתה בוחר את הדרך). "ובחרת בחיים" — בעידן של משברי בריאות נפש, אובדנות, וייאוש — זו קריאה להחיים. "לא בשמיים היא" — הידע נגיש, כמו אינטרנט, פתוח לכולם.`,
+52:`הפרשה הקצרה ביותר בתורה — 30 פסוקים בלבד. משה בן 120, ביומו האחרון, נפרד מהעם. "לא אוכל עוד לצאת ולבוא" — הכוחות אוזלים. הוא אומר לעם: "חזקו ואמצו!" — אל תפחדו, ה' הולך לפניכם, יהושע ינהיג. משה כותב את התורה ומוסר אותה ללויים. מצוות "הקהל" — כל שבע שנים, בסוכות, כל העם מתאסף — גברים, נשים, טף — לשמוע את קריאת התורה מפי המלך. ה' מגלה למשה שהעם יחטא בעתיד, אבל גם שהברית תישאר. הפרשה מלמדת על פרידה בכבוד ועל מסירת המנהיגות. "חזקו ואמצו" הפך למשפט מפתח בתרבות הישראלית — אומרים אותו בצבא, בבתי חולים, בעתות מלחמה. מצוות הקהל — כל העם ביחד, כולל ילדים — חגיגה לאומית של לימוד.`,
+53:`שירת האזינו — אחד הטקסטים העוצמתיים ביותר בתורה. משה מזמין את השמיים והארץ כעדים ומתחיל לשיר. השירה מספרת את כל ההיסטוריה: ה' מצא את ישראל במדבר ושמר עליו, אבל ישראל שכח ופנה לאלילים, ה' כעס ועניש, אבל בסוף — גאולה. "צור תמים פעלו, כי כל דרכיו משפט" — כל מה שה' עושה, גם אם לא מבינים, הוא צודק. משה מסיים את השירה ומצווה לעלות להר נבו — שם הוא ימות. הפרשה מלמדת על כוח השירה כזיכרון. עם ישראל שר — מ"האזינו" לשירי ארץ ישראל, משירת הים לשירי שואה. המוזיקה מחזיקה את הסיפור כשהמילים לא מספיקות. "צור תמים" — משפט שנאמר בימים הקשים ביותר, כאמונה שיש משמעות גם לכאב.`,
+54:`הפרשה האחרונה בתורה — ונקראת בשמחת תורה. משה מברך כל שבט בנפרד, ברכה מותאמת אישית: ליהודה — מלכות, ללוי — תורה, לבנימין — חיבה, ליוסף — שפע. ואז — הרגע האחרון. משה עולה להר נבו, ומשם ה' מראה לו את כל הארץ: הגלעד, נפתלי, אפרים, יהודה, הנגב, ירדן יריחו. "זאת הארץ אשר נשבעתי לאברהם ליצחק וליעקב — הראיתיך בעיניך ושמה לא תעבור." משה מת. ה' קוברו בעצמו, ואיש לא יודע איפה הקבר. "ולא קם נביא עוד בישראל כמשה." ומיד — חוזרים ל"בראשית ברא" — המחזוריות הנצחית. שמחת תורה 2023 — 7 באוקטובר — יום שנחרת לנצח. הפרשה מלמדת שגם כשהחלום לא מתממש בשלמות, הוא שווה. משה לא נכנס לארץ — אבל הביא את העם עד השער.`
+};
+
+const currentWeekParshaId = getCurrentParshaId();
+
+let currentParsha = null;
+let currentBook = 'all';
+let filteredParshas = [...PARSHAS];
+
+// ========== INIT ==========
+function init(){
+  renderBookTabs();
+  renderSidebar();
+  renderMain();
+  // keyboard nav
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape') closeDetail();
+    if(currentParsha !== null){
+      if(e.key === 'ArrowRight') navigateParsha(-1);
+      if(e.key === 'ArrowLeft') navigateParsha(1);
+    }
+  });
+}
+
+// ========== SIDEBAR ==========
+function renderBookTabs(){
+  const tabs = document.getElementById('bookTabs');
+  let html = `<button class="book-tab active" onclick="filterByBook('all')">הכל</button>`;
+  BOOKS.forEach(b => {
+    html += `<button class="book-tab" onclick="filterByBook('${b.id}')">${b.name}</button>`;
+  });
+  tabs.innerHTML = html;
+}
+
+function filterByBook(bookId){
+  currentBook = bookId;
+  document.querySelectorAll('.book-tab').forEach((t,i) => {
+    t.classList.toggle('active',
+      (bookId === 'all' && i === 0) ||
+      (BOOKS[i-1] && BOOKS[i-1].id === bookId)
+    );
+  });
+  const q = document.getElementById('searchInput').value;
+  applyFilters(q);
+}
+
+function filterParshas(query){
+  applyFilters(query);
+}
+
+function applyFilters(query){
+  filteredParshas = PARSHAS.filter(p => {
+    const bookMatch = currentBook === 'all' || p.book === currentBook;
+    const queryMatch = !query || p.name.includes(query) || p.ref.includes(query) || p.summary.includes(query);
+    return bookMatch && queryMatch;
+  });
+  renderSidebar();
+  renderMain();
+}
+
+function renderSidebar(){
+  const list = document.getElementById('parshaList');
+  list.innerHTML = filteredParshas.map(p => `
+    <div class="parsha-item ${currentParsha === p.id ? 'active' : ''} ${p.id === currentWeekParshaId ? 'current-week' : ''}"
+         onclick="openDetail(${p.id})" data-id="${p.id}">
+      <div class="parsha-num">${p.id}</div>
+      <div>
+        <div class="parsha-item-name">${p.name}</div>
+        <div class="parsha-item-ref">${p.ref}</div>
+      </div>
+    </div>
+  `).join('');
+  // Scroll to current week in sidebar
+  const cwEl = list.querySelector('.current-week');
+  if(cwEl && !currentParsha) cwEl.scrollIntoView({block:'center',behavior:'smooth'});
+}
+
+function toggleSidebar(){
+  const sb = document.getElementById('sidebar');
+  sb.classList.toggle('open');
+  sb.classList.toggle('closed');
+  document.body.classList.toggle('sidebar-open');
+  document.body.classList.toggle('sidebar-closed');
+}
+
+// ========== MAIN CONTENT ==========
+function renderMain(){
+  const main = document.getElementById('mainContent');
+  const cwp = PARSHAS.find(p => p.id === currentWeekParshaId);
+  const cwExtra = EXTRA[currentWeekParshaId] || {};
+  let html = `
+    <div class="hero">
+      <div class="hero-ornament">ש</div>
+      <div class="hero-content animate-in">
+        <h1>פרשת השבוע של משפחת כהן</h1>
+        <p>כל 54 פרשיות התורה במקום אחד — תקצירים, פירושים ממקורות שונים, חיבור להוויה המודרנית, ועוד. בחרו פרשה מהתפריט או גללו למטה.</p>
+      </div>
+    </div>
+    <div class="current-week-banner" onclick="openDetail(${currentWeekParshaId})">
+      <div class="current-week-badge">${cwExtra.emoji || '📖'} פרשת השבוע</div>
+      <div class="current-week-info">
+        <h3>פרשת ${cwp ? cwp.name : ''}</h3>
+        <p>${cwp ? cwp.ref : ''} — לחצו לקריאה מלאה</p>
+      </div>
+    </div>
+  `;
+
+  const booksToShow = currentBook === 'all' ? BOOKS : BOOKS.filter(b => b.id === currentBook);
+
+  booksToShow.forEach(book => {
+    const bookParshas = filteredParshas.filter(p => p.book === book.id);
+    if(bookParshas.length === 0) return;
+
+    const bookHeb = {bereshit:'ספר בראשית',shemot:'ספר שמות',vayikra:'ספר ויקרא',bamidbar:'ספר במדבר',devarim:'ספר דברים'};
+    const bookDesc = {
+      bereshit:'מבריאת העולם ועד ירידת יעקב למצרים — 12 פרשיות',
+      shemot:'מהשעבוד במצרים ועד הקמת המשכן — 11 פרשיות',
+      vayikra:'קרבנות, טהרה, קדושה ומועדים — 10 פרשיות',
+      bamidbar:'ארבעים שנות נדודים במדבר — 10 פרשיות',
+      devarim:'נאומי משה האחרונים לפני הכניסה לארץ — 11 פרשיות'
+    };
+
+    html += `
+      <div class="book-section" id="book-${book.id}">
+        <h2 class="book-title" style="border-color:${book.color}">${bookHeb[book.id]}</h2>
+        <p class="book-subtitle">${bookDesc[book.id]}</p>
+      </div>
+      <div class="parsha-cards">
+        ${bookParshas.map((p,i) => {
+          const ex = EXTRA[p.id] || {};
+          const isCurrent = p.id === currentWeekParshaId;
+          return `
+          <div class="parsha-card ${isCurrent ? 'current-week-card' : ''}" onclick="openDetail(${p.id})" style="animation-delay:${i*0.05}s;${isCurrent ? 'border-color:var(--gold);box-shadow:0 4px 20px rgba(201,168,76,0.2)' : ''}">
+            <div class="parsha-card-image" ${PARSHA_IMAGES[p.id] ? `style="background:url('${PARSHA_IMAGES[p.id].img}') center/cover"` : ''}>
+              ${!PARSHA_IMAGES[p.id] ? `<div class="parsha-emoji">${ex.emoji || '📖'}</div>` : ''}
+              <div class="parsha-img-overlay"></div>
+              ${isCurrent ? '<div style="position:absolute;top:10px;right:10px;background:var(--gold);color:var(--navy);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">פרשת השבוע</div>' : ''}
+            </div>
+            <div class="parsha-card-header">
+              <div>
+                <div class="parsha-card-title">${p.name}</div>
+                <div class="parsha-card-ref">${p.ref}</div>
+              </div>
+              <div class="parsha-card-num">${p.id}</div>
+            </div>
+            <div class="parsha-card-body">
+              <p class="parsha-card-summary">${p.summary}</p>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+  });
+
+  main.innerHTML = html;
+}
+
+// ========== DETAIL VIEW ==========
+function openDetail(id){
+  currentParsha = id;
+  const p = PARSHAS.find(x => x.id === id);
+  if(!p) return;
+
+  const book = BOOKS.find(b => b.id === p.book);
+  const bookHeb = {bereshit:'בראשית',shemot:'שמות',vayikra:'ויקרא',bamidbar:'במדבר',devarim:'דברים'};
+
+  const ex = EXTRA[p.id] || {};
+  const isCurrent = p.id === currentWeekParshaId;
+  const content = document.getElementById('detailContent');
+  content.innerHTML = `
+    ${isCurrent ? '<div style="background:var(--gold);color:var(--navy);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:16px;display:inline-block">פרשת השבוע הנוכחית</div>' : ''}
+    <div class="detail-badge">ספר ${bookHeb[p.book]} · פרשה ${p.id} מתוך 54</div>
+    <div class="detail-hero-image" ${PARSHA_IMAGES[p.id] ? `style="background:url('${PARSHA_IMAGES[p.id].img}') center/cover"` : ''}>
+      <div class="img-pattern"></div>
+      ${!PARSHA_IMAGES[p.id] ? `<div class="parsha-emoji">${ex.emoji || '📖'}</div>` : ''}
+    </div>
+    ${PARSHA_IMAGES[p.id] ? `<div style="font-size:11px;color:var(--text-light);margin-bottom:12px;font-style:italic">${PARSHA_IMAGES[p.id].caption}</div>` : ''}
+    <h1 class="detail-title">פרשת ${p.name}</h1>
+    <div class="detail-ref">${p.ref}</div>
+
+    ${EASY_EXPLAIN[p.id] ? `
+    <div class="detail-section">
+      <h3>הסבר מפורט בשפה קלה</h3>
+      <div class="easy-explain">
+        <p>${EASY_EXPLAIN[p.id]}</p>
+      </div>
+    </div>` : ''}
+
+    <div class="detail-section">
+      <h3>תקציר</h3>
+      <p>${p.details}</p>
+    </div>
+
+    <div class="detail-section">
+      <h3>פסוק מפתח</h3>
+      <div class="detail-verse">
+        "${p.keyVerse}"
+        <span class="detail-verse-ref">${p.verseRef}</span>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>נושאים מרכזיים</h3>
+      <ul>
+        ${p.themes.map(t => `<li>${t}</li>`).join('')}
+      </ul>
+    </div>
+
+    ${ex.commentaries ? `
+    <div class="detail-section">
+      <h3>פירושים ומקורות</h3>
+      <div class="commentary-section">
+        ${ex.commentaries.map(c => `
+          <div class="commentary-card">
+            <div class="source-name">${c.source}</div>
+            <div class="source-text">${c.text}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>` : ''}
+
+    ${ex.modern ? `
+    <div class="detail-section">
+      <h3>חיבור להוויה המודרנית</h3>
+      <div class="modern-section">
+        <p>${ex.modern}</p>
+      </div>
+    </div>` : ''}
+  `;
+
+  // Update nav buttons
+  document.getElementById('prevBtn').disabled = id <= 1;
+  document.getElementById('nextBtn').disabled = id >= 54;
+
+  // Show panel
+  document.getElementById('detailOverlay').classList.add('active');
+  document.getElementById('detailPanel').classList.add('active');
+  document.getElementById('detailPanel').scrollTop = 0;
+
+  // Update sidebar
+  renderSidebar();
+}
+
+function closeDetail(){
+  currentParsha = null;
+  document.getElementById('detailOverlay').classList.remove('active');
+  document.getElementById('detailPanel').classList.remove('active');
+  renderSidebar();
+}
+
+function navigateParsha(dir){
+  if(!currentParsha) return;
+  const newId = currentParsha + dir;
+  if(newId < 1 || newId > 54) return;
+  openDetail(newId);
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
