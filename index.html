@@ -417,6 +417,13 @@ body::after{
   .footer__logo{height:28px}
   .footer__text{font-size:11px}
 }
+
+/* ===== PROTECTION ===== */
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
+.er-block{position:fixed;inset:0;z-index:99999;background:#060609;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Heebo',sans-serif;color:#c9a84c;flex-direction:column;gap:16px}
+.er-block h2{font-size:24px;font-weight:700}
+.er-block p{font-size:16px;color:#8a8478;max-width:400px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -541,6 +548,31 @@ document.querySelectorAll('.card').forEach(card=>{
     card.style.transform='';
   });
 });
+</script>
+
+<script>
+(function(){
+  // Domain lock
+  const allowed = ['slides.erezults.com','localhost','127.0.0.1',''];
+  const h = location.hostname;
+  if (!allowed.includes(h) && !h.endsWith('.local')) {
+    document.body.innerHTML = '<div class="er-block"><h2>⚠️ גישה לא מורשית</h2><p>מצגת זו זמינה רק דרך<br><strong>slides.erezults.com</strong></p><p style="font-size:13px;margin-top:8px">© E-Rezults — כל הזכויות שמורות</p></div>';
+    return;
+  }
+  // Disable right-click
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  // Disable keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && ['s','u','p','i','j','c'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+    if (e.ctrlKey && e.shiftKey) e.preventDefault();
+  });
+  // Disable drag
+  document.addEventListener('dragstart', e => e.preventDefault());
+  // Disable print
+  window.addEventListener('beforeprint', () => { document.body.style.display = 'none'; });
+  window.addEventListener('afterprint', () => { document.body.style.display = ''; });
+})();
 </script>
 
 </body>

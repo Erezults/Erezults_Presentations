@@ -457,6 +457,14 @@ p {
   .footer-company{font-size:10px}
 }
 
+/* ── Protection ── */
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
+.slide-bg img{pointer-events:none}
+.er-block{position:fixed;inset:0;z-index:99999;background:#080810;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Heebo',sans-serif;color:var(--gold);flex-direction:column;gap:16px}
+.er-block h2{font-size:24px;font-weight:700}
+.er-block p{font-size:16px;color:var(--text-secondary);max-width:400px;line-height:1.6}
+
 </style>
 </head>
 <body>
@@ -1138,6 +1146,26 @@ document.getElementById('prevBtn').disabled = true;
 function openCreditModal(){document.getElementById('creditOverlay').classList.add('active')}
 function closeCreditModal(){document.getElementById('creditOverlay').classList.remove('active')}
 document.getElementById('siteFooter').addEventListener('click',openCreditModal);
+</script>
+
+<script>
+(function(){
+  var allowed = ['slides.erezults.com','localhost','127.0.0.1',''];
+  var h = location.hostname;
+  if (!allowed.includes(h) && !h.endsWith('.local')) {
+    document.body.innerHTML = '<div class="er-block"><h2>⚠️ גישה לא מורשית</h2><p>מצגת זו זמינה רק דרך<br><strong>slides.erezults.com</strong></p><p style="font-size:13px;margin-top:8px">© E-Rezults — כל הזכויות שמורות</p></div>';
+    return;
+  }
+  document.addEventListener('contextmenu', function(e){e.preventDefault()});
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && 'supijc'.indexOf(e.key.toLowerCase())!==-1) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+    if (e.ctrlKey && e.shiftKey) e.preventDefault();
+  });
+  document.addEventListener('dragstart', function(e){e.preventDefault()});
+  window.addEventListener('beforeprint', function(){ document.body.style.display='none'; });
+  window.addEventListener('afterprint', function(){ document.body.style.display=''; });
+})();
 </script>
 
 </body>
