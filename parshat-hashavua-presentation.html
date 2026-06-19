@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>פרשת השבוע - כל פרשיות התורה</title>
+<meta name="theme-color" content="#43222e">
+<link rel="manifest" href="manifest.json">
+<script>(function(){try{var f=localStorage.getItem('parsha-font');if(f)document.documentElement.style.setProperty('--font-scale',f);}catch(e){}})();</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a14'/%3E%3Crect x='1' y='1' width='30' height='30' rx='5' fill='none' stroke='%23c9a84c' stroke-width='1.5' opacity='.4'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-weight='900' font-size='22' fill='%23c9a84c'%3EE%3C/text%3E%3C/svg%3E">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -11,24 +14,25 @@
 <meta property="og:description" content="מצגת אינטראקטיבית של כל פרשיות התורה — סקירה מקיפה עם תוכן, פרשנות ותובנות">
 <meta property="og:image" content="https://slides.erezults.com/og-parshat-hashavua.png">
 <meta property="og:url" content="https://slides.erezults.com/parshat-hashavua-presentation.html">
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=David+Libre:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@300;400;500;600;700;800&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=David+Libre:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
---gold:#c9a84c;--gold-light:#e8d48b;--gold-dark:#a07d2e;
---navy:#1a1a2e;--navy-light:#2a2a4e;--navy-mid:#16213e;
---parchment:#f5f0e8;--parchment-dark:#e8dfd0;--parchment-light:#faf7f2;
---brown:#5c3d2e;--brown-light:#8b6914;
---text:#2c1810;--text-light:#6b5744;
---accent:#8b2252;--accent-light:#c44d7b;
+--gold:#c9a84c;--gold-light:#e8d48b;--gold-dark:#8a6a1f;
+--navy:#2e2519;--navy-light:#46392a;--navy-mid:#241c12;
+--parchment:#f3e9d2;--parchment-dark:#ebe0c6;--parchment-light:#fffdf7;
+--brown:#6b4a2a;--brown-light:#8b6914;
+--text:#3a2c1d;--text-light:#7a6650;
+--accent:#c08a3e;--accent-light:#d9a960;
 --sidebar-w:320px;
 --transition:0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+--header-h:46px;
 }
 html{scroll-behavior:smooth}
 body{
 font-family:'Noto Sans Hebrew','David Libre',serif;
 background:var(--parchment);color:var(--text);
-overflow-x:hidden;min-height:100vh;
+overflow-x:hidden;min-height:100vh;padding-top:var(--header-h);
 }
 
 /* ========== PARCHMENT TEXTURE ========== */
@@ -43,26 +47,26 @@ background:
 
 /* ========== SIDEBAR ========== */
 .sidebar{
-position:fixed;top:0;right:0;width:var(--sidebar-w);height:100vh;
-background:var(--navy);z-index:100;
+position:fixed;top:var(--header-h);right:0;width:var(--sidebar-w);height:calc(100vh - var(--header-h));
+background:linear-gradient(rgba(255,251,242,0.34),rgba(255,251,242,0.34)),url('jerusalem-wall.svg') top left/130px 114px repeat #ddc998;z-index:100;
 display:flex;flex-direction:column;
 transition:transform var(--transition);
-box-shadow:-4px 0 30px rgba(0,0,0,0.3);
+box-shadow:-4px 0 26px rgba(90,70,40,0.18);
 }
 .sidebar.closed{transform:translateX(100%)}
 .sidebar-header{
 padding:28px 24px 20px;
-background:linear-gradient(180deg,var(--navy) 0%,var(--navy-light) 100%);
+background:linear-gradient(180deg,#d4c08f 0%,#cdb784 100%);
 border-bottom:1px solid rgba(201,168,76,0.2);
 }
 .sidebar-logo{
 font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700;
-color:var(--gold);text-align:center;margin-bottom:16px;
+color:#5a3f17;text-align:center;margin-bottom:16px;
 letter-spacing:1px;
 }
 .sidebar-logo span{
 display:block;font-size:12px;font-weight:300;
-color:var(--gold-light);opacity:0.7;margin-top:4px;
+color:#5a4a30;opacity:1;margin-top:4px;
 letter-spacing:2px;
 }
 .search-box{
@@ -70,13 +74,13 @@ position:relative;margin-top:8px;
 }
 .search-box input{
 width:100%;padding:10px 16px 10px 36px;
-background:rgba(255,255,255,0.08);border:1px solid rgba(201,168,76,0.2);
-border-radius:8px;color:#e0d5c5;font-family:'Noto Sans Hebrew',sans-serif;
+background:#fffdf8;border:1px solid rgba(201,168,76,0.4);
+border-radius:8px;color:var(--text);font-family:'Noto Sans Hebrew',sans-serif;
 font-size:14px;outline:none;transition:all 0.3s;
 }
-.search-box input::placeholder{color:rgba(224,213,197,0.4)}
+.search-box input::placeholder{color:rgba(58,44,29,0.4)}
 .search-box input:focus{
-border-color:var(--gold);background:rgba(255,255,255,0.12);
+border-color:var(--gold);background:#fff;
 }
 .search-box svg{
 position:absolute;left:12px;top:50%;transform:translateY(-50%);
@@ -90,13 +94,13 @@ background:rgba(0,0,0,0.15);
 }
 .book-tab{
 flex:1;padding:8px 4px;text-align:center;
-font-size:11px;font-weight:600;color:rgba(201,168,76,0.5);
+font-size:11px;font-weight:700;color:#5a4830;
 cursor:pointer;border-radius:6px 6px 0 0;transition:all 0.3s;
 background:transparent;border:none;font-family:'Noto Sans Hebrew',sans-serif;
 }
 .book-tab:hover{color:var(--gold-light);background:rgba(201,168,76,0.08)}
 .book-tab.active{
-color:var(--gold);background:rgba(201,168,76,0.12);
+color:#5a3f17;background:rgba(201,168,76,0.32);
 border-bottom:2px solid var(--gold);
 }
 
@@ -121,41 +125,43 @@ background:rgba(201,168,76,0.12);border-right-color:var(--gold);
 .parsha-num{
 width:28px;height:28px;border-radius:50%;
 display:flex;align-items:center;justify-content:center;
-font-size:11px;font-weight:700;color:var(--gold);
-background:rgba(201,168,76,0.1);flex-shrink:0;
+font-size:11px;font-weight:700;color:#5a3f17;
+background:rgba(201,168,76,0.34);flex-shrink:0;
 }
 .parsha-item.active .parsha-num{background:var(--gold);color:var(--navy)}
 .parsha-item-name{
 font-family:'Frank Ruhl Libre',serif;font-size:15px;
-color:#c8bfb0;font-weight:500;
+color:var(--text);font-weight:600;
 }
-.parsha-item.active .parsha-item-name{color:var(--gold)}
+.parsha-item.active .parsha-item-name{color:#5a3f17}
 .parsha-item-ref{
-font-size:11px;color:rgba(200,191,176,0.4);margin-top:2px;
+font-size:11px;color:rgba(50,38,22,0.62);margin-top:2px;
 }
+.vid-ico{font-size:11px;opacity:0.85;vertical-align:middle;margin-inline-start:3px;filter:drop-shadow(0 0 2px rgba(201,168,76,0.5))}
+.parsha-item.has-video .parsha-num{box-shadow:0 0 0 2px rgba(201,168,76,0.35)}
 
 /* Toggle button */
 .sidebar-toggle{
-position:fixed;top:20px;right:20px;z-index:101;
+position:fixed;top:calc(var(--header-h) + 8px);right:20px;z-index:301;
 width:44px;height:44px;border-radius:50%;
-background:var(--navy);border:2px solid var(--gold);
+background:#fffdf8;border:2px solid var(--gold);
 cursor:pointer;display:flex;align-items:center;justify-content:center;
 transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
-.sidebar-toggle:hover{background:var(--navy-light);transform:scale(1.05)}
-.sidebar-toggle svg{stroke:var(--gold);width:20px;height:20px}
+.sidebar-toggle:hover{background:#f3ead6;transform:scale(1.05)}
+.sidebar-toggle svg{stroke:var(--gold-dark);width:20px;height:20px}
 .sidebar-open .sidebar-toggle{right:calc(var(--sidebar-w) + 20px)}
 
 /* ========== MAIN CONTENT ========== */
 .main{
-margin-right:var(--sidebar-w);min-height:100vh;transition:margin var(--transition);
+margin-right:var(--sidebar-w);min-height:calc(100vh - var(--header-h));transition:margin var(--transition);
 }
 .sidebar-closed .main{margin-right:0}
 
 /* Hero */
 .hero{
 padding:80px 60px 60px;
-background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 50%,var(--navy-light) 100%);
+background:url('jerusalem-wall.svg') top left/180px 158px repeat #d8c08a;
 position:relative;overflow:hidden;
 }
 .hero::before{
@@ -169,12 +175,12 @@ background:linear-gradient(to top,var(--parchment),transparent);
 .hero-content{position:relative;z-index:1;max-width:900px}
 .hero h1{
 font-family:'Frank Ruhl Libre',serif;font-size:52px;font-weight:900;
-color:var(--gold);line-height:1.2;margin-bottom:12px;
-text-shadow:0 2px 20px rgba(201,168,76,0.3);
+color:#4a3315;line-height:1.2;margin-bottom:12px;
+text-shadow:0 1px 0 rgba(255,250,235,0.55),0 2px 5px rgba(80,55,18,0.28);
 }
 .hero p{
-font-size:18px;color:rgba(224,213,197,0.7);line-height:1.8;
-max-width:600px;font-weight:300;
+font-size:18px;color:#4a3a24;line-height:1.8;
+max-width:600px;font-weight:400;
 }
 .hero-ornament{
 position:absolute;left:60px;top:50%;transform:translateY(-50%);
@@ -252,7 +258,7 @@ transition:opacity 0.4s;
 .detail-overlay.active{opacity:1;pointer-events:all}
 .detail-panel{
 position:fixed;top:0;left:0;bottom:0;
-width:min(720px,85vw);z-index:201;
+width:100vw;z-index:201;
 background:var(--parchment-light);
 transform:translateX(-100%);
 transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
@@ -274,7 +280,14 @@ transition:all 0.3s;
 }
 .detail-close button:hover{background:var(--navy-light);transform:scale(1.1)}
 .detail-close button svg{stroke:var(--gold);width:18px;height:18px}
-.detail-content{padding:0 48px 60px}
+.detail-content{padding:0 48px 60px;max-width:920px;margin:0 auto}
+.detail-content.main-fade{animation:mainFade .32s ease}
+@keyframes mainFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.detail-content.main-fade{animation:none}}
+.detail-back{margin:24px 0 14px;display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.12);color:var(--gold-dark);border:1px solid rgba(201,168,76,0.35);border-radius:8px;padding:9px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s}
+.detail-back:hover{background:rgba(201,168,76,0.22)}
+.detail-back span{font-size:18px;line-height:1}
+.detail-content .detail-nav{padding-left:0;padding-right:0}
 .detail-badge{
 display:inline-block;padding:4px 14px;border-radius:20px;
 background:rgba(201,168,76,0.12);color:var(--gold-dark);
@@ -290,6 +303,15 @@ font-size:16px;color:var(--text-light);margin-bottom:32px;
 padding-bottom:24px;border-bottom:1px solid rgba(201,168,76,0.2);
 }
 .detail-section{margin-bottom:28px}
+.lecture-block{margin-bottom:24px}
+.year-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.year-btn{background:rgba(201,168,76,0.12);color:var(--gold-dark);border:1px solid rgba(201,168,76,0.4);border-radius:8px;padding:7px 14px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.year-btn:hover{background:rgba(201,168,76,0.24)}
+.year-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.lecture-caption{font-size:15px;color:var(--brown);font-weight:700;margin-top:12px}
+.lecture-date{font-size:15px;color:var(--text-light);font-weight:600;margin-top:4px}
+.video-embed{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;background:#000;box-shadow:0 8px 30px rgba(0,0,0,0.18)}
+.video-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
 .detail-section h3{
 font-family:'Frank Ruhl Libre',serif;font-size:20px;font-weight:700;
 color:var(--navy);margin-bottom:12px;
@@ -401,33 +423,40 @@ cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:8px;
 
 /* ========== FAMILY HEADER ========== */
 .family-header{
-background:linear-gradient(90deg,var(--navy) 0%,var(--navy-mid) 100%);
-padding:10px 24px;text-align:center;
-border-bottom:2px solid var(--gold);position:relative;z-index:99;
+background:url('jerusalem-wall.svg') top left/120px 105px repeat #ddc998;
+text-align:center;padding:0 16px;
+border-bottom:2px solid var(--gold);
+position:fixed;top:0;left:0;right:0;z-index:300;
+height:var(--header-h);display:flex;align-items:center;justify-content:center;
 }
 .family-header span{
 font-family:'Frank Ruhl Libre',serif;font-size:14px;
-color:var(--gold);font-weight:500;letter-spacing:1px;
+color:#5a3f17;font-weight:700;letter-spacing:1px;
 }
 
 /* ========== CURRENT WEEK BANNER ========== */
 .current-week-banner{
-background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(139,34,82,0.06));
-border:1px solid rgba(201,168,76,0.25);border-radius:12px;
-padding:20px 28px;margin:24px 60px;cursor:pointer;
-transition:all 0.3s;display:flex;align-items:center;gap:20px;
+background:linear-gradient(135deg,rgba(201,168,76,0.16),rgba(139,34,82,0.08));
+border:1px solid rgba(201,168,76,0.3);border-radius:18px;
+padding:32px 40px;margin:28px 60px;cursor:pointer;
+transition:all 0.3s;display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;
 }
 .current-week-banner:hover{
-transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.15);
+transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,168,76,0.18);
 }
-.current-week-badge{
-background:var(--gold);color:var(--navy);padding:6px 14px;
-border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;
+.cwb-badge{
+background:var(--gold);color:var(--navy);padding:7px 18px;
+border-radius:20px;font-size:13px;font-weight:700;white-space:nowrap;
 }
-.current-week-info h3{
-font-family:'Frank Ruhl Libre',serif;font-size:22px;color:var(--brown);
-}
-.current-week-info p{font-size:13px;color:var(--text-light);margin-top:4px}
+.cwb-name{font-family:'Frank Ruhl Libre',serif;font-size:40px;line-height:1.1;color:var(--brown);margin:0}
+.cwb-ref{font-size:15px;color:var(--gold-dark);font-weight:600}
+.cwb-summary{font-size:16px;line-height:1.85;color:var(--text);max-width:760px;margin:4px auto 0}
+.cwb-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.cwb-btn{border:0;border-radius:10px;padding:11px 22px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:filter .2s,transform .1s}
+.cwb-btn:hover{filter:brightness(1.06)}
+.cwb-btn:active{transform:translateY(1px)}
+.cwb-btn-read{background:rgba(201,168,76,0.18);color:var(--brown);border:1px solid rgba(201,168,76,0.4)}
+.cwb-btn-watch{background:var(--gold);color:var(--navy)}
 
 /* ========== PARSHA IMAGE ========== */
 .parsha-card-image{
@@ -500,10 +529,10 @@ font-size:14.5px;line-height:2;color:var(--text);
 /* ========== FOOTER ========== */
 .site-footer{
 position:fixed;bottom:0;left:0;right:0;z-index:90;
-background:var(--navy);padding:10px 32px;
+background:url('jerusalem-wall.svg') top left/120px 105px repeat #ddc998;padding:10px 32px;
 border-top:2px solid var(--gold);
 display:flex;align-items:center;justify-content:center;gap:14px;
-box-shadow:0 -2px 12px rgba(0,0,0,0.3);
+box-shadow:0 -2px 14px rgba(90,70,40,0.16);
 }
 body{padding-bottom:52px}
 .footer-logo{
@@ -512,17 +541,17 @@ object-fit:contain;
 }
 .footer-credit{
 font-family:'Frank Ruhl Libre',serif;font-size:14px;
-color:var(--gold);
+color:#5a3f17;
 }
 .footer-company{
-font-size:12px;color:rgba(201,168,76,0.6);
+font-size:12px;color:#5a4a30;
 }
 .site-footer{cursor:pointer;transition:background 0.3s}
 .site-footer:hover{background:var(--navy-light)}
 
 /* ========== CREDIT MODAL ========== */
 .credit-overlay{
-position:fixed;inset:0;z-index:300;
+position:fixed;inset:0;z-index:350;
 background:rgba(26,26,46,0.7);backdrop-filter:blur(8px);
 opacity:0;pointer-events:none;transition:opacity 0.3s;
 display:flex;align-items:center;justify-content:center;
@@ -573,9 +602,10 @@ background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:10px;
 font-size:9px;font-weight:700;
 }
 @media(max-width:768px){
-  .current-week-banner{margin:12px 16px;flex-direction:column;text-align:center;padding:16px 18px;gap:12px}
-  .current-week-info h3{font-size:18px}
-  .current-week-info p{font-size:12px}
+  .current-week-banner{margin:16px;padding:22px 18px}
+  .cwb-name{font-size:30px}
+  .cwb-ref{font-size:13px}
+  .cwb-summary{font-size:14px}
   .site-footer{padding:10px 16px;gap:10px}
   .footer-logo{width:42px;height:28px}
   .footer-credit{font-size:12px}
@@ -590,6 +620,198 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
 .er-block{position:fixed;inset:0;z-index:99999;background:var(--parchment);display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Noto Sans Hebrew',serif;color:var(--brown);flex-direction:column;gap:16px}
 .er-block h2{font-size:24px;font-weight:700}
 .er-block p{font-size:16px;color:var(--text-light);max-width:400px;line-height:1.6}
+/* ===== Enhancements (share, filter, archive, a11y, dark, PWA, polish) ===== */
+html{scroll-behavior:smooth}
+.main{zoom:var(--font-scale,1)}
+/* header controls: font size + dark toggle */
+.header-controls{position:absolute;left:12px;top:50%;transform:translateY(-50%);display:flex;gap:6px;align-items:center}
+.header-emblem{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:7px}
+.header-emblem svg{display:block}
+@media(max-width:620px){.header-emblem{gap:4px}.header-emblem .menorah{display:none}}
+.hc-btn{background:rgba(138,94,18,0.14);color:#5a3f17;border:1px solid rgba(201,168,76,0.4);border-radius:7px;min-width:30px;height:30px;padding:0 8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.hc-btn:hover{background:rgba(201,168,76,0.3)}
+/* sidebar filter + archive buttons */
+.video-filter-toggle,.archive-btn{width:100%;margin-top:10px;background:rgba(255,253,247,0.7);color:#5a3f17;border:1px solid rgba(138,94,18,0.4);border-radius:9px;padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;text-align:center}
+.video-filter-toggle:hover,.archive-btn:hover{background:rgba(255,253,247,0.95)}
+.video-filter-toggle.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.archive-btn{background:rgba(255,253,247,0.55)}
+/* share / print toolbar inside detail */
+.detail-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 18px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18)}
+.dt-label{font-size:13px;color:var(--text-light);font-weight:700;margin-inline-end:2px}
+.dt-btn{background:rgba(201,168,76,0.1);color:var(--gold-dark);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:7px 13px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.dt-btn:hover{background:rgba(201,168,76,0.22)}
+.dt-wa{background:rgba(37,211,102,0.14);color:#1c8a45;border-color:rgba(37,211,102,0.4)}
+.dt-print{margin-inline-start:auto}
+/* current-week video on homepage banner */
+.cwb-video{width:100%;max-width:680px;margin:8px auto 2px}
+/* archive grid */
+.archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:18px}
+.archive-item{display:flex;flex-direction:column;background:var(--parchment-light);border:1px solid rgba(201,168,76,0.2);border-radius:12px;overflow:hidden;cursor:pointer;text-align:start;font-family:inherit;padding:0;transition:transform .15s,box-shadow .15s}
+.archive-item:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,0.12)}
+.archive-thumb{position:relative;aspect-ratio:16/9;background:#000}
+.archive-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.archive-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;background:rgba(0,0,0,0.25);transition:background .2s}
+.archive-item:hover .archive-play{background:rgba(0,0,0,0.4)}
+.archive-meta{padding:12px 14px}
+.archive-name{font-family:'Frank Ruhl Libre',serif;font-size:18px;color:var(--brown);font-weight:700}
+.archive-date{font-size:12.5px;color:var(--text-light);margin-top:3px}
+/* back to top */
+.back-to-top{position:fixed;left:20px;bottom:74px;width:46px;height:46px;border-radius:50%;background:var(--gold);color:#2e2519;border:2px solid var(--gold-dark);font-size:20px;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(10px);transition:all .3s;z-index:95;box-shadow:0 4px 14px rgba(0,0,0,0.25)}
+.back-to-top.visible{opacity:1;pointer-events:auto;transform:none}
+/* toast */
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:var(--gold-light);padding:11px 22px;border-radius:24px;font-size:14px;font-weight:600;z-index:500;opacity:0;pointer-events:none;transition:all .3s;border:1px solid rgba(201,168,76,0.4)}
+.toast.show{opacity:1;transform:translateX(-50%)}
+/* (single light Jerusalem-stone theme — dark mode removed) */
+/* ===== Print: clean parsha sheet ===== */
+@media print{
+  .family-header,.sidebar,.sidebar-toggle,.site-footer,.detail-nav,.detail-back,.detail-toolbar,.lecture-block,.cwb-video,.back-to-top,.header-controls,.book-tabs,.toast{display:none!important}
+  body{padding:0!important;background:#fff!important}
+  .main{margin:0!important;zoom:1!important}
+  .detail-content{max-width:100%!important;padding:0 14px!important}
+  .detail-content,.detail-title,.detail-section h3,.detail-section p,.detail-section li,.detail-ref,.detail-badge,.detail-verse,.easy-explain,.commentary-card,.modern-section{color:#000!important;background:#fff!important}
+  *{box-shadow:none!important;text-shadow:none!important}
+}
+@media(max-width:768px){.header-controls{left:8px;gap:4px}.hc-btn{min-width:26px;height:26px;font-size:11px;padding:0 5px}}
+
+/* ============================================================
+   PROFESSIONAL DESIGN LAYER — "Illuminated Editorial"
+   ALL-LIGHT luxe · floating white surfaces · antique gold · no dark bands
+   ============================================================ */
+:root{
+  --paper:#fbf7ef; --paper-2:#fffefb; --card:#ffffff;
+  --ink:#33302a; --ink-soft:#857a68; --ink-faint:#b1a692;
+  --gold:#a9853a; --gold-deep:#7d5e1d; --gold-lt:#cdab63;
+  --gold-soft:rgba(169,133,58,0.09); --gold-line:rgba(169,133,58,0.28);
+  --line:#ece4d4;
+  --feature:#fffdf8; --tint:#f7efe1;
+  --fd:'Frank Ruhl Libre',serif; --fb:'Heebo','Noto Sans Hebrew',sans-serif;
+  --sh-sm:0 1px 2px rgba(51,48,42,0.05);
+  --sh-md:0 1px 3px rgba(51,48,42,0.05),0 10px 26px rgba(51,48,42,0.07);
+  --sh-lg:0 2px 6px rgba(51,48,42,0.05),0 22px 50px rgba(51,48,42,0.10);
+}
+body{font-family:var(--fb)!important;color:var(--ink)!important;
+  background:radial-gradient(140% 100% at 50% -15%, #fffdf7 0%, var(--paper) 58%) fixed !important;}
+::selection{background:rgba(169,133,58,0.20)}
+
+/* ---------- Header ---------- */
+.family-header{background:rgba(255,254,251,0.92)!important;backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line)!important;box-shadow:0 1px 0 var(--gold-line),0 6px 20px rgba(51,48,42,0.04)!important;height:50px!important}
+.family-header span{font-family:var(--fd)!important;color:var(--ink)!important;font-weight:700;font-size:17px;letter-spacing:.3px}
+.hc-btn{background:transparent!important;border:1px solid var(--line)!important;color:var(--ink-soft)!important}
+.hc-btn:hover{background:var(--gold-soft)!important;color:var(--gold-deep)!important}
+
+/* ---------- Sidebar ---------- */
+.sidebar{background:var(--paper-2)!important;box-shadow:-1px 0 0 var(--line),-18px 0 40px rgba(51,48,42,0.035)!important}
+.sidebar-header{background:transparent!important;border-bottom:1px solid var(--line)!important}
+.sidebar-logo{color:var(--ink)!important;font-family:var(--fd)!important}
+.sidebar-logo span{color:var(--ink-soft)!important;opacity:1!important}
+.search-box input{background:var(--paper)!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px}
+.search-box input::placeholder{color:var(--ink-faint)!important}
+.search-box input:focus{border-color:var(--gold)!important;background:#fff!important;box-shadow:0 0 0 3px var(--gold-soft)!important}
+.search-box svg{stroke:var(--ink-faint)}
+.book-tab{color:var(--ink-soft)!important;font-weight:600}
+.book-tab.active{color:var(--gold-deep)!important;background:var(--gold-soft)!important;border-bottom:2px solid var(--gold)!important}
+.parsha-item{border-right:2px solid transparent}
+.parsha-item:hover{background:var(--gold-soft)!important;border-right-color:var(--gold-line)!important}
+.parsha-item.active{background:var(--gold-soft)!important;border-right-color:var(--gold)!important}
+.parsha-item-name{color:var(--ink)!important;font-family:var(--fd)!important;font-weight:600}
+.parsha-item.active .parsha-item-name{color:var(--gold-deep)!important}
+.parsha-item-ref{color:var(--ink-faint)!important}
+.parsha-num{background:#fff!important;border:1px solid var(--line)!important;color:var(--gold-deep)!important;box-shadow:none!important}
+.parsha-item.active .parsha-num{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
+.parsha-item.has-video .parsha-num{box-shadow:0 0 0 2px var(--gold-soft)!important}
+.parsha-item.current-week::after{background:var(--gold)!important;color:#fff!important;font-family:var(--fb)}
+.vid-ico{filter:none!important}
+.video-filter-toggle,.archive-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px;box-shadow:var(--sh-sm)}
+.video-filter-toggle:hover,.archive-btn:hover{background:var(--gold-soft)!important;border-color:var(--gold-line)!important}
+.video-filter-toggle.active{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
+
+/* ---------- Hero (light, illuminated title page) ---------- */
+.hero{background:linear-gradient(180deg,#fffdf7 0%,#f6eede 100%)!important;
+  padding:84px 64px 72px!important;position:relative;border-bottom:1px solid var(--line)!important;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);
+  width:520px;height:520px;background:radial-gradient(circle,rgba(169,133,58,0.10),transparent 65%);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:18px;border:1px solid var(--gold-line);border-radius:4px;pointer-events:none}
+.hero-content{position:relative;z-index:1}
+.hero h1{font-family:var(--fd)!important;color:var(--ink)!important;font-weight:800!important;
+  font-size:clamp(36px,5.2vw,58px)!important;text-shadow:none!important;letter-spacing:.3px;line-height:1.15}
+.hero h1::after{content:"";display:block;width:64px;height:3px;background:linear-gradient(90deg,var(--gold),transparent);margin:18px 0 0;border-radius:2px}
+.hero p{color:var(--ink-soft)!important;font-weight:300}
+.hero-ornament{color:var(--gold)!important;opacity:0.07!important}
+
+/* ---------- Current-week banner (premium white feature card) ---------- */
+.current-week-banner{background:var(--card)!important;border:1px solid var(--line)!important;border-top:3px solid var(--gold)!important;
+  border-radius:18px!important;box-shadow:var(--sh-lg)!important;padding:34px 40px!important}
+.cwb-badge{background:var(--gold-soft)!important;color:var(--gold-deep)!important;border:1px solid var(--gold-line)!important;letter-spacing:2px;font-weight:700;font-size:11.5px}
+.cwb-name{color:var(--ink)!important;font-family:var(--fd)!important}
+.cwb-ref{color:var(--gold-deep)!important}
+.cwb-summary{color:var(--ink-soft)!important}
+.cwb-btn{font-family:var(--fb)!important;border-radius:11px}
+.cwb-btn-watch{background:var(--gold)!important;color:#fff!important;border:0!important;box-shadow:0 4px 14px rgba(169,133,58,0.28)}
+
+/* ---------- Book sections ---------- */
+.book-title{font-family:var(--fd)!important;color:var(--ink)!important;border-color:var(--gold)!important}
+.book-subtitle{color:var(--ink-soft)!important}
+
+/* ---------- Parsha cards (floating gallery) ---------- */
+.parsha-card{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:16px!important;
+  box-shadow:var(--sh-sm)!important;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s!important}
+.parsha-card:hover{transform:translateY(-6px)!important;box-shadow:var(--sh-lg)!important;border-color:var(--gold-line)!important}
+.parsha-card.current-week-card{border-color:var(--gold)!important;box-shadow:0 2px 6px rgba(51,48,42,0.05),0 14px 34px rgba(169,133,58,0.18)!important}
+.parsha-card-title{font-family:var(--fd)!important;color:var(--ink)!important}
+.parsha-card-ref{color:var(--ink-soft)!important}
+.parsha-card-num{color:var(--gold-deep)!important;background:var(--gold-soft)!important}
+.parsha-card-summary{color:var(--ink-soft)!important}
+
+/* ---------- Detail / reading ---------- */
+.detail-badge{background:var(--gold-soft)!important;color:var(--gold-deep)!important;border:1px solid var(--gold-line)!important;letter-spacing:1px}
+.detail-title{font-family:var(--fd)!important;color:var(--ink)!important}
+.detail-ref{color:var(--gold-deep)!important}
+.detail-section h3{font-family:var(--fd)!important;color:var(--ink)!important}
+.detail-section h3::before{content:"";display:inline-block;width:22px;height:2px;background:var(--gold);vertical-align:middle;margin-inline-end:11px;margin-bottom:6px;border-radius:2px}
+.detail-section p,.detail-section li{color:var(--ink)}
+.detail-verse{background:linear-gradient(135deg,var(--gold-soft),rgba(169,133,58,0.03))!important;border-right:3px solid var(--gold)!important;font-family:var(--fd);color:var(--ink)}
+.detail-verse-ref{color:var(--gold-deep)!important}
+.easy-explain{background:var(--gold-soft)!important;border:1px solid var(--gold-line)!important}
+.commentary-card{background:#fff!important;border:1px solid var(--line)!important;border-right:3px solid var(--gold)!important;box-shadow:var(--sh-sm)}
+.source-name{color:var(--gold-deep)!important;font-family:var(--fd)}
+.modern-section{background:var(--gold-soft)!important;border:1px solid var(--gold-line)!important}
+.detail-back{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px;box-shadow:var(--sh-sm)}
+.detail-back:hover{background:var(--gold-soft)!important;border-color:var(--gold-line)!important}
+.detail-nav{border-top:1px solid var(--line)!important}
+.detail-nav button{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px;box-shadow:var(--sh-sm)}
+.detail-nav button:hover{background:var(--gold-soft)!important;border-color:var(--gold)!important}
+
+/* ---------- Lecture / video ---------- */
+.lecture-caption{color:var(--ink)!important;font-family:var(--fd)}
+.lecture-date{color:var(--ink-soft)!important}
+.video-embed{border-radius:12px;box-shadow:var(--sh-md)}
+.year-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:10px;font-family:var(--fb);box-shadow:var(--sh-sm)}
+.year-btn.active{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
+.detail-toolbar{border-bottom:1px solid var(--line)!important}
+.dt-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important}
+.dt-label{color:var(--ink-soft)!important}
+
+/* ---------- Archive ---------- */
+.archive-item{background:var(--card)!important;border:1px solid var(--line)!important;box-shadow:var(--sh-sm)}
+.archive-item:hover{box-shadow:var(--sh-md)}
+.archive-name{font-family:var(--fd)!important;color:var(--ink)!important}
+.archive-date{color:var(--ink-soft)!important}
+
+/* ---------- Footer (light) ---------- */
+.site-footer{background:var(--paper-2)!important;border-top:1px solid var(--gold-line)!important;box-shadow:0 -1px 0 var(--line),0 -8px 24px rgba(51,48,42,0.03)!important}
+.footer-credit{color:var(--ink)!important;font-family:var(--fd)!important}
+.footer-company{color:var(--ink-soft)!important}
+.footer-logo{filter:brightness(0) saturate(100%) invert(54%) sepia(40%) saturate(540%) hue-rotate(2deg) brightness(92%) contrast(88%)}
+
+/* ---------- Misc ---------- */
+.back-to-top{background:#fff!important;color:var(--gold-deep)!important;border:1px solid var(--gold)!important;box-shadow:var(--sh-md)!important}
+.back-to-top:hover{background:var(--gold-soft)!important}
+.toast{background:#fff!important;color:var(--ink)!important;border:1px solid var(--gold-line)!important;box-shadow:var(--sh-lg)!important}
+.sidebar-toggle{background:#fff!important;border:2px solid var(--gold)!important;box-shadow:var(--sh-md)!important}
+.sidebar-toggle svg{stroke:var(--gold-deep)!important}
+.header-emblem .menorah{stroke:var(--gold-deep)!important}
+
 </style>
 </head>
 <body class="sidebar-open">
@@ -600,7 +822,12 @@ else{document.addEventListener('DOMContentLoaded',function(){document.getElement
 
 <!-- Family Header -->
 <div class="family-header">
+  <div class="header-emblem" title="מדינת ישראל" aria-label="מדינת ישראל"><svg class="menorah" viewBox="0 0 100 90" width="20" height="18" fill="none" stroke="#8a5e12" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 74 V30"/><path d="M38 30 Q38 54 50 54"/><path d="M62 30 Q62 54 50 54"/><path d="M26 30 Q26 49 50 49"/><path d="M74 30 Q74 49 50 49"/><path d="M14 30 Q14 44 50 44"/><path d="M86 30 Q86 44 50 44"/><path d="M37 74 H63"/><path d="M44 81 H56"/></svg>&nbsp;<svg viewBox="0 0 55 40" width="27" height="19" aria-hidden="true" style="border:1px solid rgba(0,0,0,0.12);border-radius:2px;display:block"><rect width="55" height="40" fill="#fff"/><rect y="6" width="55" height="5" fill="#0038b8"/><rect y="29" width="55" height="5" fill="#0038b8"/><g fill="none" stroke="#0038b8" stroke-width="1.6"><path d="M27.5 13.8 L21.6 23.6 L33.4 23.6 Z"/><path d="M27.5 26.2 L21.6 16.4 L33.4 16.4 Z"/></g></svg></div>
   <span>פרשת השבוע של משפחת כהן</span>
+  <div class="header-controls">
+    <button class="hc-btn" onclick="adjustFont(-1)" title="הקטן טקסט" aria-label="הקטן טקסט">א−</button>
+    <button class="hc-btn" onclick="adjustFont(1)" title="הגדל טקסט" aria-label="הגדל טקסט">א+</button>
+  </div>
 </div>
 
 <!-- Sidebar Toggle -->
@@ -623,34 +850,19 @@ else{document.addEventListener('DOMContentLoaded',function(){document.getElement
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
     </div>
+    <button class="video-filter-toggle" id="videoFilterToggle" onclick="toggleVideoFilter()" aria-pressed="false">🎥 רק פרשות עם שיעור</button>
+    <button class="archive-btn" onclick="showArchive()">🎬 כל השיעורים</button>
   </div>
   <div class="book-tabs" id="bookTabs"></div>
   <div class="parsha-list" id="parshaList"></div>
 </nav>
 
-<!-- Detail Overlay -->
-<div class="detail-overlay" id="detailOverlay" onclick="closeDetail()"></div>
-<div class="detail-panel" id="detailPanel">
-  <div class="detail-close">
-    <button onclick="closeDetail()">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-  </div>
-  <div class="detail-content" id="detailContent"></div>
-  <div class="detail-nav">
-    <button id="prevBtn" onclick="navigateParsha(-1)">
-      <span>→</span> הפרשה הקודמת
-    </button>
-    <button id="nextBtn" onclick="navigateParsha(1)">
-      הפרשה הבאה <span>←</span>
-    </button>
-  </div>
-</div>
+<!-- Detail renders inline inside #mainContent (master-detail) -->
 
 <!-- Main Content -->
 <main class="main" id="mainContent"></main>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="חזרה למעלה" title="חזרה למעלה">↑</button>
 
 <!-- Footer -->
 <footer class="site-footer" id="siteFooter">
@@ -1403,35 +1615,19 @@ const EXTRA = {
 
 // ========== PARSHA SCHEDULE (approximate Shabbat dates for 5786/2025-2026) ==========
 const PARSHA_SCHEDULE = [
-  {id:1,start:'2025-10-18'},{id:2,start:'2025-10-25'},{id:3,start:'2025-11-01'},{id:4,start:'2025-11-08'},
-  {id:5,start:'2025-11-15'},{id:6,start:'2025-11-22'},{id:7,start:'2025-11-29'},{id:8,start:'2025-12-06'},
-  {id:9,start:'2025-12-13'},{id:10,start:'2025-12-20'},{id:11,start:'2025-12-27'},{id:12,start:'2026-01-03'},
-  {id:13,start:'2026-01-10'},{id:14,start:'2026-01-17'},{id:15,start:'2026-01-24'},{id:16,start:'2026-01-31'},
-  {id:17,start:'2026-02-07'},{id:18,start:'2026-02-14'},{id:19,start:'2026-02-21'},{id:20,start:'2026-02-28'},
-  {id:21,start:'2026-03-07'},{id:22,start:'2026-03-14'},{id:23,start:'2026-03-21'},{id:24,start:'2026-04-04'},
-  {id:25,start:'2026-04-11'},{id:26,start:'2026-04-18'},{id:27,start:'2026-04-25'},{id:28,start:'2026-05-02'},
-  {id:29,start:'2026-05-09'},{id:30,start:'2026-05-16'},{id:31,start:'2026-05-23'},{id:32,start:'2026-05-30'},
-  {id:33,start:'2026-06-06'},{id:34,start:'2026-06-13'},{id:35,start:'2026-06-20'},{id:36,start:'2026-06-27'},
-  {id:37,start:'2026-07-04'},{id:38,start:'2026-07-11'},{id:39,start:'2026-07-18'},{id:40,start:'2026-07-25'},
-  {id:41,start:'2026-08-01'},{id:42,start:'2026-08-08'},{id:43,start:'2026-08-15'},{id:44,start:'2026-08-22'},
-  {id:45,start:'2026-08-29'},{id:46,start:'2026-09-05'},{id:47,start:'2026-09-12'},{id:48,start:'2026-09-19'},
-  {id:49,start:'2026-09-26'},{id:50,start:'2026-10-03'},{id:51,start:'2026-10-04'},{id:52,start:'2026-10-04'},
-  {id:53,start:'2026-10-05'},{id:54,start:'2026-10-06'},
+{start:'2025-09-27',id:52},{start:'2025-10-04',id:53},{start:'2025-10-18',id:1},{start:'2025-10-25',id:2},{start:'2025-11-01',id:3},{start:'2025-11-08',id:4},{start:'2025-11-15',id:5},{start:'2025-11-22',id:6},{start:'2025-11-29',id:7},{start:'2025-12-06',id:8},{start:'2025-12-13',id:9},{start:'2025-12-20',id:10},{start:'2025-12-27',id:11},{start:'2026-01-03',id:12},{start:'2026-01-10',id:13},{start:'2026-01-17',id:14},{start:'2026-01-24',id:15},{start:'2026-01-31',id:16},{start:'2026-02-07',id:17},{start:'2026-02-14',id:18},{start:'2026-02-21',id:19},{start:'2026-02-28',id:20},{start:'2026-03-07',id:21},{start:'2026-03-14',id:22},{start:'2026-03-21',id:24},{start:'2026-03-28',id:25},{start:'2026-04-11',id:26},{start:'2026-04-18',id:27},{start:'2026-04-25',id:29},{start:'2026-05-02',id:31},{start:'2026-05-09',id:32},{start:'2026-05-16',id:34},{start:'2026-05-23',id:35},{start:'2026-05-30',id:36},{start:'2026-06-06',id:37},{start:'2026-06-13',id:38},{start:'2026-06-20',id:39},{start:'2026-06-27',id:40},{start:'2026-07-04',id:41},{start:'2026-07-11',id:42},{start:'2026-07-18',id:44},{start:'2026-07-25',id:45},{start:'2026-08-01',id:46},{start:'2026-08-08',id:47},{start:'2026-08-15',id:48},{start:'2026-08-22',id:49},{start:'2026-08-29',id:50},{start:'2026-09-05',id:51},{start:'2026-09-19',id:53},{start:'2026-10-10',id:1},{start:'2026-10-17',id:2},{start:'2026-10-24',id:3},{start:'2026-10-31',id:4},{start:'2026-11-07',id:5},{start:'2026-11-14',id:6},{start:'2026-11-21',id:7},{start:'2026-11-28',id:8},{start:'2026-12-05',id:9},{start:'2026-12-12',id:10},{start:'2026-12-19',id:11},{start:'2026-12-26',id:12},{start:'2027-01-02',id:13},{start:'2027-01-09',id:14},{start:'2027-01-16',id:15},{start:'2027-01-23',id:16},{start:'2027-01-30',id:17},{start:'2027-02-06',id:18},{start:'2027-02-13',id:19},{start:'2027-02-20',id:20},{start:'2027-02-27',id:21},{start:'2027-03-06',id:22},{start:'2027-03-13',id:23},{start:'2027-03-20',id:24},{start:'2027-03-27',id:25},{start:'2027-04-03',id:26},{start:'2027-04-10',id:27},{start:'2027-04-17',id:28},{start:'2027-05-01',id:29},{start:'2027-05-08',id:30},{start:'2027-05-15',id:31},{start:'2027-05-22',id:32},{start:'2027-05-29',id:33},{start:'2027-06-05',id:34},{start:'2027-06-12',id:35},{start:'2027-06-19',id:36},{start:'2027-06-26',id:37},{start:'2027-07-03',id:38},{start:'2027-07-10',id:39},{start:'2027-07-17',id:40},{start:'2027-07-24',id:41},{start:'2027-07-31',id:42},{start:'2027-08-07',id:44},{start:'2027-08-14',id:45},{start:'2027-08-21',id:46},{start:'2027-08-28',id:47},{start:'2027-09-04',id:48},{start:'2027-09-11',id:49},{start:'2027-09-18',id:50},{start:'2027-09-25',id:51}
 ];
 
 function getCurrentParshaId(){
   const today = new Date();
-  // מיום שישי ואילך — מציגים את פרשת השבוע הבא
-  const day = today.getDay(); // 0=Sun..6=Sat
-  if(day >= 5){ // Friday(5) or Saturday(6)
-    today.setDate(today.getDate() + (7 - day)); // skip to next Sunday
-  }
-  const todayStr = today.toISOString().slice(0,10);
-  let currentId = 1;
+  const todayStr = today.getFullYear() + '-' +
+    String(today.getMonth()+1).padStart(2,'0') + '-' +
+    String(today.getDate()).padStart(2,'0');
+  // פרשת השבוע = הפרשה של השבת הקרובה (ביום שבת — אותה שבת)
   for(let i = 0; i < PARSHA_SCHEDULE.length; i++){
-    if(todayStr >= PARSHA_SCHEDULE[i].start) currentId = PARSHA_SCHEDULE[i].id;
+    if(PARSHA_SCHEDULE[i].start >= todayStr) return PARSHA_SCHEDULE[i].id;
   }
-  return currentId;
+  return PARSHA_SCHEDULE[PARSHA_SCHEDULE.length - 1].id;
 }
 // Gustave Doré Bible Illustrations (1866) - Public Domain
 const DORE_BASE = 'https://www.creationism.org/images/DoreBibleIllus/';
@@ -1492,6 +1688,88 @@ const PARSHA_IMAGES = {
 54:{img:DORE_BASE+'dJos0515Dore_TheAngelAppearingToJoshua.jpg',caption:'וזאת הברכה — גוסטב דורה, 1866'},
 };
 
+// ====== שיעורי וידאו (יוטיוב) לכל פרשה ======
+// מפתח = id הפרשה. ערך = { url, date:'YYYY-MM-DD' (מועד מסירת השיעור), dateHe? }
+// פרשה מחוברת -> השתמשו ב-id של הפרשה הראשונה. הסרטון יוצג רק כשקיים קישור.
+const PARSHA_VIDEOS_FALLBACK = {
+  19: [{url:'https://youtu.be/DQYb25UfqzM',date:'2026-02-21',dateHe:'ד׳ אדר תשפ״ו',year:'תשפ״ו',visible:true}],
+  20: [{url:'https://youtu.be/cDcJFV1y-cg',date:'2026-02-28',dateHe:'י״א אדר תשפ״ו',year:'תשפ״ו',visible:true}],
+  22: [{url:'https://youtu.be/zoKZSrphrvs',date:'2026-03-14',dateHe:'כ״ה אדר תשפ״ו',year:'תשפ״ו',visible:true}],
+  23: [{url:'https://youtu.be/zoKZSrphrvs',date:'2026-03-14',dateHe:'כ״ה אדר תשפ״ו',year:'תשפ״ו',visible:true}],
+  26: [{url:'https://youtu.be/ZkGfZRKgJ5A',date:'2026-04-11',dateHe:'כ״ד ניסן תשפ״ו',year:'תשפ״ו',visible:true}],
+  27: [{url:'https://youtu.be/jH7lAQ-oEQ4',date:'2026-04-18',dateHe:'א׳ אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  28: [{url:'https://youtu.be/jH7lAQ-oEQ4',date:'2026-04-18',dateHe:'א׳ אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  29: [{url:'https://youtu.be/O8Lg6awmURU',date:'2026-04-25',dateHe:'ח׳ אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  30: [{url:'https://youtu.be/O8Lg6awmURU',date:'2026-04-25',dateHe:'ח׳ אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  31: [{url:'https://youtu.be/FHdJFw7yPik',date:'2026-05-02',dateHe:'ט״ו אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  32: [{url:'https://youtu.be/ltkM-sgNRTY',date:'2026-05-09',dateHe:'כ״ב אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  33: [{url:'https://youtu.be/ltkM-sgNRTY',date:'2026-05-09',dateHe:'כ״ב אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  34: [{url:'https://youtu.be/IXRjBFfsKiw',date:'2026-05-16',dateHe:'כ״ט אייר תשפ״ו',year:'תשפ״ו',visible:true}],
+  35: [{url:'https://youtu.be/UpRopiyVDbQ',date:'2026-05-23',dateHe:'ז׳ סיון תשפ״ו',year:'תשפ״ו',visible:true}],
+  36: [{url:'https://youtu.be/79VeWJsmaS0',date:'2026-05-30',dateHe:'י״ד סיון תשפ״ו',year:'תשפ״ו',visible:true}],
+  37: [{url:'https://youtu.be/nK3I6lusFs4',date:'2026-06-06',dateHe:'כ״א סיון תשפ״ו',year:'תשפ״ו',visible:true}],
+  38: [{url:'https://youtu.be/AIl9oofqw0I',date:'2026-06-13',dateHe:'כ״ח סיון תשפ״ו',year:'תשפ״ו',visible:true}],
+  39: [{url:'https://youtu.be/x69J2CowztQ',date:'2026-06-20',dateHe:'ה׳ תמוז תשפ״ו',year:'תשפ״ו',visible:true}]
+};
+let PARSHA_VIDEOS = JSON.parse(JSON.stringify(PARSHA_VIDEOS_FALLBACK));
+function getYouTubeId(v){
+  if(!v) return null;
+  v = String(v).trim();
+  if(/^[A-Za-z0-9_-]{11}$/.test(v)) return v;
+  const m = v.match(/(?:youtu\.be\/|[?&]v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+function fmtGreg(iso){ if(!iso) return ''; const p = iso.split('-'); return (+p[2]) + '.' + (+p[1]) + '.' + p[0]; }
+
+// ===== Multi-year lecture helpers (data model: PARSHA_VIDEOS[id] = [ {url,date,dateHe,year,visible} ]) =====
+function lecturesFor(id){ const v = PARSHA_VIDEOS[id]; return Array.isArray(v) ? v : (v && v.url ? [v] : []); }
+function visibleLecturesFor(id){
+  return lecturesFor(id)
+    .filter(l => l && l.visible !== false && getYouTubeId(l.url))
+    .sort((a,b) => (a.date < b.date ? 1 : (a.date > b.date ? -1 : 0)));
+}
+function hasVisibleVideo(id){ return visibleLecturesFor(id).length > 0; }
+function lectureBtnLabel(l){
+  const greg = l.date ? l.date.slice(0,4) : '';
+  return (l.year || '') + ((l.year && greg) ? ' · ' : '') + greg;
+}
+function lecturePlayerHTML(p, l){
+  const vid = getYouTubeId(l.url); if(!vid) return '';
+  const heDate = l.dateHe || (window.gregToHebrew ? window.gregToHebrew(l.date) : '');
+  const dateLine = l.date ? `<div class="lecture-date">📅 ${heDate ? heDate + ' · ' : ''}${fmtGreg(l.date)}</div>` : '';
+  return `<div class="video-embed"><iframe src="https://www.youtube.com/embed/${vid}?rel=0&playsinline=1" title="שיעור לפרשת ${p.name}" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <div class="lecture-caption">🎥 שיעור לפרשת ${p.name}</div>
+      ${dateLine}`;
+}
+function lectureSectionHTML(p){
+  const lecs = visibleLecturesFor(p.id);
+  if(!lecs.length) return '';
+  const tabs = lecs.length > 1
+    ? `<div class="year-tabs">${lecs.map((l,i)=>`<button class="year-btn${i===0?' active':''}" onclick="showLectureYear(${p.id},${i},this)">${lectureBtnLabel(l)}</button>`).join('')}</div>`
+    : '';
+  return `<div class="lecture-block" id="lectureBlock-${p.id}">${tabs}<div class="lecture-player" id="lecturePlayer-${p.id}">${lecturePlayerHTML(p, lecs[0])}</div></div>`;
+}
+function showLectureYear(id, idx, btn){
+  const p = PARSHAS.find(x => x.id === id); if(!p) return;
+  const lecs = visibleLecturesFor(id); const l = lecs[idx]; if(!l) return;
+  const holder = document.getElementById('lecturePlayer-' + id);
+  if(holder) holder.innerHTML = lecturePlayerHTML(p, l);
+  if(btn){ const par = btn.parentElement; par.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+}
+function loadVideosJson(){
+  fetch('videos.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if(data && typeof data === 'object' && !Array.isArray(data)){
+        PARSHA_VIDEOS = data;
+        renderSidebar();
+        if(currentParsha === null) renderMain();
+        else if(typeof currentParsha === 'number' && currentParsha > 0) window.openDetail(currentParsha);
+      }
+    })
+    .catch(function(){ /* offline / file:// -> baked-in fallback stays */ });
+}
+
 const EASY_EXPLAIN = {
 1:`פרשת בראשית היא הפרשה הראשונה בתורה ומספרת את הסיפור הכי גדול שיש — איך הכל התחיל. ה' ברא את העולם בשישה ימים: אור, שמיים, ים ויבשה, כוכבים, בעלי חיים, ובסוף — את האדם. ביום השביעי ה' נח, ומכאן מגיע רעיון השבת. אדם וחוה חיים בגן עדן, אבל אוכלים מהפרי האסור ומגורשים. אחר כך קין הורג את הבל אחיו מקנאה. הפרשה מלמדת אותנו שלכל בחירה יש תוצאות, שקנאה הורסת, ושהאחריות על העולם היא שלנו. היום, כשאנחנו מתמודדים עם שינויי אקלים ואתגרים סביבתיים, הציווי "לעבדה ולשמרה" רלוונטי יותר מתמיד — העולם הזה ניתן לנו בפיקדון.`,
 2:`פרשת נח מספרת על עולם שהשתבש לגמרי. אנשים היו אלימים וגנבו אחד מהשני, והמצב היה כל כך גרוע שה' החליט להביא מבול. אדם אחד בלבד היה צדיק — נח. ה' ציווה אותו לבנות תיבה ענקית ולהכניס בה מכל חיה זוג, את משפחתו, ולהציל את החיים. המבול ירד ארבעים יום, ואחריו נח שלח יונה שחזרה עם עלה של זית — סימן שהעולם מתחדש. ה' הבטיח לא להשמיד עוד את העולם, ונתן את הקשת בענן כסימן. אחר כך בני אדם ניסו לבנות מגדל שמגיע לשמיים (מגדל בבל), וה' בלבל את שפתם. הלקח: גם כשהעולם נראה אבוד, תמיד אפשר להתחיל מחדש. היום, כשמשברים גלובליים מאיימים, צריך להיות כמו נח — לפעול גם כשאף אחד אחר לא מבין למה.`,
@@ -1549,9 +1827,10 @@ const EASY_EXPLAIN = {
 54:`הפרשה האחרונה בתורה — ונקראת בשמחת תורה. משה מברך כל שבט בנפרד, ברכה מותאמת אישית: ליהודה — מלכות, ללוי — תורה, לבנימין — חיבה, ליוסף — שפע. ואז — הרגע האחרון. משה עולה להר נבו, ומשם ה' מראה לו את כל הארץ: הגלעד, נפתלי, אפרים, יהודה, הנגב, ירדן יריחו. "זאת הארץ אשר נשבעתי לאברהם ליצחק וליעקב — הראיתיך בעיניך ושמה לא תעבור." משה מת. ה' קוברו בעצמו, ואיש לא יודע איפה הקבר. "ולא קם נביא עוד בישראל כמשה." ומיד — חוזרים ל"בראשית ברא" — המחזוריות הנצחית. שמחת תורה 2023 — 7 באוקטובר — יום שנחרת לנצח. הפרשה מלמדת שגם כשהחלום לא מתממש בשלמות, הוא שווה. משה לא נכנס לארץ — אבל הביא את העם עד השער.`
 };
 
-const currentWeekParshaId = getCurrentParshaId();
+let currentWeekParshaId = getCurrentParshaId();
 
 let currentParsha = null;
+let overviewScroll = 0;
 let currentBook = 'all';
 let filteredParshas = [...PARSHAS];
 
@@ -1569,6 +1848,16 @@ function init(){
     }
   });
 }
+
+// מאפשר למודול Hebcal (חישוב אוטומטי) לעדכן את פרשת השבוע ולרענן את התצוגה
+window.setCurrentWeekParsha = function(id){
+  if(!id || id < 1 || id > 54 || id === currentWeekParshaId) return;
+  currentWeekParshaId = id;
+  renderMain();
+  renderSidebar();
+  if(currentParsha) openDetail(currentParsha);
+};
+window.__onHebcalReady = function(){ if(currentParsha) openDetail(currentParsha); };
 
 // ========== SIDEBAR ==========
 function renderBookTabs(){
@@ -1600,7 +1889,8 @@ function applyFilters(query){
   filteredParshas = PARSHAS.filter(p => {
     const bookMatch = currentBook === 'all' || p.book === currentBook;
     const queryMatch = !query || p.name.includes(query) || p.ref.includes(query) || p.summary.includes(query);
-    return bookMatch && queryMatch;
+    const videoMatch = !window.videoOnlyMode || hasVisibleVideo(p.id);
+    return bookMatch && queryMatch && videoMatch;
   });
   renderSidebar();
   renderMain();
@@ -1608,16 +1898,19 @@ function applyFilters(query){
 
 function renderSidebar(){
   const list = document.getElementById('parshaList');
-  list.innerHTML = filteredParshas.map(p => `
-    <div class="parsha-item ${currentParsha === p.id ? 'active' : ''} ${p.id === currentWeekParshaId ? 'current-week' : ''}"
+  list.innerHTML = filteredParshas.map(p => {
+    const hasVideo = hasVisibleVideo(p.id);
+    return `
+    <div class="parsha-item ${currentParsha === p.id ? 'active' : ''} ${p.id === currentWeekParshaId ? 'current-week' : ''} ${hasVideo ? 'has-video' : ''}"
          onclick="openDetail(${p.id})" data-id="${p.id}">
       <div class="parsha-num">${p.id}</div>
       <div>
-        <div class="parsha-item-name">${p.name}</div>
+        <div class="parsha-item-name">${p.name}${hasVideo ? ' <span class="vid-ico" title="קיים שיעור וידאו">🎥</span>' : ''}</div>
         <div class="parsha-item-ref">${p.ref}</div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
   // Scroll to current week in sidebar
   const cwEl = list.querySelector('.current-week');
   if(cwEl && !currentParsha) cwEl.scrollIntoView({block:'center',behavior:'smooth'});
@@ -1645,10 +1938,13 @@ function renderMain(){
       </div>
     </div>
     <div class="current-week-banner" onclick="openDetail(${currentWeekParshaId})">
-      <div class="current-week-badge">${cwExtra.emoji || '📖'} פרשת השבוע</div>
-      <div class="current-week-info">
-        <h3>פרשת ${cwp ? cwp.name : ''}</h3>
-        <p>${cwp ? cwp.ref : ''} — לחצו לקריאה מלאה</p>
+      <div class="cwb-badge">${cwExtra.emoji || '📖'} פרשת השבוע</div>
+      <h2 class="cwb-name">פרשת ${cwp ? cwp.name : ''}</h2>
+      <div class="cwb-ref">${cwp ? cwp.ref : ''}</div>
+      <p class="cwb-summary">${cwp ? cwp.summary : ''}</p>
+      ${(() => { const ls = visibleLecturesFor(currentWeekParshaId); const cwv = ls.length ? getYouTubeId(ls[0].url) : null; return cwv ? `<div class="cwb-video" onclick="event.stopPropagation()"><div class="video-embed"><iframe src="https://www.youtube.com/embed/${cwv}?rel=0&playsinline=1" title="שיעור השבוע" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div></div>` : ''; })()}
+      <div class="cwb-actions">
+        <button class="cwb-btn cwb-btn-watch" onclick="event.stopPropagation();openDetail(${currentWeekParshaId})">פתח פרשה →</button>
       </div>
     </div>
   `;
@@ -1705,6 +2001,7 @@ function renderMain(){
 
 // ========== DETAIL VIEW ==========
 function openDetail(id){
+  if(currentParsha === null) overviewScroll = window.scrollY;
   currentParsha = id;
   const p = PARSHAS.find(x => x.id === id);
   if(!p) return;
@@ -1714,8 +2011,10 @@ function openDetail(id){
 
   const ex = EXTRA[p.id] || {};
   const isCurrent = p.id === currentWeekParshaId;
-  const content = document.getElementById('detailContent');
+  const content = document.getElementById('mainContent');
   content.innerHTML = `
+    <div class="detail-content main-fade">
+    <button class="detail-back" onclick="closeDetail()"><span>→</span> חזרה לכל הפרשות</button>
     ${isCurrent ? '<div style="background:var(--gold);color:var(--navy);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:16px;display:inline-block">פרשת השבוע הנוכחית</div>' : ''}
     <div class="detail-badge">ספר ${bookHeb[p.book]} · פרשה ${p.id} מתוך 54</div>
     <div class="detail-hero-image" ${PARSHA_IMAGES[p.id] ? `style="background:url('${PARSHA_IMAGES[p.id].img}') center/cover"` : ''}>
@@ -1725,6 +2024,7 @@ function openDetail(id){
     ${PARSHA_IMAGES[p.id] ? `<div style="font-size:11px;color:var(--text-light);margin-bottom:12px;font-style:italic">${PARSHA_IMAGES[p.id].caption}</div>` : ''}
     <h1 class="detail-title">פרשת ${p.name}</h1>
     <div class="detail-ref">${p.ref}</div>
+    ${lectureSectionHTML(p)}
 
     ${EASY_EXPLAIN[p.id] ? `
     <div class="detail-section">
@@ -1774,26 +2074,23 @@ function openDetail(id){
         <p>${ex.modern}</p>
       </div>
     </div>` : ''}
+    <div class="detail-nav">
+      <button onclick="navigateParsha(-1)" ${id <= 1 ? 'disabled' : ''}><span>→</span> הפרשה הקודמת</button>
+      <button onclick="navigateParsha(1)" ${id >= 54 ? 'disabled' : ''}>הפרשה הבאה <span>←</span></button>
+    </div>
+    </div>
   `;
 
-  // Update nav buttons
-  document.getElementById('prevBtn').disabled = id <= 1;
-  document.getElementById('nextBtn').disabled = id >= 54;
-
-  // Show panel
-  document.getElementById('detailOverlay').classList.add('active');
-  document.getElementById('detailPanel').classList.add('active');
-  document.getElementById('detailPanel').scrollTop = 0;
-
-  // Update sidebar
+  // Reveal inline detail at top + sync sidebar
+  window.scrollTo(0, 0);
   renderSidebar();
 }
 
 function closeDetail(){
   currentParsha = null;
-  document.getElementById('detailOverlay').classList.remove('active');
-  document.getElementById('detailPanel').classList.remove('active');
+  renderMain();
   renderSidebar();
+  window.scrollTo(0, overviewScroll || 0);
 }
 
 function navigateParsha(dir){
@@ -1805,6 +2102,165 @@ function navigateParsha(dir){
 
 // Init
 document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<script type="module">
+(async () => {
+  try {
+    const { HDate, Sedra } = await import('https://esm.sh/@hebcal/core@5');
+    // מעצב תאריך עברי לכרטיס השיעור
+    window.gregToHebrew = (iso) => {
+      if(!iso) return '';
+      const p = iso.split('-').map(Number);
+      try { return new HDate(new Date(p[0], p[1]-1, p[2])).renderGematriya().normalize('NFKD').replace(/[֑-ׇ]/g,''); }
+      catch(e){ return ''; }
+    };
+    // חישוב פרשת השבוע (לוח ארץ-ישראל) — השבת הקרובה, דילוג על חגים
+    const idForToday = () => {
+      const d = new Date();
+      for(let i=0;i<6;i++){
+        const hd = new HDate(d);
+        const info = new Sedra(hd.getFullYear(), true).lookup(hd);
+        if(info && !info.chag && info.num != null) return Array.isArray(info.num) ? info.num[0] : info.num;
+        d.setDate(d.getDate()+7);
+      }
+      return null;
+    };
+    const id = idForToday();
+    if(id && typeof window.setCurrentWeekParsha === 'function') window.setCurrentWeekParsha(id);
+    if(typeof window.__onHebcalReady === 'function') window.__onHebcalReady();
+  } catch(e){ /* CDN/offline -> static fallback stands */ }
+})();
+</script>
+
+<script>
+/* ===== Enhancements: a11y, dark mode, filter, archive, share, hash routing, PWA ===== */
+(function(){
+  // ----- Font size (A+/A-) -----
+  var FONT_STEPS = [0.9, 1, 1.1, 1.25, 1.4];
+  function fontIdx(){
+    var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 1;
+    var i = FONT_STEPS.indexOf(v); return i < 0 ? 1 : i;
+  }
+  window.adjustFont = function(dir){
+    var idx = Math.max(0, Math.min(FONT_STEPS.length - 1, fontIdx() + dir));
+    var val = FONT_STEPS[idx];
+    document.documentElement.style.setProperty('--font-scale', val);
+    try { localStorage.setItem('parsha-font', val); } catch(e){}
+  };
+  // ----- Dark mode -----
+  function syncThemeIcon(){
+    var btn = document.getElementById('themeToggle');
+    if(btn) btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+  }
+  window.toggleTheme = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if(dark){ document.documentElement.removeAttribute('data-theme'); }
+    else { document.documentElement.setAttribute('data-theme','dark'); }
+    try { localStorage.setItem('parsha-theme', dark ? 'light' : 'dark'); } catch(e){}
+    syncThemeIcon();
+  };
+  // ----- Video-only filter -----
+  window.videoOnlyMode = false;
+  window.toggleVideoFilter = function(){
+    window.videoOnlyMode = !window.videoOnlyMode;
+    var btn = document.getElementById('videoFilterToggle');
+    if(btn){ btn.classList.toggle('active', window.videoOnlyMode); btn.setAttribute('aria-pressed', window.videoOnlyMode); }
+    applyFilters((document.getElementById('searchInput') || {}).value || '');
+  };
+  // ----- Toast -----
+  var toastTimer;
+  window.toast = function(msg){
+    var t = document.getElementById('appToast');
+    if(!t){ t = document.createElement('div'); t.id = 'appToast'; t.className = 'toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+  };
+  // ----- Share -----
+  window.shareParsha = function(type, id){
+    var p = PARSHAS.find(function(x){ return x.id === id; }); if(!p) return;
+    var url = location.origin + location.pathname + '#' + encodeURIComponent(p.name);
+    var text = 'פרשת ' + p.name + ' — פרשת השבוע של משפחת כהן';
+    if(type === 'whatsapp') window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank', 'noopener');
+    else if(type === 'telegram') window.open('https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '_blank', 'noopener');
+    else if(type === 'email') location.href = 'mailto:?subject=' + encodeURIComponent(text) + '&body=' + encodeURIComponent(text + '\n' + url);
+    else if(type === 'copy'){
+      (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject())
+        .then(function(){ window.toast('הקישור הועתק ✓'); })
+        .catch(function(){ window.prompt('העתק את הקישור:', url); });
+    }
+  };
+  function toolbarHTML(id){
+    return '<div class="detail-toolbar">' +
+      '<span class="dt-label">שיתוף:</span>' +
+      '<button class="dt-btn dt-wa" onclick="shareParsha(&quot;whatsapp&quot;,' + id + ')">וואטסאפ</button>' +
+      '<button class="dt-btn" onclick="shareParsha(&quot;telegram&quot;,' + id + ')">טלגרם</button>' +
+      '<button class="dt-btn" onclick="shareParsha(&quot;copy&quot;,' + id + ')">העתק קישור</button>' +
+      '<button class="dt-btn" onclick="shareParsha(&quot;email&quot;,' + id + ')">מייל</button>' +
+      '<button class="dt-btn dt-print" onclick="window.print()">🖨️ הדפס</button>' +
+    '</div>';
+  }
+  // ----- Wrap openDetail/closeDetail: hash routing + share toolbar -----
+  var _open = window.openDetail;
+  window.openDetail = function(id){
+    _open(id);
+    var p = PARSHAS.find(function(x){ return x.id === id; });
+    if(p){ var target = '#' + encodeURIComponent(p.name); if(location.hash !== target){ history.pushState(null, '', target); } }
+    var back = document.querySelector('#mainContent .detail-back');
+    if(back) back.insertAdjacentHTML('afterend', toolbarHTML(id));
+  };
+  var _close = window.closeDetail;
+  window.closeDetail = function(){
+    _close();
+    if(location.hash){ history.pushState(null, '', location.pathname + location.search); }
+  };
+  // ----- Archive (all lectures) -----
+  window.showArchive = function(){
+    if(currentParsha === null) overviewScroll = window.scrollY;
+    currentParsha = -1;
+    var seen = {}, items = [];
+    PARSHAS.forEach(function(p){
+      visibleLecturesFor(p.id).forEach(function(l){
+        var vid = getYouTubeId(l.url);
+        if(!vid || seen[vid]) return; seen[vid] = 1;
+        items.push({ id: p.id, name: p.name, date: l.date || '', dateHe: l.dateHe || '', year: l.year || '', vid: vid });
+      });
+    });
+    items.sort(function(a,b){ return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
+    document.getElementById('mainContent').innerHTML = '<div class="detail-content main-fade">' +
+      '<button class="detail-back" onclick="closeDetail()"><span>→</span> חזרה לכל הפרשות</button>' +
+      '<h1 class="detail-title">🎬 כל השיעורים</h1>' +
+      '<div class="detail-ref">' + items.length + ' שיעורים זמינים — מהחדש לישן</div>' +
+      '<div class="archive-grid">' + items.map(function(x){
+        return '<button class="archive-item" onclick="openDetail(' + x.id + ')">' +
+          '<div class="archive-thumb"><img src="https://i.ytimg.com/vi/' + x.vid + '/mqdefault.jpg" alt="" loading="lazy"><span class="archive-play">▶</span></div>' +
+          '<div class="archive-meta"><div class="archive-name">פרשת ' + x.name + '</div><div class="archive-date">' + (x.year ? x.year + ' · ' : '') + fmtGreg(x.date) + '</div></div>' +
+        '</button>';
+      }).join('') + '</div></div>';
+    renderSidebar();
+    window.scrollTo(0, 0);
+  };
+  // ----- Hash deep-linking -----
+  function openFromHash(){
+    var h = decodeURIComponent((location.hash || '').replace(/^#/, ''));
+    if(!h){ if(currentParsha !== null && currentParsha !== -1) window.closeDetail(); return; }
+    var p = PARSHAS.find(function(x){ return x.name === h; }) || PARSHAS.find(function(x){ return String(x.id) === h; });
+    if(p && p.id !== currentParsha) window.openDetail(p.id);
+  }
+  window.addEventListener('popstate', openFromHash);
+  // ----- Back to top -----
+  window.addEventListener('scroll', function(){
+    var b = document.getElementById('backToTop');
+    if(b) b.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  // ----- Init -----
+  function enhInit(){ syncThemeIcon(); loadVideosJson(); if(location.hash) openFromHash(); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enhInit); else enhInit();
+  // ----- PWA service worker -----
+  if('serviceWorker' in navigator && location.protocol !== 'file:'){
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+  }
+})();
 </script>
 
 <script>
