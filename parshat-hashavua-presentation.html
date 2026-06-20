@@ -674,186 +674,256 @@ html{scroll-behavior:smooth}
 @media(max-width:768px){.header-controls{left:8px;gap:4px}.hc-btn{min-width:26px;height:26px;font-size:11px;padding:0 5px}}
 
 /* ============================================================
-   PROFESSIONAL DESIGN LAYER — "Illuminated Editorial"
-   ALL-LIGHT luxe · floating white surfaces · antique gold · no dark bands
+   DESIGN LAYER v3 — "Torah Mantle" (מעיל תורה · תכלת וזהב)
+   cream parchment · royal techelet blue feature · antique gold · 3D buttons
    ============================================================ */
 :root{
-  --paper:#fbf7ef; --paper-2:#fffefb; --card:#ffffff;
-  --ink:#33302a; --ink-soft:#857a68; --ink-faint:#b1a692;
-  --gold:#a9853a; --gold-deep:#7d5e1d; --gold-lt:#cdab63;
-  --gold-soft:rgba(169,133,58,0.09); --gold-line:rgba(169,133,58,0.28);
-  --line:#ece4d4;
-  --feature:#fffdf8; --tint:#f7efe1;
+  --paper:#f4edde; --paper-2:#fbf5e8; --card:#fffdf7;
+  --ink:#2b2620; --ink-soft:#7d7160; --ink-faint:#a99c86;
+  --blue:#22456f; --blue-d:#16294a; --blue-lt:#3a6699;
+  --gold:#c2982f; --gold-deep:#8a6614; --gold-lt:#e6c878;
+  --gold-soft:rgba(194,152,47,0.11); --gold-line:rgba(194,152,47,0.32);
+  --line:#e7ddc6; --cream:#f1e3c0;
   --fd:'Frank Ruhl Libre',serif; --fb:'Heebo','Noto Sans Hebrew',sans-serif;
-  --sh-sm:0 1px 2px rgba(51,48,42,0.05);
-  --sh-md:0 1px 3px rgba(51,48,42,0.05),0 10px 26px rgba(51,48,42,0.07);
-  --sh-lg:0 2px 6px rgba(51,48,42,0.05),0 22px 50px rgba(51,48,42,0.10);
+  --sh-sm:0 1px 2px rgba(43,38,32,.05);
+  --sh-md:0 1px 3px rgba(43,38,32,.05),0 10px 26px rgba(43,38,32,.07);
+  --sh-lg:0 2px 6px rgba(43,38,32,.05),0 22px 50px rgba(43,38,32,.10);
 }
 body{font-family:var(--fb)!important;color:var(--ink)!important;
-  background:radial-gradient(140% 100% at 50% -15%, #fffdf7 0%, var(--paper) 58%) fixed !important;}
-::selection{background:rgba(169,133,58,0.20)}
+  background:radial-gradient(135% 95% at 50% -12%,#f9f2e3 0%,var(--paper) 60%) fixed !important;}
+::selection{background:rgba(194,152,47,.22)}
 
-/* ---------- Header ---------- */
-.family-header{background:rgba(255,254,251,0.92)!important;backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--line)!important;box-shadow:0 1px 0 var(--gold-line),0 6px 20px rgba(51,48,42,0.04)!important;height:50px!important}
-.family-header span{font-family:var(--fd)!important;color:var(--ink)!important;font-weight:700;font-size:17px;letter-spacing:.3px}
-.hc-btn{background:transparent!important;border:1px solid var(--line)!important;color:var(--ink-soft)!important}
-.hc-btn:hover{background:var(--gold-soft)!important;color:var(--gold-deep)!important}
+/* ---------- 3D button system ---------- */
+.cwb-btn,.year-btn,.dt-btn,.detail-back,.detail-nav button,.video-filter-toggle,.archive-btn,.mnav-btn{font-family:var(--fb)!important;transition:transform .09s ease,box-shadow .09s ease,background .2s!important}
+.cwb-btn-watch,.year-btn.active,.video-filter-toggle.active{
+  background:linear-gradient(180deg,#f0d791,#d2a948 55%,#bd9234)!important;color:var(--blue-d)!important;border:0!important;
+  box-shadow:0 1px 0 #fff inset,0 5px 0 #8a6a1c,0 8px 16px rgba(0,0,0,.28)!important;font-weight:800!important}
+.cwb-btn-watch:active,.year-btn.active:active{transform:translateY(4px)!important;box-shadow:0 1px 0 #fff inset,0 1px 0 #8a6a1c,0 3px 7px rgba(0,0,0,.25)!important}
 
-/* ---------- Sidebar ---------- */
-.sidebar{background:var(--paper-2)!important;box-shadow:-1px 0 0 var(--line),-18px 0 40px rgba(51,48,42,0.035)!important}
+/* ---------- Header (light) ---------- */
+.family-header{background:rgba(251,245,232,.93)!important;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)!important;
+  box-shadow:0 1px 0 var(--gold-line),0 6px 20px rgba(43,38,32,.05)!important;height:50px!important}
+.family-header span{font-family:var(--fd)!important;color:var(--blue)!important;font-weight:700;font-size:17px;letter-spacing:.3px}
+.hc-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--gold-deep)!important;box-shadow:var(--sh-sm)!important}
+.hc-btn:hover{background:var(--gold-soft)!important}
+.header-emblem .menorah{stroke:var(--gold-deep)!important}
+
+/* ---------- Sidebar (light) ---------- */
+.sidebar{background:var(--paper-2)!important;box-shadow:-1px 0 0 var(--line),-18px 0 40px rgba(43,38,32,.04)!important}
 .sidebar-header{background:transparent!important;border-bottom:1px solid var(--line)!important}
-.sidebar-logo{color:var(--ink)!important;font-family:var(--fd)!important}
+.sidebar-logo{color:var(--blue)!important;font-family:var(--fd)!important}
 .sidebar-logo span{color:var(--ink-soft)!important;opacity:1!important}
-.search-box input{background:var(--paper)!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px}
+.search-box input{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px}
 .search-box input::placeholder{color:var(--ink-faint)!important}
-.search-box input:focus{border-color:var(--gold)!important;background:#fff!important;box-shadow:0 0 0 3px var(--gold-soft)!important}
+.search-box input:focus{border-color:var(--gold)!important;box-shadow:0 0 0 3px var(--gold-soft)!important}
 .search-box svg{stroke:var(--ink-faint)}
 .book-tab{color:var(--ink-soft)!important;font-weight:600}
 .book-tab.active{color:var(--gold-deep)!important;background:var(--gold-soft)!important;border-bottom:2px solid var(--gold)!important}
 .parsha-item{border-right:2px solid transparent}
 .parsha-item:hover{background:var(--gold-soft)!important;border-right-color:var(--gold-line)!important}
-.parsha-item.active{background:var(--gold-soft)!important;border-right-color:var(--gold)!important}
+.parsha-item.active{background:rgba(34,69,111,.07)!important;border-right-color:var(--gold)!important}
 .parsha-item-name{color:var(--ink)!important;font-family:var(--fd)!important;font-weight:600}
-.parsha-item.active .parsha-item-name{color:var(--gold-deep)!important}
+.parsha-item.active .parsha-item-name{color:var(--blue)!important}
 .parsha-item-ref{color:var(--ink-faint)!important}
 .parsha-num{background:#fff!important;border:1px solid var(--line)!important;color:var(--gold-deep)!important;box-shadow:none!important}
 .parsha-item.active .parsha-num{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
 .parsha-item.has-video .parsha-num{box-shadow:0 0 0 2px var(--gold-soft)!important}
 .parsha-item.current-week::after{background:var(--gold)!important;color:#fff!important;font-family:var(--fb)}
 .vid-ico{filter:none!important}
-.video-filter-toggle,.archive-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px;box-shadow:var(--sh-sm)}
-.video-filter-toggle:hover,.archive-btn:hover{background:var(--gold-soft)!important;border-color:var(--gold-line)!important}
-.video-filter-toggle.active{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
+.video-filter-toggle,.archive-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px;box-shadow:0 3px 0 #e7ddc6,0 5px 10px rgba(43,38,32,.07)!important;font-weight:700!important}
+.video-filter-toggle:hover,.archive-btn:hover{background:var(--gold-soft)!important}
+.video-filter-toggle:active,.archive-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #e7ddc6,0 2px 5px rgba(43,38,32,.08)!important}
 
-/* ---------- Hero (light, illuminated title page) ---------- */
-.hero{background:linear-gradient(180deg,#fffdf7 0%,#f6eede 100%)!important;
-  padding:84px 64px 72px!important;position:relative;border-bottom:1px solid var(--line)!important;overflow:hidden}
-.hero::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);
-  width:520px;height:520px;background:radial-gradient(circle,rgba(169,133,58,0.10),transparent 65%);pointer-events:none}
+/* ---------- Hero (light, illuminated) ---------- */
+.hero{background:linear-gradient(180deg,#fdf8ec 0%,#f4ebd9 100%)!important;padding:72px 60px 60px!important;
+  border-bottom:1px solid var(--line)!important;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-42%;left:50%;transform:translateX(-50%);width:540px;height:540px;
+  background:radial-gradient(circle,rgba(194,152,47,.10),transparent 65%);pointer-events:none}
 .hero::after{content:"";position:absolute;inset:18px;border:1px solid var(--gold-line);border-radius:4px;pointer-events:none}
 .hero-content{position:relative;z-index:1}
-.hero h1{font-family:var(--fd)!important;color:var(--ink)!important;font-weight:800!important;
-  font-size:clamp(36px,5.2vw,58px)!important;text-shadow:none!important;letter-spacing:.3px;line-height:1.15}
+.hero h1{font-family:var(--fd)!important;color:var(--blue)!important;font-weight:800!important;
+  font-size:clamp(34px,5vw,54px)!important;text-shadow:none!important;letter-spacing:.3px;line-height:1.15}
 .hero h1::after{content:"";display:block;width:64px;height:3px;background:linear-gradient(90deg,var(--gold),transparent);margin:18px 0 0;border-radius:2px}
 .hero p{color:var(--ink-soft)!important;font-weight:300}
 .hero-ornament{color:var(--gold)!important;opacity:0.07!important}
+.presenter-banner{text-align:center;margin:6px auto 0;padding:6px 16px 0}
+.presenter-banner img{max-width:480px;width:100%;height:auto;display:block;margin:0 auto;filter:drop-shadow(0 10px 22px rgba(43,38,32,.20))}
+@media(max-width:768px){.presenter-banner img{max-width:340px}}
+/* fix: back btn was inline-flex (taller than its line box) -> share toolbar overlapped it */
+.detail-back{display:flex!important;width:-moz-fit-content!important;width:fit-content!important}
+/* desktop: small portrait of dad beside the title */
+.header-photo{height:38px;width:38px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);box-shadow:0 2px 7px rgba(43,38,32,.22);margin-inline-end:11px;display:inline-block;vertical-align:middle;flex:0 0 auto}
+/* home button in the header emblem (mobile way back home) */
+.home-btn{background:#fff;border:1px solid rgba(138,94,18,.32);border-radius:8px;width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 3px rgba(43,38,32,.12);padding:0;transition:background .18s,transform .18s}
+.home-btn:hover{background:#fbf3df;transform:translateY(-1px)}
+.home-btn:active{transform:translateY(0)}
+/* desktop shows header portrait + hides big content banner; mobile is the reverse */
+@media(min-width:769px){.presenter-banner{display:none!important}}
+@media(max-width:768px){.header-photo{display:none!important}}
+/* in detail/archive view the filter bar scrolls with the page so it never covers the back button */
+@media(max-width:768px){.mobile-nav{position:static!important;box-shadow:none!important}}
+/* ===== Bigger, more accessible header + buttons ===== */
+:root{--header-h:60px}
+.family-header{height:var(--header-h)!important}
+.family-header span{font-size:20px!important}
+.header-controls{gap:8px!important}
+.hc-btn{min-width:38px!important;height:38px!important;font-size:16px!important;padding:0 10px!important;border-radius:9px!important}
+.header-emblem{gap:10px!important}
+.header-emblem > svg.menorah{width:26px!important;height:23px!important}
+.header-emblem > svg:not(.menorah){width:34px!important;height:24px!important}
+.home-btn{width:42px!important;height:42px!important;border-radius:10px!important}
+.home-btn svg{width:23px!important;height:23px!important}
+.header-photo{height:50px!important;width:50px!important}
+@media(max-width:768px){
+  .family-header span{font-size:15px!important}
+  .header-controls{gap:5px!important}
+  .hc-btn{min-width:34px!important;height:34px!important;font-size:13px!important;padding:0 7px!important}
+  .header-emblem{gap:7px!important}
+  .home-btn{width:40px!important;height:40px!important}
+  .home-btn svg{width:22px!important;height:22px!important}
+}
+/* remove the redundant in-content back button — the header home button replaces it */
+.detail-back{display:none!important}
+/* hero: dad photo on the left, where the big faded "ש" used to be (desktop) */
+.hero{display:flex!important;align-items:center!important;gap:48px!important}
+.hero-content{flex:1 1 auto!important}
+.hero-photo{flex:0 0 auto;width:300px;max-width:34%;height:auto;position:relative;z-index:1;filter:drop-shadow(0 12px 26px rgba(43,38,32,.22))}
+@media(max-width:768px){.hero{display:block!important}.hero-photo{display:none!important}}
 
-/* ---------- Current-week banner (premium white feature card) ---------- */
-.current-week-banner{background:var(--card)!important;border:1px solid var(--line)!important;border-top:3px solid var(--gold)!important;
-  border-radius:18px!important;box-shadow:var(--sh-lg)!important;padding:34px 40px!important}
-.cwb-badge{background:var(--gold-soft)!important;color:var(--gold-deep)!important;border:1px solid var(--gold-line)!important;letter-spacing:2px;font-weight:700;font-size:11.5px}
-.cwb-name{color:var(--ink)!important;font-family:var(--fd)!important}
-.cwb-ref{color:var(--gold-deep)!important}
-.cwb-summary{color:var(--ink-soft)!important}
-.cwb-btn{font-family:var(--fb)!important;border-radius:11px}
-.cwb-btn-watch{background:var(--gold)!important;color:#fff!important;border:0!important;box-shadow:0 4px 14px rgba(169,133,58,0.28)}
+/* ---------- Current-week banner (ROYAL BLUE feature + video) ---------- */
+.current-week-banner{background:linear-gradient(160deg,var(--blue) 0%,var(--blue-d) 100%)!important;
+  border:1px solid var(--blue-lt)!important;border-radius:20px!important;
+  box-shadow:0 18px 48px rgba(22,41,74,.30)!important;padding:30px 36px!important;position:relative;overflow:hidden}
+.current-week-banner::before{content:"";position:absolute;inset:8px;border:1px solid rgba(230,200,120,.30);border-radius:13px;pointer-events:none}
+.current-week-banner>*{position:relative;z-index:1}
+.cwb-badge{background:linear-gradient(180deg,var(--gold-lt),var(--gold))!important;color:var(--blue-d)!important;letter-spacing:1.8px;font-weight:800;
+  box-shadow:0 2px 5px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.5)!important;border:0!important}
+.cwb-name{color:var(--cream)!important;font-family:var(--fd)!important;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+.cwb-ref{color:var(--gold-lt)!important}
+.cwb-summary{color:rgba(243,231,206,.85)!important}
+.cwb-video{box-shadow:0 12px 30px rgba(0,0,0,.4)!important;border-radius:12px;overflow:hidden}
+.cwb-video .video-embed{box-shadow:none!important}
 
 /* ---------- Book sections ---------- */
 .book-title{font-family:var(--fd)!important;color:var(--ink)!important;border-color:var(--gold)!important}
 .book-subtitle{color:var(--ink-soft)!important}
 
-/* ---------- Parsha cards (floating gallery) ---------- */
-.parsha-card{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:16px!important;
+/* ---------- Parsha cards ---------- */
+.parsha-card{background:var(--card)!important;border:1px solid var(--line)!important;border-top:3px solid var(--blue)!important;border-radius:15px!important;
   box-shadow:var(--sh-sm)!important;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s!important}
-.parsha-card:hover{transform:translateY(-6px)!important;box-shadow:var(--sh-lg)!important;border-color:var(--gold-line)!important}
-.parsha-card.current-week-card{border-color:var(--gold)!important;box-shadow:0 2px 6px rgba(51,48,42,0.05),0 14px 34px rgba(169,133,58,0.18)!important}
-.parsha-card-title{font-family:var(--fd)!important;color:var(--ink)!important}
+.parsha-card:hover{transform:translateY(-6px)!important;box-shadow:var(--sh-lg)!important}
+.parsha-card.current-week-card{border-top-color:var(--gold)!important;box-shadow:0 2px 6px rgba(43,38,32,.05),0 14px 34px rgba(194,152,47,.20)!important}
+.parsha-card-title{font-family:var(--fd)!important;color:var(--blue)!important}
 .parsha-card-ref{color:var(--ink-soft)!important}
 .parsha-card-num{color:var(--gold-deep)!important;background:var(--gold-soft)!important}
 .parsha-card-summary{color:var(--ink-soft)!important}
 
 /* ---------- Detail / reading ---------- */
 .detail-badge{background:var(--gold-soft)!important;color:var(--gold-deep)!important;border:1px solid var(--gold-line)!important;letter-spacing:1px}
-.detail-title{font-family:var(--fd)!important;color:var(--ink)!important}
+.detail-title{font-family:var(--fd)!important;color:var(--blue)!important}
 .detail-ref{color:var(--gold-deep)!important}
-.detail-section h3{font-family:var(--fd)!important;color:var(--ink)!important}
+.detail-section h3{font-family:var(--fd)!important;color:var(--blue)!important}
 .detail-section h3::before{content:"";display:inline-block;width:22px;height:2px;background:var(--gold);vertical-align:middle;margin-inline-end:11px;margin-bottom:6px;border-radius:2px}
 .detail-section p,.detail-section li{color:var(--ink)}
-.detail-verse{background:linear-gradient(135deg,var(--gold-soft),rgba(169,133,58,0.03))!important;border-right:3px solid var(--gold)!important;font-family:var(--fd);color:var(--ink)}
+.detail-verse{background:linear-gradient(135deg,var(--gold-soft),rgba(194,152,47,.03))!important;border-right:3px solid var(--gold)!important;font-family:var(--fd);color:var(--ink)}
 .detail-verse-ref{color:var(--gold-deep)!important}
 .easy-explain{background:var(--gold-soft)!important;border:1px solid var(--gold-line)!important}
-.commentary-card{background:#fff!important;border:1px solid var(--line)!important;border-right:3px solid var(--gold)!important;box-shadow:var(--sh-sm)}
-.source-name{color:var(--gold-deep)!important;font-family:var(--fd)}
+.commentary-card{background:#fff!important;border:1px solid var(--line)!important;border-right:3px solid var(--blue)!important;box-shadow:var(--sh-sm)}
+.source-name{color:var(--blue)!important;font-family:var(--fd)}
 .modern-section{background:var(--gold-soft)!important;border:1px solid var(--gold-line)!important}
-.detail-back{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px;box-shadow:var(--sh-sm)}
-.detail-back:hover{background:var(--gold-soft)!important;border-color:var(--gold-line)!important}
+.detail-back{background:#fff!important;border:1px solid var(--line)!important;color:var(--blue)!important;border-radius:11px;font-weight:700!important;box-shadow:0 3px 0 #dde4ec,0 5px 10px rgba(31,58,95,.10)!important}
+.detail-back:hover{background:#f4f8fc!important}
+.detail-back:active{transform:translateY(2px);box-shadow:0 1px 0 #dde4ec!important}
 .detail-nav{border-top:1px solid var(--line)!important}
-.detail-nav button{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:11px;box-shadow:var(--sh-sm)}
-.detail-nav button:hover{background:var(--gold-soft)!important;border-color:var(--gold)!important}
+.detail-nav button{background:#fff!important;border:1px solid var(--line)!important;color:var(--blue)!important;border-radius:11px;box-shadow:0 3px 0 #dde4ec,0 5px 10px rgba(31,58,95,.10)!important;font-weight:700!important}
+.detail-nav button:hover{background:#f4f8fc!important}
+.detail-nav button:active{transform:translateY(2px);box-shadow:0 1px 0 #dde4ec!important}
 
-/* ---------- Lecture / video ---------- */
-.lecture-caption{color:var(--ink)!important;font-family:var(--fd)}
+/* ---------- Lecture / video / year buttons ---------- */
+.lecture-caption{color:var(--blue)!important;font-family:var(--fd)}
 .lecture-date{color:var(--ink-soft)!important}
 .video-embed{border-radius:12px;box-shadow:var(--sh-md)}
-.year-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:10px;font-family:var(--fb);box-shadow:var(--sh-sm)}
-.year-btn.active{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
-.detail-toolbar{border-bottom:1px solid var(--line)!important}
-.dt-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important}
-.dt-label{color:var(--ink-soft)!important}
+.year-tabs{justify-content:center}
+.year-btn{background:#fff!important;border:1px solid var(--line)!important;color:var(--blue)!important;border-radius:10px;font-family:var(--fb);font-weight:700!important;box-shadow:0 3px 0 #dde4ec,0 5px 9px rgba(31,58,95,.10)!important}
+.detail-toolbar{border-bottom:1px solid var(--line)!important;justify-content:center}
+
+/* ---------- Share (WhatsApp) + Print ---------- */
+.dt-btn{font-weight:800!important;border-radius:12px!important;padding:11px 22px!important;border:0!important}
+.dt-wa{background:linear-gradient(180deg,#3fc56a,#1f9c47)!important;color:#fff!important;
+  box-shadow:0 5px 0 #157a35,0 8px 14px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.4)!important}
+.dt-wa:active{transform:translateY(4px);box-shadow:0 1px 0 #157a35,0 2px 6px rgba(0,0,0,.2)!important}
+.dt-print{background:linear-gradient(180deg,#eef3f9,#d6e2f0)!important;color:var(--blue)!important;margin-inline-start:0!important;
+  box-shadow:0 5px 0 #aac0db,0 8px 14px rgba(31,58,95,.16),inset 0 1px 0 #fff!important}
+.dt-print:active{transform:translateY(4px);box-shadow:0 1px 0 #aac0db!important}
+.dt-label{color:var(--ink-soft)!important;font-family:var(--fd)}
 
 /* ---------- Archive ---------- */
-.archive-item{background:var(--card)!important;border:1px solid var(--line)!important;box-shadow:var(--sh-sm)}
+.archive-item{background:var(--card)!important;border:1px solid var(--line)!important;border-top:3px solid var(--blue)!important;box-shadow:var(--sh-sm)}
 .archive-item:hover{box-shadow:var(--sh-md)}
-.archive-name{font-family:var(--fd)!important;color:var(--ink)!important}
+.archive-name{font-family:var(--fd)!important;color:var(--blue)!important}
 .archive-date{color:var(--ink-soft)!important}
 
 /* ---------- Footer (light) ---------- */
-.site-footer{background:var(--paper-2)!important;border-top:1px solid var(--gold-line)!important;box-shadow:0 -1px 0 var(--line),0 -8px 24px rgba(51,48,42,0.03)!important}
-.footer-credit{color:var(--ink)!important;font-family:var(--fd)!important}
+.site-footer{background:var(--paper-2)!important;border-top:1px solid var(--gold-line)!important;box-shadow:0 -1px 0 var(--line)!important}
+.footer-credit{color:var(--blue)!important;font-family:var(--fd)!important}
 .footer-company{color:var(--ink-soft)!important}
-.footer-logo{filter:brightness(0) saturate(100%) invert(54%) sepia(40%) saturate(540%) hue-rotate(2deg) brightness(92%) contrast(88%)}
+.footer-logo{filter:brightness(0) saturate(100%) invert(23%) sepia(28%) saturate(900%) hue-rotate(178deg) brightness(94%) contrast(90%)}
 
 /* ---------- Misc ---------- */
-.back-to-top{background:#fff!important;color:var(--gold-deep)!important;border:1px solid var(--gold)!important;box-shadow:var(--sh-md)!important}
-.back-to-top:hover{background:var(--gold-soft)!important}
-.toast{background:#fff!important;color:var(--ink)!important;border:1px solid var(--gold-line)!important;box-shadow:var(--sh-lg)!important}
+.back-to-top{background:linear-gradient(180deg,#f0d791,#d2a948)!important;color:var(--blue-d)!important;border:0!important;box-shadow:0 4px 0 #8a6a1c,0 6px 12px rgba(0,0,0,.25)!important}
+.toast{background:var(--blue-d)!important;color:var(--gold-lt)!important;border:1px solid var(--gold-line)!important;box-shadow:var(--sh-lg)!important}
 .sidebar-toggle{background:#fff!important;border:2px solid var(--gold)!important;box-shadow:var(--sh-md)!important}
 .sidebar-toggle svg{stroke:var(--gold-deep)!important}
-.header-emblem .menorah{stroke:var(--gold-deep)!important}
 
-/* ===== Mobile (phones): top dropdown + filter buttons replace the hamburger ===== */
+/* ============================================================ MOBILE ============================================================ */
 .mobile-nav{display:none}
 @media(max-width:768px){
-  .sidebar,.sidebar-toggle{display:none!important}
-  .main{margin-right:0!important}
-  .mobile-nav{display:flex;flex-direction:column;gap:8px;position:sticky;top:var(--header-h);z-index:80;
-    background:rgba(255,254,251,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
-    padding:10px 12px;box-shadow:0 5px 16px rgba(51,48,42,0.06)}
-  .mnav-select{width:100%;padding:13px 16px;font-size:16px;font-family:var(--fd);font-weight:600;color:var(--ink);
-    background:#fff;border:1px solid var(--line);border-radius:12px;-webkit-appearance:none;appearance:none;cursor:pointer;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a9853a' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;background-position:left 16px center;box-shadow:0 1px 2px rgba(51,48,42,0.05)}
-  .mnav-select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
-  .mnav-row{display:flex;gap:8px}
-  .mnav-btn{flex:1;min-height:44px;padding:10px 8px;font-size:13.5px;font-weight:700;font-family:var(--fb);color:var(--ink);
-    background:#fff;border:1px solid var(--line);border-radius:11px;cursor:pointer;box-shadow:0 1px 2px rgba(51,48,42,0.05)}
-  .mnav-btn:active{transform:scale(.98)}
-  .mnav-btn.active{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
-  /* compact hero (fix overflow) */
-  .hero{padding:44px 22px 38px!important}
-  .hero::after{inset:10px!important}
-  .hero h1{font-size:30px!important;line-height:1.18}
-  .hero h1::after{margin-top:14px!important}
-  .hero p{font-size:15px!important}
-  .family-header span{font-size:14px!important}
-  /* compact feature blocks */
-  .current-week-banner{padding:24px 18px!important;margin:18px 14px!important;border-radius:15px!important}
-  .cwb-name{font-size:30px!important}
-  .detail-title{font-size:30px!important}
-  .detail-content{padding:0 16px 40px!important}
-  .detail-toolbar{gap:6px!important}
-  .dt-btn{padding:7px 10px!important;font-size:12px!important}
-  .dt-print{margin-inline-start:0!important}
-  /* fix horizontal overflow: single-column cards, tight gutters */
   html,body{overflow-x:hidden!important;max-width:100vw}
-  .main,.hero,.book-section,.parsha-cards,.current-week-banner,.detail-content,.detail-section,.lecture-block,.detail-toolbar{max-width:100%!important;overflow-x:clip}
-  .detail-hero-image,.video-embed,.parsha-card-image{max-width:100%!important}
-  .detail-toolbar{flex-wrap:wrap}
+  .sidebar,.sidebar-toggle{display:none!important}
+  .main{margin-right:0!important;max-width:100%!important}
+  .mobile-nav{display:flex;flex-direction:column;gap:8px;position:sticky;top:var(--header-h);z-index:80;
+    background:rgba(251,245,232,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 12px;box-shadow:0 5px 16px rgba(43,38,32,.06)}
+  .mnav-select{width:100%;padding:13px 16px;font-size:16px;font-family:var(--fd);font-weight:600;color:var(--blue);
+    background:#fff;border:1px solid var(--line);border-radius:12px;-webkit-appearance:none;appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c2982f' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:left 16px center;box-shadow:0 1px 2px rgba(43,38,32,.05)}
+  .mnav-row{display:flex;gap:8px}
+  .mnav-btn{flex:1;min-height:44px;padding:10px 8px;font-size:13.5px;font-weight:700;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:11px;cursor:pointer;box-shadow:0 3px 0 #e7ddc6,0 4px 8px rgba(43,38,32,.06)}
+  .mnav-btn.active{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important;box-shadow:0 2px 0 #8a6a1c!important}
+  .main,.hero,.book-section,.parsha-cards,.current-week-banner,.detail-content,.detail-section,.lecture-block{max-width:100%!important;overflow-x:clip}
   .parsha-cards{grid-template-columns:1fr!important;gap:16px!important;padding:0 14px 34px!important}
   .book-section{padding:0 16px!important}
-  .current-week-banner{margin:16px 14px!important}
-  .hero h1,.detail-title,.cwb-name,.parsha-card-title{overflow-wrap:break-word;word-break:break-word}
+  .hero{padding:42px 22px 34px!important}.hero::after{inset:10px!important}.hero h1{font-size:30px!important}.hero p{font-size:15px!important}
+  .family-header span{font-size:14px!important}
+  .current-week-banner{margin:16px 14px!important;padding:22px 18px!important;border-radius:16px!important}
+  .cwb-name{font-size:32px!important}
+  .detail-title{font-size:30px!important}.detail-content{padding:0 16px 40px!important}
+  .detail-toolbar{gap:8px!important}.dt-btn{padding:10px 16px!important;font-size:13px!important}
+  .hero h1,.detail-title,.cwb-name,.parsha-card-title{overflow-wrap:break-word}
+}
+
+/* ============================================================ PRINT — dedicated grayscale parsha sheet ============================================================ */
+@media print{
+  *{background:#fff!important;color:#000!important;box-shadow:none!important;text-shadow:none!important;animation:none!important;transition:none!important;opacity:1!important;transform:none!important;
+    border-color:#bbb!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .family-header,.sidebar,.sidebar-toggle,.mobile-nav,.site-footer,.detail-nav,.detail-back,.detail-toolbar,
+  .lecture-block,.cwb-video,.back-to-top,.header-controls,.book-tabs,.toast,.hero-ornament,.detail-hero-image,.parsha-card-image{display:none!important}
+  body{padding:0!important;font-family:'Frank Ruhl Libre',Georgia,serif!important;background:#fff!important}
+  .main{margin:0!important}
+  .detail-content{max-width:100%!important;padding:0!important;margin:0!important}
+  .detail-title{font-size:30pt!important;font-weight:900;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:6px;color:#000!important}
+  .detail-ref{font-size:12pt!important;color:#444!important;margin-bottom:18px}
+  .detail-badge{border:1px solid #999!important;color:#333!important;background:#fff!important}
+  .detail-section{margin-bottom:16px!important;break-inside:avoid}
+  .detail-section h3{font-size:15pt!important;color:#000!important;border-bottom:1px solid #999;padding-bottom:3px;margin-bottom:6px}
+  .detail-section h3::before{background:#000!important}
+  .detail-section p,.detail-section li{font-size:11.5pt!important;line-height:1.7!important;color:#111!important}
+  .detail-verse{background:#f4f4f4!important;border-right:3px solid #000!important;color:#000!important;font-style:italic}
+  .easy-explain,.modern-section,.commentary-card{background:#f7f7f7!important;border:1px solid #ccc!important;color:#000!important}
+  .source-name{color:#000!important;font-weight:700}
+  .detail-content::after{content:"פרשת השבוע של משפחת כהן · slides.erezults.com";display:block;margin-top:24px;padding-top:10px;border-top:1px solid #999;font-size:9pt;color:#666!important;text-align:center}
+  @page{margin:18mm 16mm}
 }
 
 </style>
@@ -866,8 +936,8 @@ else{document.addEventListener('DOMContentLoaded',function(){document.getElement
 
 <!-- Family Header -->
 <div class="family-header">
-  <div class="header-emblem" title="מדינת ישראל" aria-label="מדינת ישראל"><svg class="menorah" viewBox="0 0 100 90" width="20" height="18" fill="none" stroke="#8a5e12" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 74 V30"/><path d="M38 30 Q38 54 50 54"/><path d="M62 30 Q62 54 50 54"/><path d="M26 30 Q26 49 50 49"/><path d="M74 30 Q74 49 50 49"/><path d="M14 30 Q14 44 50 44"/><path d="M86 30 Q86 44 50 44"/><path d="M37 74 H63"/><path d="M44 81 H56"/></svg>&nbsp;<svg viewBox="0 0 55 40" width="27" height="19" aria-hidden="true" style="border:1px solid rgba(0,0,0,0.12);border-radius:2px;display:block"><rect width="55" height="40" fill="#fff"/><rect y="6" width="55" height="5" fill="#0038b8"/><rect y="29" width="55" height="5" fill="#0038b8"/><g fill="none" stroke="#0038b8" stroke-width="1.6"><path d="M27.5 13.8 L21.6 23.6 L33.4 23.6 Z"/><path d="M27.5 26.2 L21.6 16.4 L33.4 16.4 Z"/></g></svg></div>
-  <span>פרשת השבוע של משפחת כהן</span>
+  <div class="header-emblem" title="מדינת ישראל" aria-label="מדינת ישראל"><svg class="menorah" viewBox="0 0 100 90" width="20" height="18" fill="none" stroke="#8a5e12" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 74 V30"/><path d="M38 30 Q38 54 50 54"/><path d="M62 30 Q62 54 50 54"/><path d="M26 30 Q26 49 50 49"/><path d="M74 30 Q74 49 50 49"/><path d="M14 30 Q14 44 50 44"/><path d="M86 30 Q86 44 50 44"/><path d="M37 74 H63"/><path d="M44 81 H56"/></svg>&nbsp;<svg viewBox="0 0 55 40" width="27" height="19" aria-hidden="true" style="border:1px solid rgba(0,0,0,0.12);border-radius:2px;display:block"><rect width="55" height="40" fill="#fff"/><rect y="6" width="55" height="5" fill="#0038b8"/><rect y="29" width="55" height="5" fill="#0038b8"/><g fill="none" stroke="#0038b8" stroke-width="1.6"><path d="M27.5 13.8 L21.6 23.6 L33.4 23.6 Z"/><path d="M27.5 26.2 L21.6 16.4 L33.4 16.4 Z"/></g></svg><button class="home-btn" onclick="closeDetail()" title="דף הבית" aria-label="חזרה לדף הבית"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#9a7420" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/><path d="M9 20v-6h6v6"/></svg></button></div>
+  <img class="header-photo" src="abba-avatar.png" alt="אלי כהן · שיעורי פרשת השבוע" loading="lazy"><span>פרשת השבוע של משפחת כהן</span>
   <div class="header-controls">
     <button class="hc-btn" onclick="adjustFont(-1)" title="הקטן טקסט" aria-label="הקטן טקסט">א−</button>
     <button class="hc-btn" onclick="adjustFont(1)" title="הגדל טקסט" aria-label="הגדל טקסט">א+</button>
@@ -2004,12 +2074,13 @@ function renderMain(){
   const cwExtra = EXTRA[currentWeekParshaId] || {};
   let html = `
     <div class="hero">
-      <div class="hero-ornament">ש</div>
       <div class="hero-content animate-in">
         <h1>פרשת השבוע של משפחת כהן</h1>
         <p>כל 54 פרשיות התורה במקום אחד — תקצירים, פירושים ממקורות שונים, חיבור להוויה המודרנית, ועוד. בחרו פרשה מהתפריט או גללו למטה.</p>
       </div>
+      <img class="hero-photo" src="abba.png" alt="אלי כהן — שיעורי פרשת השבוע" loading="lazy">
     </div>
+    <div class="presenter-banner"><img src="abba.png" alt="אלי כהן — שיעורי פרשת השבוע" loading="lazy"></div>
     <div class="current-week-banner" onclick="openDetail(${currentWeekParshaId})">
       <div class="cwb-badge">${cwExtra.emoji || '📖'} פרשת השבוע</div>
       <h2 class="cwb-name">פרשת ${cwp ? cwp.name : ''}</h2>
@@ -2265,15 +2336,47 @@ document.addEventListener('DOMContentLoaded', init);
   };
   function toolbarHTML(id){
     return '<div class="detail-toolbar">' +
-      '<span class="dt-label">שיתוף:</span>' +
-      '<button class="dt-btn dt-wa" onclick="shareParsha(&quot;whatsapp&quot;,' + id + ')">וואטסאפ</button>' +
-      '<button class="dt-btn" onclick="shareParsha(&quot;telegram&quot;,' + id + ')">טלגרם</button>' +
-      '<button class="dt-btn" onclick="shareParsha(&quot;copy&quot;,' + id + ')">העתק קישור</button>' +
-      '<button class="dt-btn" onclick="shareParsha(&quot;email&quot;,' + id + ')">מייל</button>' +
-      '<button class="dt-btn dt-print" onclick="window.print()">🖨️ הדפס</button>' +
+      '<button class="dt-btn dt-wa" onclick="shareParsha(&quot;whatsapp&quot;,' + id + ')">שיתוף בוואטסאפ</button>' +
+      '<button class="dt-btn dt-print" onclick="printParsha(' + id + ')">🖨️ הדפסה</button>' +
     '</div>';
   }
   // ----- Wrap openDetail/closeDetail: hash routing + share toolbar -----
+  function printParsha(id){
+    var p = PARSHAS.find(function(x){ return x.id === id; }); if(!p) return;
+    var ex = (typeof EXTRA !== 'undefined' && EXTRA[id]) ? EXTRA[id] : {};
+    var easy = (typeof EASY_EXPLAIN !== 'undefined' && EASY_EXPLAIN[id]) ? EASY_EXPLAIN[id] : '';
+    var bk = {bereshit:'בראשית',shemot:'שמות',vayikra:'ויקרא',bamidbar:'במדבר',devarim:'דברים'};
+    var E = function(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+    var sec = function(t,h){ return h ? '<h2>'+E(t)+'</h2>'+h : ''; };
+    var themes = (p.themes||[]).map(function(t){ return '<li>'+E(t)+'</li>'; }).join('');
+    var comm = (ex.commentaries||[]).map(function(c){ return '<div class="cm"><b>'+E(c.source)+'</b><p>'+E(c.text)+'</p></div>'; }).join('');
+    var doc = '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>פרשת '+E(p.name)+'</title>'+
+      '<style>@page{margin:18mm 16mm}'+
+      'body{font-family:"Frank Ruhl Libre",Georgia,serif;color:#111;line-height:1.72;font-size:12pt;margin:0}'+
+      'h1{font-size:30pt;font-weight:900;border-bottom:2px solid #000;padding-bottom:6px;margin:0 0 4px}'+
+      '.ref{font-size:11pt;color:#555;margin-bottom:16px}'+
+      'h2{font-size:15pt;border-bottom:1px solid #999;padding-bottom:3px;margin:16px 0 6px}'+
+      'p{margin:0 0 8px}ul{margin:0;padding-inline-start:20px}li{margin-bottom:3px}'+
+      '.verse{background:#f3f3f3;border-right:3px solid #000;padding:10px 14px;font-style:italic;margin:4px 0}'+
+      '.cm{border-right:2px solid #777;padding:4px 12px;margin:0 0 8px}.cm b{display:block}'+
+      '.ft{margin-top:24px;padding-top:8px;border-top:1px solid #999;text-align:center;font-size:9pt;color:#666}'+
+      '</style></head><body>'+
+      '<h1>פרשת '+E(p.name)+'</h1>'+
+      '<div class="ref">ספר '+E(bk[p.book]||'')+' · '+E(p.ref)+' · פרשה '+id+' מתוך 54</div>'+
+      sec('הסבר בשפה קלה', easy ? '<p>'+E(easy)+'</p>' : '')+
+      sec('תקציר', p.details ? '<p>'+E(p.details)+'</p>' : '')+
+      (p.keyVerse ? '<h2>פסוק מפתח</h2><div class="verse">"'+E(p.keyVerse)+'"' + (p.verseRef?' — '+E(p.verseRef):'') + '</div>' : '')+
+      sec('נושאים מרכזיים', themes ? '<ul>'+themes+'</ul>' : '')+
+      sec('פירושים ומקורות', comm)+
+      sec('חיבור להוויה המודרנית', ex.modern ? '<p>'+E(ex.modern)+'</p>' : '')+
+      '<div class="ft">פרשת השבוע של משפחת כהן · slides.erezults.com</div></body></html>';
+    var f = document.createElement('iframe');
+    f.setAttribute('aria-hidden','true');
+    f.style.cssText = 'position:fixed;left:-9999px;top:0;width:0;height:0;border:0';
+    document.body.appendChild(f);
+    var d = f.contentWindow.document; d.open(); d.write(doc); d.close();
+    setTimeout(function(){ try{ f.contentWindow.focus(); f.contentWindow.print(); }catch(e){ try{window.print();}catch(_){} } setTimeout(function(){ if(f.parentNode) f.parentNode.removeChild(f); }, 2500); }, 400);
+  }
   var _open = window.openDetail;
   window.openDetail = function(id){
     _open(id);
@@ -2281,16 +2384,19 @@ document.addEventListener('DOMContentLoaded', init);
     if(p){ var target = '#' + encodeURIComponent(p.name); if(location.hash !== target){ history.pushState(null, '', target); } }
     var back = document.querySelector('#mainContent .detail-back');
     if(back) back.insertAdjacentHTML('afterend', toolbarHTML(id));
+    document.body.classList.add('detail-mode');
   };
   var _close = window.closeDetail;
   window.closeDetail = function(){
     _close();
+    document.body.classList.remove('detail-mode');
     if(location.hash){ history.pushState(null, '', location.pathname + location.search); }
   };
   // ----- Archive (all lectures) -----
   window.showArchive = function(){
     if(currentParsha === null) overviewScroll = window.scrollY;
     currentParsha = -1;
+    document.body.classList.add('detail-mode');
     var seen = {}, items = [];
     PARSHAS.forEach(function(p){
       visibleLecturesFor(p.id).forEach(function(l){
@@ -2340,7 +2446,8 @@ document.addEventListener('DOMContentLoaded', init);
 (function(){
   var allowed = ['slides.erezults.com','localhost','127.0.0.1',''];
   var h = location.hostname;
-  if (!allowed.includes(h) && !h.endsWith('.local')) {
+  var isLan = /^(192\.168\.|10\.|172\.(1[6-9]|2\d|3[01])\.)/.test(h);
+  if (!allowed.includes(h) && !h.endsWith('.local') && !isLan) {
     document.body.innerHTML = '<div class="er-block"><h2>⚠️ גישה לא מורשית</h2><p>מצגת זו זמינה רק דרך<br><strong>slides.erezults.com</strong></p><p style="font-size:13px;margin-top:8px">© E-Rezults — כל הזכויות שמורות</p></div>';
     return;
   }
