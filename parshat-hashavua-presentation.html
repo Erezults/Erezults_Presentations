@@ -812,6 +812,50 @@ body{font-family:var(--fb)!important;color:var(--ink)!important;
 .sidebar-toggle svg{stroke:var(--gold-deep)!important}
 .header-emblem .menorah{stroke:var(--gold-deep)!important}
 
+/* ===== Mobile (phones): top dropdown + filter buttons replace the hamburger ===== */
+.mobile-nav{display:none}
+@media(max-width:768px){
+  .sidebar,.sidebar-toggle{display:none!important}
+  .main{margin-right:0!important}
+  .mobile-nav{display:flex;flex-direction:column;gap:8px;position:sticky;top:var(--header-h);z-index:80;
+    background:rgba(255,254,251,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+    padding:10px 12px;box-shadow:0 5px 16px rgba(51,48,42,0.06)}
+  .mnav-select{width:100%;padding:13px 16px;font-size:16px;font-family:var(--fd);font-weight:600;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:12px;-webkit-appearance:none;appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a9853a' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:left 16px center;box-shadow:0 1px 2px rgba(51,48,42,0.05)}
+  .mnav-select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .mnav-row{display:flex;gap:8px}
+  .mnav-btn{flex:1;min-height:44px;padding:10px 8px;font-size:13.5px;font-weight:700;font-family:var(--fb);color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:11px;cursor:pointer;box-shadow:0 1px 2px rgba(51,48,42,0.05)}
+  .mnav-btn:active{transform:scale(.98)}
+  .mnav-btn.active{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
+  /* compact hero (fix overflow) */
+  .hero{padding:44px 22px 38px!important}
+  .hero::after{inset:10px!important}
+  .hero h1{font-size:30px!important;line-height:1.18}
+  .hero h1::after{margin-top:14px!important}
+  .hero p{font-size:15px!important}
+  .family-header span{font-size:14px!important}
+  /* compact feature blocks */
+  .current-week-banner{padding:24px 18px!important;margin:18px 14px!important;border-radius:15px!important}
+  .cwb-name{font-size:30px!important}
+  .detail-title{font-size:30px!important}
+  .detail-content{padding:0 16px 40px!important}
+  .detail-toolbar{gap:6px!important}
+  .dt-btn{padding:7px 10px!important;font-size:12px!important}
+  .dt-print{margin-inline-start:0!important}
+  /* fix horizontal overflow: single-column cards, tight gutters */
+  html,body{overflow-x:hidden!important;max-width:100vw}
+  .main,.hero,.book-section,.parsha-cards,.current-week-banner,.detail-content,.detail-section,.lecture-block,.detail-toolbar{max-width:100%!important;overflow-x:clip}
+  .detail-hero-image,.video-embed,.parsha-card-image{max-width:100%!important}
+  .detail-toolbar{flex-wrap:wrap}
+  .parsha-cards{grid-template-columns:1fr!important;gap:16px!important;padding:0 14px 34px!important}
+  .book-section{padding:0 16px!important}
+  .current-week-banner{margin:16px 14px!important}
+  .hero h1,.detail-title,.cwb-name,.parsha-card-title{overflow-wrap:break-word;word-break:break-word}
+}
+
 </style>
 </head>
 <body class="sidebar-open">
@@ -856,6 +900,15 @@ else{document.addEventListener('DOMContentLoaded',function(){document.getElement
   <div class="book-tabs" id="bookTabs"></div>
   <div class="parsha-list" id="parshaList"></div>
 </nav>
+
+<!-- Mobile nav: parsha dropdown + filters (replaces hamburger on phones) -->
+<div class="mobile-nav" id="mobileNav">
+  <select class="mnav-select" id="parshaSelect" aria-label="בחר פרשה" onchange="if(this.value){openDetail(+this.value)}else{closeDetail()}"></select>
+  <div class="mnav-row">
+    <button class="mnav-btn" id="mFilterBtn" onclick="toggleVideoFilter()" aria-pressed="false">🎥 רק עם שיעור</button>
+    <button class="mnav-btn" onclick="showArchive()">🎬 כל השיעורים</button>
+  </div>
+</div>
 
 <!-- Detail renders inline inside #mainContent (master-detail) -->
 
@@ -1914,6 +1967,26 @@ function renderSidebar(){
   // Scroll to current week in sidebar
   const cwEl = list.querySelector('.current-week');
   if(cwEl && !currentParsha) cwEl.scrollIntoView({block:'center',behavior:'smooth'});
+  renderParshaSelect();
+}
+function renderParshaSelect(){
+  const sel = document.getElementById('parshaSelect'); if(!sel) return;
+  const bookName = {bereshit:'ספר בראשית',shemot:'ספר שמות',vayikra:'ספר ויקרא',bamidbar:'ספר במדבר',devarim:'ספר דברים'};
+  const byBook = {};
+  filteredParshas.forEach(p => { (byBook[p.book] = byBook[p.book] || []).push(p); });
+  let html = '<option value="">— בחר פרשה —</option>';
+  BOOKS.forEach(b => {
+    const ps = byBook[b.id]; if(!ps || !ps.length) return;
+    html += '<optgroup label="' + bookName[b.id] + '">';
+    ps.forEach(p => {
+      const mark = (p.id === currentWeekParshaId ? '★ ' : '') + (hasVisibleVideo(p.id) ? '🎥 ' : '');
+      html += '<option value="' + p.id + '"' + (p.id === currentParsha ? ' selected' : '') + '>' + mark + p.name + '</option>';
+    });
+    html += '</optgroup>';
+  });
+  sel.innerHTML = html;
+  const mfb = document.getElementById('mFilterBtn');
+  if(mfb) mfb.classList.toggle('active', !!window.videoOnlyMode);
 }
 
 function toggleSidebar(){
